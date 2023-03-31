@@ -1,9 +1,5 @@
 name: Run Tests
-env:
-  MYSQL_DATABASE: evertec_bootcamp
-  MYSQL_USER: root
-  MYSQL_PASSWORD: password
-  MYSQL_HOST: 127.0.0.1
+
 on:
   pull_request:
     branches:
@@ -12,22 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
-          MYSQL_USER: ${{ env.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
-          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASSWORD }}
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
 
     steps:
       - name: Checkout code
@@ -45,6 +25,9 @@ jobs:
 
       - name: Copy environment file
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Create SQLite database
+        run: touch database/database.sqlite
 
       - name: Generate application key
         run: php artisan key:generate
