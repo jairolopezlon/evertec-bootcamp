@@ -1,5 +1,9 @@
 name: Run Tests
-
+env:
+  MYSQL_DATABASE: test_evertec
+  MYSQL_USER: test_user
+  MYSQL_PASSWORD: password
+  MYSQL_HOST: mysql-master
 on:
   pull_request:
     branches:
@@ -13,10 +17,10 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: mydb
-          MYSQL_USER: myuser
-          MYSQL_PASSWORD: mypass
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASSWORD }}
         ports:
           - 3306:3306
         options: >-
