@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::redirect('/home', '/');
+
+Route::view('/', 'welcome');
+Route::view('/login', 'login');
+
+Route::post('/login', function () {
+    $credenciales = request()->only('password', 'email');
+    if (Auth::attempt($credenciales)) {
+        request()->session()->regenerate();
+        return redirect('home');
+    }
+    return redirect('login');
 });
