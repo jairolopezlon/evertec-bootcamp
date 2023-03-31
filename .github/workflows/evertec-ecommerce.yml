@@ -1,9 +1,9 @@
 name: Run Tests
 env:
-  MYSQL_DATABASE: test_evertec
-  MYSQL_USER: test_user
+  MYSQL_DATABASE: evertec_bootcamp
+  MYSQL_USER: root
   MYSQL_PASSWORD: password
-  MYSQL_HOST: mysql-master
+  MYSQL_HOST: 127.0.0.1
 on:
   pull_request:
     branches:
