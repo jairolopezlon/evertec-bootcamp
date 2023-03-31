@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 Route::redirect('/home', '/');
 
 Route::view('/', 'welcome');
-Route::view('/login', 'login');
+Route::view('/login', 'login')->name('login')->middleware('guest');
 
 Route::post('/login', function () {
     $credenciales = request()->only('password', 'email');
