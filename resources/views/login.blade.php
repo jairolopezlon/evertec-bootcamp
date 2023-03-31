@@ -9,6 +9,10 @@
 </head>
 
 <body>
+    @if (Auth::user())
+        <p>logged</p>
+    @endif
+
     <form method="POST" id="loginForm">
         @csrf
         <div>
