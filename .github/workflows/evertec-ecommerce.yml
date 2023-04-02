@@ -1,4 +1,4 @@
-name: Laravel_4
+name: Laravel_5
 
 on:
   push:
@@ -36,6 +36,8 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: |
         sqlite3 $DB_DATABASE ".tables"
+    - name: Build Vite
+      run: npm run build
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
