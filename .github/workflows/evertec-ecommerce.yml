@@ -1,4 +1,4 @@
-name: Laravel_3
+name: Laravel_4
 
 on:
   push:
@@ -30,6 +30,12 @@ jobs:
         touch database/database.sqlite
     - name: Run Migrations
       run: php artisan migrate:fresh --env=testing --quiet
+    - name: Validate database tables exist
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+      run: |
+        sqlite3 $DB_DATABASE ".tables"
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
