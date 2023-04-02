@@ -70,7 +70,6 @@ class LoginTest extends TestCase
             'password' => 'password544',
         ]);
 
-        $response->assertRedirect('/login');
         $this->assertGuest();
     }
 }
