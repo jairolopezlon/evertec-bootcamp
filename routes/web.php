@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +20,9 @@ use Illuminate\Support\Facades\Auth;
 
 Route::redirect('/home', '/');
 
-Route::view('/', 'welcome');
+Route::view('/', 'home');
 Route::view('/login', 'login')->name('login')->middleware('guest');
+Route::view('/signup', 'signup')->name('signup')->middleware('guest');
 
 Route::post('/login', function () {
     $credenciales = request()->only('password', 'email');
@@ -26,4 +31,26 @@ Route::post('/login', function () {
         return redirect('home');
     }
     return redirect('login');
+});
+
+Route::post('/signup', function (Request $request) {
+    try {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users|max:255',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        Auth()->login($user);
+        $request->session()->put('email', $user->email);
+        return redirect('home');
+    } catch (ValidationException  $exception) {
+        return redirect('signup')->withErrors($exception->errors());
+    }
 });
