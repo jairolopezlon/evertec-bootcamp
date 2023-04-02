@@ -24,13 +24,18 @@ Route::view('/', 'home');
 Route::view('/login', 'login')->name('login')->middleware('guest');
 Route::view('/signup', 'signup')->name('signup')->middleware('guest');
 
-Route::post('/login', function () {
-    $credenciales = request()->only('password', 'email');
+Route::post('/login', function (Request $request) {
+    $credenciales = $request->validate([
+        'email' => ['required', 'email', 'string'],
+        'password' => ['required', 'string'],
+    ]);
     if (Auth::attempt($credenciales)) {
         request()->session()->regenerate();
-        return redirect('home');
+        return redirect()->intended('home');
     }
-    return redirect('login');
+    throw ValidationException::withMessages([
+        'email' => 'incorrect credentials'
+    ]);
 });
 
 Route::post('/signup', function (Request $request) {
