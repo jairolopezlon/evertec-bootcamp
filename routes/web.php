@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\EmailVerificationRequest;
+use App\Models\Customer;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,16 @@ Route::get('/email/verify/resend', function () {
     return back()->with('resent', true);
 })->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 
+Route::get('/dashboard', function () {
+    $customers = DB::table('users')
+        ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
+        ->select('users.*', 'customers.is_enabled')
+        ->get();
+
+    return view('dashboard', [
+        'customers' => $customers
+    ]);
+});
 
 // POST REQUEST
 Route::post('/login', function (Request $request) {
@@ -77,6 +89,11 @@ Route::post('/signup', function (Request $request) {
             'email_verified_at' => null, // set email_verified_at to null by default
         ]);
 
+        $customer = Customer::create([
+            'is_enable' => false,
+            'user_id' => $user->id,
+        ]);
+
         event(new Registered($user));
         $user->sendEmailVerificationNotification();
 
@@ -88,3 +105,10 @@ Route::post('/signup', function (Request $request) {
         return redirect('signup')->withErrors($exception->errors())->withInput();
     }
 });
+
+Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
+    $customer = Customer::findOrFail($id);
+    $customer->is_enabled = !$customer->is_enabled;
+    $customer->save();
+    return redirect()->back();
+})->name('users.toggle-enable');
