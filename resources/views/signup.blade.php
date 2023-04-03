@@ -37,7 +37,7 @@
             @csrf
             <div class="form_field">
                 <label for="name">Name</label>
-                <input type="text" name="name" id="name" value="{{ old('name') }}">
+                <input type="text" name="name" id="name" required autofocus value="{{ old('name') }}">
                 @error('name')
                     <div class="invalid-feedback-container">
                         @foreach ($errors->get('name') as $error)
@@ -48,7 +48,7 @@
             </div>
             <div class="form_field">
                 <label for="email">Email</label>
-                <input type="text" name="email" id="email" value="{{ old('email') }}">
+                <input type="text" name="email" id="email" required value="{{ old('email') }}">
                 @error('email')
                     <div class="invalid-feedback-container">
                         @foreach ($errors->get('email') as $error)
@@ -59,7 +59,7 @@
             </div>
             <div class="form_field">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password">
+                <input type="password" name="password" id="password" required value="password">
                 @error('password')
                     <div class="invalid-feedback-container">
                         @foreach ($errors->get('password') as $error)
@@ -70,7 +70,8 @@
             </div>
             <div class="form_field">
                 <label for="password_confirmation">Password confirmation</label>
-                <input type="password" name="password_confirmation" id="password_confirmation">
+                <input type="password" name="password_confirmation" id="password_confirmation" required
+                    value="password">
             </div>
             <button type="submit">Sign-up</button>
         </form>

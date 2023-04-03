@@ -10,7 +10,8 @@ use App\Models\User;
 
 class SignupTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     public function testSignupPageExist(): void
     {
@@ -35,7 +36,7 @@ class SignupTest extends TestCase
 
         $response = $this->post('/signup', $userData);
 
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/email/verify/notice');
 
         $this->assertAuthenticated();
         $this->assertEquals($userData['email'], session('email'));
