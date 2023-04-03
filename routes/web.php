@@ -49,6 +49,13 @@ Route::get('/email/verify/resend', function () {
 })->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 
 Route::get('/dashboard', function () {
+
+    $user_id = Auth::user()->id;
+    $customer_exists = DB::table('admins')->where('user_id', $user_id)->exists();
+    if (!$customer_exists) {
+        abort(403, 'No tienes acceso a esta página');
+    }
+
     $customers = DB::table('users')
         ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
         ->select('users.*', 'customers.is_enabled')
@@ -57,7 +64,7 @@ Route::get('/dashboard', function () {
     return view('dashboard', [
         'customers' => $customers
     ]);
-});
+})->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
 
 // POST REQUEST
 Route::post('/login', function (Request $request) {
