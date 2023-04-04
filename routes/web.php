@@ -28,7 +28,7 @@ Route::redirect('/home', '/');
 
 
 // PAGES
-Route::view('/', 'home')->name('home');
+Route::view('/', 'pages.home')->name('home');
 
 Route::view('/login', 'login')->name('login')->middleware('guest');
 
@@ -61,7 +61,7 @@ Route::get('/dashboard', function () {
         ->select('users.*', 'customers.is_enabled')
         ->get();
 
-    return view('dashboard', [
+    return view('pages.dashboard', [
         'customers' => $customers
     ]);
 })->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
