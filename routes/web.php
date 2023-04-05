@@ -30,9 +30,9 @@ Route::redirect('/home', '/');
 // PAGES
 Route::view('/', 'pages.home')->name('home');
 
-Route::view('/login', 'login')->name('login')->middleware('guest');
+Route::view('/login', 'auth.login')->name('login')->middleware('guest');
 
-Route::view('/signup', 'signup')->name('signup')->middleware('guest');
+Route::view('/signup', 'auth.signup')->name('signup')->middleware('guest');
 
 Route::get('/email/verify/notice', function () {
     return view('auth.verification-notice');
