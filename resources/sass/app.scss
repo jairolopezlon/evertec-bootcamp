@@ -1,0 +1,48 @@
+*, *::after, *::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header{
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: slateblue;
+}
+
+.nav-main{
+  ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;  
+    gap: .5rem;
+    padding: 0px 32px;
+    li{
+      a{
+        background-color: cadetblue;
+        padding: .5rem 1rem;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.form_field {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.invalid-feedback-container {
+  display: flex;
+  flex-direction: column;
+  gap: .125rem;
+}
+
+.invalid-feedback {
+  color: #ff0000;
+  font-size: .8rem;
+}
+
