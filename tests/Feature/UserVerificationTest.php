@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertFalse;
-use function PHPUnit\Framework\assertNotNull;
 use function PHPUnit\Framework\assertTrue;
 
 class UserVerificationTest extends TestCase

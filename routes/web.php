@@ -49,7 +49,6 @@ Route::get('/email/verify/resend', function () {
 })->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 
 Route::get('/dashboard', function () {
-
     $user_id = Auth::user()->id;
     $customer_exists = DB::table('admins')->where('user_id', $user_id)->exists();
     if (!$customer_exists) {
