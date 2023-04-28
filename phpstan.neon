@@ -5,4 +5,7 @@ parameters:
     paths:
         - app/
         - tests/
+        - config/
+        - routes/web.php
+        - database/
     level: 7
