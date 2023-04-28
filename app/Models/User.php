@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,16 +48,18 @@ class User extends Authenticatable
 
     /**
      * Get the customer record associated with the user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<Customer>
      */
-    public function customer()
+    public function customer(): HasOne
     {
         return $this->hasOne(Customer::class);
     }
 
     /**
      * Get the admin record associated with the user.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<Admin>
      */
-    public function admin()
+    public function admin(): HasOne
     {
         return $this->hasOne(Admin::class);
     }

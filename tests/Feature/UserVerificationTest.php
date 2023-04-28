@@ -17,7 +17,7 @@ class UserVerificationTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testSuccessfulRegistrationWithEmailNotVerified()
+    public function testSuccessfulRegistrationWithEmailNotVerified(): void
     {
         Notification::fake();
 
@@ -41,7 +41,7 @@ class UserVerificationTest extends TestCase
         assertFalse($user->hasVerifiedEmail());
     }
 
-    public function testSuccessfulRegistrationWithEmailVerified()
+    public function testSuccessfulRegistrationWithEmailVerified(): void
     {
         Notification::fake();
 
@@ -65,7 +65,7 @@ class UserVerificationTest extends TestCase
         assertTrue($user->hasVerifiedEmail());
     }
 
-    public function testSuccessfulEmailVerification()
+    public function testSuccessfulEmailVerification(): void
     {
         Notification::fake();
 
@@ -91,7 +91,7 @@ class UserVerificationTest extends TestCase
         $this->assertNotNull($updatedUser->fresh()->email_verified_at);
     }
 
-    public function testRedirectToLoginWhenUserRegisterAndNoAutenticated()
+    public function testRedirectToLoginWhenUserRegisterAndNoAutenticated(): void
     {
         $userData = [
             'name' => $this->faker->name(),
@@ -116,7 +116,7 @@ class UserVerificationTest extends TestCase
         $responseVerificationNotice->assertRedirect('/login');
     }
 
-    public function testRedirectToHomeWhenUserRegisterAndAutenticated()
+    public function testRedirectToHomeWhenUserRegisterAndAutenticated(): void
     {
         $userData = [
             'name' => $this->faker->name(),

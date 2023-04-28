@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Customer;
+use App\Models\Admin;
 
 class UserSeeder extends Seeder
 {
@@ -15,14 +17,14 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()->count(20)->create()->each(function ($user) {
-            $customer = \App\Models\Customer::factory()->make();
-            $customer->user_id = $user->id;
-            $customer->save();
+            Customer::factory()->state([
+                'user_id' => $user->id,
+            ])->create();
 
             if ($user->type === 'admin') {
-                $admin = \App\Models\Admin::factory()->make();
-                $admin->user_id = $user->id;
-                $admin->save();
+                Admin::factory()->state([
+                    'user_id' => $user->id,
+                ])->create();
             }
         });
     }

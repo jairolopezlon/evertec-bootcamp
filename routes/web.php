@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\EmailVerificationRequest;
 use App\Models\Customer;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /*
@@ -41,7 +42,7 @@ Route::get('/email/verify/notice', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect()->route('home')->with('verification_status', true);
-})->middleware(['auth', 'redirectIfVerifying',  'signed'])->name('verification.verify');
+})->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
 
 Route::get('/email/verify/resend', function () {
     Auth::user()->sendEmailVerificationNotification();
@@ -107,14 +108,19 @@ Route::post('/signup', function (Request $request) {
         $request->session()->put('email', $user->email);
 
         return redirect()->route('verification.notice');
-    } catch (ValidationException  $exception) {
+    } catch (ValidationException $exception) {
         return redirect('signup')->withErrors($exception->errors())->withInput();
     }
 });
 
 Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
-    $customer = Customer::findOrFail($id);
-    $customer->is_enabled = !$customer->is_enabled;
-    $customer->save();
+    try {
+        /** @var Customer $customer */
+        $customer = Customer::findOrFail($id);
+        $customer->is_enabled = !$customer->is_enabled;
+        $customer->save();
+    } catch (ModelNotFoundException $exception) {
+        abort(404);
+    }
     return redirect()->back();
 })->name('users.toggle-enable');

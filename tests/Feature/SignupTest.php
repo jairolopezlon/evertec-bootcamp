@@ -24,7 +24,7 @@ class SignupTest extends TestCase
         $response->assertSeeInOrder(['form', 'id', 'signupForm', 'form']);
     }
 
-    public function testSignupWithValidData()
+    public function testSignupWithValidData(): void
     {
         $userData = [
             'name' => $this->faker->name(),
@@ -44,7 +44,7 @@ class SignupTest extends TestCase
         ]);
     }
 
-    public function testSignupWithInvalidData()
+    public function testSignupWithInvalidData(): void
     {
         $userData = [
             'name' => $this->faker->name(),
