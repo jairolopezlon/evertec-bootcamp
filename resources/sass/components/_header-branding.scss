@@ -1,0 +1,16 @@
+@use "../base" as *;
+.header{ 
+  .branding-container{
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+  }
+  .branding-image{
+    width: 35px;
+  }
+  .branding-text{
+    @extend .text-size-large;
+    line-height: 100%;
+    font-weight: 700;
+  }
+}
