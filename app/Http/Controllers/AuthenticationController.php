@@ -8,6 +8,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Customer;
+use App\Models\User;
 
 class AuthenticationController extends Controller
 {
@@ -15,12 +19,10 @@ class AuthenticationController extends Controller
     {
         return view('auth.signup');
     }
-
     public function loginView(Request $request): View
     {
         return view('auth.login');
     }
-
     public function verifyEmailMessageView(Request $request): View
     {
         return view('auth.verification-notice');
@@ -52,8 +54,41 @@ class AuthenticationController extends Controller
             'email' => 'incorrect credentials'
         ]);
     }
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function signup(Request $request): RedirectResponse
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|unique:users|max:255',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
 
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'email_verified_at' => null, // set email_verified_at to null by default
+            ]);
 
+            $customer = Customer::create([
+                'is_enable' => false,
+                'user_id' => $user->id,
+            ]);
+
+            event(new Registered($user));
+            $user->sendEmailVerificationNotification();
+
+            Auth()->login($user);
+            $request->session()->put('email', $user->email);
+
+            return redirect()->route('verification.notice');
+        } catch (ValidationException $exception) {
+            return redirect('signup')->withErrors($exception->errors())->withInput();
+        }
+    }
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();

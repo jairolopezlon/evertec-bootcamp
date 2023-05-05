@@ -1,14 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 use App\Models\Customer;
-use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -37,8 +33,8 @@ Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'email
 Route::get('/email/verify/resend', [AuthenticationController::class, 'resentEmailToVerify'])
     ->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/signup', [AuthenticationController::class, 'signup']);
 Route::post('/logout', [AuthenticationController::class, 'logout']);
-
 
 Route::get('/dashboard', function () {
     $user_id = Auth::user()->id;
@@ -56,41 +52,6 @@ Route::get('/dashboard', function () {
         'customers' => $customers
     ]);
 })->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
-
-
-
-Route::post('/signup', function (Request $request) {
-    try {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'email_verified_at' => null, // set email_verified_at to null by default
-        ]);
-
-        $customer = Customer::create([
-            'is_enable' => false,
-            'user_id' => $user->id,
-        ]);
-
-        event(new Registered($user));
-        $user->sendEmailVerificationNotification();
-
-        Auth()->login($user);
-        $request->session()->put('email', $user->email);
-
-        return redirect()->route('verification.notice');
-    } catch (ValidationException $exception) {
-        return redirect('signup')->withErrors($exception->errors())->withInput();
-    }
-});
-
 Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
     try {
         /** @var Customer $customer */
