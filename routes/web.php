@@ -24,11 +24,8 @@ use Illuminate\Support\Facades\DB;
 */
 
 
-// REDIRECTS
 Route::redirect('/home', '/');
 
-
-// PAGES
 Route::view('/', 'pages.home')->name('home');
 
 Route::get('/signup', [AuthenticationController::class, 'signupView'])->middleware('guest')->name('login');
@@ -39,6 +36,9 @@ Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'email
     ->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
 Route::get('/email/verify/resend', [AuthenticationController::class, 'resentEmailToVerify'])
     ->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
+Route::post('/login', [AuthenticationController::class, 'login']);
+Route::post('/logout', [AuthenticationController::class, 'logout']);
+
 
 Route::get('/dashboard', function () {
     $user_id = Auth::user()->id;
@@ -57,20 +57,7 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
 
-// POST REQUEST
-Route::post('/login', function (Request $request) {
-    $credenciales = $request->validate([
-        'email' => ['required', 'email', 'string'],
-        'password' => ['required', 'string'],
-    ]);
-    if (Auth::attempt($credenciales)) {
-        request()->session()->regenerate();
-        return redirect()->intended('home');
-    }
-    throw ValidationException::withMessages([
-        'email' => 'incorrect credentials'
-    ]);
-});
+
 
 Route::post('/signup', function (Request $request) {
     try {
@@ -115,5 +102,3 @@ Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
     }
     return redirect()->back();
 })->name('users.toggle-enable');
-
-Route::post('/logout', [AuthenticationController::class, 'logout']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailVerificationRequest;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,6 +34,23 @@ class AuthenticationController extends Controller
     {
         Auth::user()->sendEmailVerificationNotification();
         return back()->with('resent', true);
+    }
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function login(Request $request): RedirectResponse
+    {
+        $credenciales = $request->validate([
+            'email' => ['required', 'email', 'string'],
+            'password' => ['required', 'string'],
+        ]);
+        if (Auth::attempt($credenciales)) {
+            request()->session()->regenerate();
+            return redirect()->intended('home');
+        }
+        throw ValidationException::withMessages([
+            'email' => 'incorrect credentials'
+        ]);
     }
 
 
