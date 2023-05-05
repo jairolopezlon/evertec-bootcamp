@@ -1,24 +1,27 @@
 <nav class="nav-main">
     <ul>
         <li>
-            <a href="/">home</a>
+            <a class="nav-item {{ Request::is('/') ? 'current-page' : '' }}" href="/">home</a>
         </li>
         @auth
             <li>
-                <a href="/dashboard">dashboard</a>
+                <a class="nav-item {{ Request::is('dashboard') ? 'current-page' : '' }}" href="/dashboard">dashboard</a>
             </li>
         @endauth
         @guest
             <li>
-                <a href="/login">login</a>
+                <a class="nav-item {{ Request::is('login') ? 'current-page' : '' }}" href="/login">login</a>
             </li>
             <li>
-                <a href="/signup">signup</a>
+                <a class="nav-item {{ Request::is('signup') ? 'current-page' : '' }}" href="/signup">signup</a>
             </li>
         @endguest
         @auth
             <li>
-                <a href="/logout">Logout</a>
+                <form method="POST" action="/logout">
+                    @csrf
+                    <button class="nav-item" type="submit">Logout</button>
+                </form>
             </li>
         @endauth
     </ul>
