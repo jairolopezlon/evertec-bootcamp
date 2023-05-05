@@ -1,37 +1,10 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
 
-*, *::after, *::before{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-.header{
-  width: 100vw;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: slateblue;
-}
-
-.nav-main{
-  ul{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;  
-    gap: .5rem;
-    padding: 0px 32px;
-    li{
-      a{
-        background-color: cadetblue;
-        padding: .5rem 1rem;
-        display: inline-block;
-      }
-    }
-  }
-}
+@use "base" as *;
+@use "components/" as *;
+@use "layouts/" as *;
 
 .form_field {
   display: flex;

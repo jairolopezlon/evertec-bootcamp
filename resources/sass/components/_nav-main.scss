@@ -1,0 +1,28 @@
+@use "../base" as *;
+
+.nav-main{
+  ul{
+    align-items: center;
+    display: flex;    
+    gap: .5rem;
+    list-style: none;  
+    li{
+      a{        
+        @extend .text-size-medium;
+        color: $color-primary-dark;
+        display: inline-block;             
+        padding: .5rem;
+        transition-duration: .160s;
+        transition-property: translate;
+        transition-timing-function: ease-in-out;
+        &:hover{          
+          color: $color-primary;
+          translate: 0 -1px;
+        }
+        &.current-page{
+          color: $color-primary;
+        }
+      }
+    }
+  }
+}

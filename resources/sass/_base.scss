@@ -1,0 +1,30 @@
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+$color-primary: theme('colors.sky.500');
+$color-primary-light: theme('colors.sky.50');
+$color-primary-dark: theme('colors.sky.950');
+
+$font-family-sans-serif: "Source Sans Pro", Helvetica, Verdana, sans-serif;
+
+.text-size-extra-small{ @apply text-xs;}
+.text-size-small{ @apply text-sm;}
+.text-size-medium{ @apply text-base;}
+.text-size-large{ @apply text-lg;}
+.text-size-extra-large{ @apply text-xl;}
+.text-size-2extra-large{ @apply text-2xl;}
+.text-size-3extra-large{ @apply text-3xl;}
+
+
+*, *::after, *::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app{
+  display: flex;
+  flex-direction: column;  
+  min-height: 100vh;
+}

@@ -1,0 +1,12 @@
+@use "../base" as *;
+
+.header{
+  align-items: center;
+  background-color: $color-primary-light;
+  display: flex;
+  justify-content: space-between;
+  padding: theme("spacing.2") theme("spacing.4");
+  position: sticky;
+  top: 0px;
+  width: 100%;
+}
