@@ -33,10 +33,8 @@ Route::redirect('/home', '/');
 Route::view('/', 'pages.home')->name('home');
 Route::get('/signup', [AuthenticationController::class, 'signupView'])->middleware('guest')->name('login');
 Route::get('/login', [AuthenticationController::class, 'loginView'])->middleware('guest')->name('login');
-
-Route::get('/email/verify/notice', function () {
-    return view('auth.verification-notice');
-})->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
+Route::get('/email/verify/notice', [AuthenticationController::class, 'verifyEmailMessageView'])
+    ->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();

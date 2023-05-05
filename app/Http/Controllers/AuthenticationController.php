@@ -19,6 +19,11 @@ class AuthenticationController extends Controller
         return view('auth.login');
     }
 
+    public function verifyEmailMessageView(Request $request): View
+    {
+        return view('auth.verification-notice');
+    }
+
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
