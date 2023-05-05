@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\EmailVerificationRequest;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -38,11 +37,8 @@ Route::get('/email/verify/notice', [AuthenticationController::class, 'verifyEmai
     ->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'emailVerification'])
     ->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
-
-Route::get('/email/verify/resend', function () {
-    Auth::user()->sendEmailVerificationNotification();
-    return back()->with('resent', true);
-})->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
+Route::get('/email/verify/resend', [AuthenticationController::class, 'resentEmailToVerify'])
+    ->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 
 Route::get('/dashboard', function () {
     $user_id = Auth::user()->id;

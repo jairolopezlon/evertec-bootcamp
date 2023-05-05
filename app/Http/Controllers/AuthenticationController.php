@@ -29,6 +29,12 @@ class AuthenticationController extends Controller
         $request->fulfill();
         return redirect()->route('home')->with('verification_status', true);
     }
+    public function resentEmailToVerify(Request $request): RedirectResponse
+    {
+        Auth::user()->sendEmailVerificationNotification();
+        return back()->with('resent', true);
+    }
+
 
     public function logout(Request $request): RedirectResponse
     {
