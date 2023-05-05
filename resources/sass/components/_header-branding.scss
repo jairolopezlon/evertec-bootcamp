@@ -1,6 +1,6 @@
 @use "../base" as *;
 .header{ 
-  .branding-container{
+  .branding-container a{
     display: flex;
     gap: .5rem;
     align-items: center;

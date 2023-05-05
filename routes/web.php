@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthenticationController;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -124,3 +125,5 @@ Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
     }
     return redirect()->back();
 })->name('users.toggle-enable');
+
+Route::post('/logout', [AuthenticationController::class, 'logout']);
