@@ -7,7 +7,7 @@
     gap: .5rem;
     list-style: none;  
     li{
-      a{        
+      .nav-item{
         @extend .text-size-medium;
         color: $color-primary-dark;
         display: inline-block;             
@@ -15,12 +15,14 @@
         transition-duration: .160s;
         transition-property: translate;
         transition-timing-function: ease-in-out;
+        font-weight: 500;
         &:hover{          
           color: $color-primary;
           translate: 0 -1px;
         }
         &.current-page{
           color: $color-primary;
+          text-decoration: underline;
         }
       }
     }
