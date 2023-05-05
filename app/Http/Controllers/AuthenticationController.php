@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailVerificationRequest;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -22,6 +23,11 @@ class AuthenticationController extends Controller
     public function verifyEmailMessageView(Request $request): View
     {
         return view('auth.verification-notice');
+    }
+    public function emailVerification(EmailVerificationRequest $request): RedirectResponse
+    {
+        $request->fulfill();
+        return redirect()->route('home')->with('verification_status', true);
     }
 
     public function logout(Request $request): RedirectResponse

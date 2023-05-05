@@ -31,15 +31,13 @@ Route::redirect('/home', '/');
 
 // PAGES
 Route::view('/', 'pages.home')->name('home');
+
 Route::get('/signup', [AuthenticationController::class, 'signupView'])->middleware('guest')->name('login');
 Route::get('/login', [AuthenticationController::class, 'loginView'])->middleware('guest')->name('login');
 Route::get('/email/verify/notice', [AuthenticationController::class, 'verifyEmailMessageView'])
     ->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect()->route('home')->with('verification_status', true);
-})->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'emailVerification'])
+    ->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
 
 Route::get('/email/verify/resend', function () {
     Auth::user()->sendEmailVerificationNotification();
