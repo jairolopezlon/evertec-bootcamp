@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
+    public function signupView(Request $request): View
+    {
+        return view('auth.signup');
+    }
+
     public function loginView(Request $request): View
     {
         return view('auth.login');
     }
+
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();

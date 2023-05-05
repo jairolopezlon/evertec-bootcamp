@@ -31,11 +31,7 @@ Route::redirect('/home', '/');
 
 // PAGES
 Route::view('/', 'pages.home')->name('home');
-
-// Route::view('/login', 'auth.login')->name('login')->middleware('guest');
-
-Route::view('/signup', 'auth.signup')->name('signup')->middleware('guest');
-
+Route::get('/signup', [AuthenticationController::class, 'signupView'])->middleware('guest')->name('login');
 Route::get('/login', [AuthenticationController::class, 'loginView'])->middleware('guest')->name('login');
 
 Route::get('/email/verify/notice', function () {
