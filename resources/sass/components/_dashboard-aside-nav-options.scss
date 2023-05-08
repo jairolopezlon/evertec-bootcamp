@@ -1,0 +1,19 @@
+@use "../base" as *;
+
+.dashboard{  
+  &__aside-nav-options{
+    background-color: $color-primary-light;   
+  }
+  &__aside-nav-option{
+    @extend .text-size-small;
+    &.option-active{
+      color: $color-primary;
+      font-weight: 600;      
+      text-decoration: underline;
+    }
+    &:hover{
+      text-decoration: underline;
+      color: $color-primary;
+    }
+  }
+}

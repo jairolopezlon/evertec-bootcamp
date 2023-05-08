@@ -1,0 +1,28 @@
+@use '../base' as *;
+
+.dashboard-products-table{
+  border-collapse: collapse;
+  width: min(600px, 90%);
+  td, th{
+    @extend .text-size-small;
+  }
+  td{
+    padding: .5rem;
+  }
+  .product-image{
+    width: 200px;
+  }
+  .actions{
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    button{
+      padding: .25rem .5rem;
+      width: 100%;
+      outline: 1px solid $color-primary-light-2;
+      &:hover{
+        background-color: $color-primary-light-2;
+      }
+    }
+  }
+}

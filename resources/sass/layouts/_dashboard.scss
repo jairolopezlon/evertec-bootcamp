@@ -1,0 +1,16 @@
+.dashboard{
+  display: flex;
+  &__aside-nav-options{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    padding: 1rem;
+    gap: .5rem;
+  }
+  &__option-content{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+}
