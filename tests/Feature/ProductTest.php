@@ -52,7 +52,7 @@ class ProductTest extends TestCase
 
         $response = $this->post(route('dashboard.products.store'), $productData);
 
-        $response->assertStatus(302); // Redirect after create
+        $response->assertRedirectToRoute('dashboard.products.index');
 
         $this->assertDatabaseHas('products', [
             'name' => 'Product Test',
@@ -104,6 +104,9 @@ class ProductTest extends TestCase
 
     public function testUpdateProduct(): void
     {
+        $adminUser = AdminFactory::new()->getAdminUser();
+        $this->actingAs($adminUser);
+
         $product = Product::factory()->create();
 
         $newName = 'New Product Name';
@@ -112,7 +115,8 @@ class ProductTest extends TestCase
         $newIsEnable = true;
 
         $response = $this->get(route('dashboard.products.edit', $product));
-        $response->assertStatus(302);
+        $response->assertStatus(200);
+
 
         $response = $this->followingRedirects()->patch(route('dashboard.products.update', $product), [
             'name' => $newName,
@@ -121,6 +125,8 @@ class ProductTest extends TestCase
             'image' => UploadedFile::fake()->image('example.jpg'),
             'is_enable' => $newIsEnable,
         ])->assertStatus(200);
+
+        $response->assertRedirectToRoute('dashboard.products.index');
 
         $response->assertSee($newName);
         $response->assertSee(number_format($newPrice, 2));
