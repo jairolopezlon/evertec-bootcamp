@@ -19,7 +19,7 @@
                     <h1>{{ $product->name }}</h1>
                     <p>{{ $product->description }}</p>
                     <p>Precio: {{ $product->price }}</p>
-                    <p>Disponible: {{ $product->is_available ? 'Sí' : 'No' }}</p>
+                    <p>Disponible: {{ $product->is_enable ? 'Sí' : 'No' }}</p>
                     <img src="{{ $product->image_url }}" alt="{{ $product->name }}" width="200">
                 </div>
             @endif

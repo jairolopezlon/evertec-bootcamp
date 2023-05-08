@@ -22,25 +22,25 @@ class ProductFactory extends Factory
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(3),
             'price' => $this->faker->randomFloat(2, 1, 1000),
-            'is_available' => $this->faker->boolean(),
+            'is_enable' => $this->faker->boolean(),
             'image_url' => $this->faker->imageUrl(),
             'slug' => $this->faker->unique()->slug(),
         ];
     }
 
-    public function available(): ProductFactory
+    public function enable(): ProductFactory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_available' => true,
+                'is_enable' => true,
             ];
         });
     }
-    public function unavailable(): ProductFactory
+    public function disable(): ProductFactory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_available' => false,
+                'is_enable' => false,
             ];
         });
     }
