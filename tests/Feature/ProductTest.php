@@ -117,6 +117,7 @@ class ProductTest extends TestCase
         $response = $this->get(route('dashboard.products.edit', $product));
         $response->assertStatus(200);
 
+        $oldImageUrl = $product->image_url;
 
         $response = $this->followingRedirects()->patch(route('dashboard.products.update', $product), [
             'name' => $newName,
@@ -134,6 +135,6 @@ class ProductTest extends TestCase
         $response->assertSee($newDescription);
         $response->assertSee('Enabled');
         $response->assertSee($product->image_url);
-        Storage::assertMissing(str_replace('/storage', 'public', $product->image_url));
+        Storage::assertMissing(str_replace('/storage', 'public', $oldImageUrl));
     }
 }
