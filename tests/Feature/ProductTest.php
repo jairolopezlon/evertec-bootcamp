@@ -45,7 +45,7 @@ class ProductTest extends TestCase
             'slug' => 'product-test',
             'description' => 'This is a test product.',
             'price' => 99.99,
-            'is_available' => true,
+            'is_enable' => true,
             'image' => UploadedFile::fake()->image('product-test.jpg')
         ];
 
@@ -58,9 +58,31 @@ class ProductTest extends TestCase
             'slug' => 'product-test',
             'description' => 'This is a test product.',
             'price' => 99.99,
-            'is_available' => true,
+            'is_enable' => true,
         ]);
 
         $this->expectOutputString('');
+    }
+
+    public function testToggleProductEnableDisable(): void
+    {
+        $adminUser = AdminFactory::new()->getAdminUser();
+        $this->actingAs($adminUser);
+
+        $product = Product::factory()->create([
+            'is_enable' => false
+        ]);
+
+        $response = $this->patch(route('dashboard.products.toggle_enable_disable', $product->id));
+        $response->assertStatus(302);
+
+        $product->refresh();
+        $this->assertTrue($product->is_enable);
+
+        $response = $this->patch(route('dashboard.products.toggle_enable_disable', $product->id));
+        $response->assertStatus(302);
+
+        $product->refresh();
+        $this->assertFalse($product->is_enable);
     }
 }

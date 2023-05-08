@@ -22,20 +22,22 @@
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
-                    <td>{{ $product->is_available ? 'available' : 'unavailable' }}</td>
+                    <td>{{ $product->is_enable ? 'enable' : 'disable' }} {{ $product->is_enable }}</td>
                     <td class="actions">
-                        {{-- <form method="POST" action="{{ route('dashboard.products.toggle-status', $product->id) }}">
+                        <form method="POST" action="{{ route('dashboard.products.toggle_enable_disable', $product->id) }}">
                             @csrf
-                            <button type="submit">{{ $product->is_available ? 'available' : 'unavailable' }}</button>
-                        </form> --}}
-                        <form method="POST" action="{{ route('dashboard.products.edit', $product->id) }}">
+                            @method('PATCH')
+                            <button type="submit">{{ $product->is_enable ? 'Enable' : 'Disable' }}</button>
+                        </form>
+                        <a href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">Show</a>
+                        {{-- <form method="POST" action="{{ route('dashboard.products.edit', $product->id) }}">
                             @csrf
                             <button type="submit">Edit</button>
                         </form>
                         <form method="POST" action="{{ route('dashboard.products.destroy', $product->id) }}">
                             @csrf
                             <button type="submit">Delete</button>
-                        </form>
+                        </form> --}}
                     </td>
                 </tr>
             @endforeach

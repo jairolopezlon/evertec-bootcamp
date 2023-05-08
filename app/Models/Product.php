@@ -14,7 +14,20 @@ class Product extends Model
         'slug',
         'description',
         'price',
-        'is_available',
+        'is_enable',
         'image_url',
     ];
+
+    protected $casts = [
+        'is_enable' => 'boolean',
+    ];
+
+    public function castAttribute($key, $value)
+    {
+        if ($key === 'is_enable') {
+            return (bool) $value;
+        }
+
+        return parent::castAttribute($key, $value);
+    }
 }

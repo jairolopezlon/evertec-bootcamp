@@ -50,6 +50,8 @@ Route::post('/users/{id}/toggle-enable', [UsersManagerController::class, 'toggle
     ->name('users.toggle-enable');
 
 Route::prefix('dashboard')->middleware(['auth', 'validateAdminAccess'])->group(function () {
+    Route::patch('/product/toggle_enable_disable/{product}', [ProductManagerController::class, 'toggleEnableDisable'])
+        ->name('dashboard.products.toggle_enable_disable');
     Route::resource('/product', ProductManagerController::class)->names('dashboard.products');
     Route::get('/customer', [UsersManagerController::class, 'dashboardView'])->name('dashboard.customers.index');
 });
