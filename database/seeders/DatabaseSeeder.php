@@ -3,7 +3,13 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Admin;
+use App\Models\Customer;
+use App\Models\User;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +18,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        //crear el usuario admin
+        $userAdmin = User::factory()->state([
+            "name" => "admin",
+            "email" => "admin@admin.com",
+            'type' => 'admin',
+            "email_verified_at" => Carbon::now(),
+        ])->create();
+        Admin::factory()->state([
+            'user_id' => $userAdmin->id,
+        ])->create();
+        Customer::factory()->state([
+            'user_id' => $userAdmin->id,
+        ])->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // crear usuarios random
+        User::factory(50)->create()->each(function ($user) {
+            Customer::factory()->state([
+                'user_id' => $user->id,
+            ])->create();
+
+            if ($user->type === 'admin') {
+                Admin::factory()->state([
+                    'user_id' => $user->id,
+                ])->create();
+            }
+        });
+
+        // crear productos
+        Product::factory(10)->create();
     }
 }

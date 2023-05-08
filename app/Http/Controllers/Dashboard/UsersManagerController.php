@@ -37,7 +37,7 @@ class UsersManagerController extends Controller
 
         $customers = self::getAllCustomer();
 
-        return view('pages.dashboard', [
+        return view('pages.dashboard.customers.index', [
             'customers' => $customers
         ]);
     }

@@ -5,7 +5,8 @@
         </li>
         @auth
             <li>
-                <a class="nav-item {{ Request::is('dashboard') ? 'current-page' : '' }}" href="/dashboard">dashboard</a>
+                <a class="nav-item {{ Request::is('dashboard') || Request::is('dashboard/*') ? 'current-page' : '' }}"
+                    href="/dashboard">dashboard</a>
             </li>
         @endauth
         @guest
