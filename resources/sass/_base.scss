@@ -2,13 +2,13 @@
 @use "tailwindcss/components";
 @use "tailwindcss/utilities";
 
-$color-primary: theme('colors.sky.500');
-$color-primary-light: theme('colors.sky.50');
-$color-primary-light-2: theme('colors.sky.100');
-$color-primary-light-3: theme('colors.sky.200');
-$color-primary-dark: theme('colors.sky.950');
-$color-primary-dark-2: theme('colors.sky.900');
-$color-primary-dark-3: theme('colors.sky.800');
+$color-primary: theme('colors.indigo.500');
+$color-primary-light: theme('colors.indigo.50');
+$color-primary-light-2: theme('colors.indigo.100');
+$color-primary-light-3: theme('colors.indigo.200');
+$color-primary-dark: theme('colors.indigo.950');
+$color-primary-dark-2: theme('colors.indigo.900');
+$color-primary-dark-3: theme('colors.indigo.800');
 
 $font-family-sans-serif: "Source Sans Pro", Helvetica, Verdana, sans-serif;
 
