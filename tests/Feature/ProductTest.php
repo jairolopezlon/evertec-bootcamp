@@ -86,7 +86,7 @@ class ProductTest extends TestCase
         $this->assertFalse($product->is_enable);
     }
 
-    public function testDeleteProduct()
+    public function testDeleteProduct(): void
     {
         $adminUser = AdminFactory::new()->getAdminUser();
         $this->actingAs($adminUser);
