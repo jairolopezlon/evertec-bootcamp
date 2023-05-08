@@ -28,6 +28,7 @@
                             @csrf
                             <button type="submit">{{ $product->is_available ? 'available' : 'unavailable' }}</button>
                         </form> --}}
+                        <a href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">Show</a>
                         <form method="POST" action="{{ route('dashboard.products.edit', $product->id) }}">
                             @csrf
                             <button type="submit">Edit</button>

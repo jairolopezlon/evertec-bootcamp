@@ -62,10 +62,16 @@ class ProductManagerController extends Controller
     /**
      * Display the specified resource.
      */
-    // public function show(string $id): View
-    // {
-    //     //
-    // }
+    public function show(string $product)
+    {
+        try {
+            $product = Product::where('id', $product)->firstOrFail();
+            return view('pages.dashboard.products.show', compact('product'));
+        } catch (\Throwable $th) {
+            $productNotFound = true;
+            return view('pages.dashboard.products.show', compact('productNotFound'));
+        }
+    }
 
     // /**
     //  * Show the form for editing the specified resource.
