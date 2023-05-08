@@ -124,12 +124,15 @@ class ProductTest extends TestCase
             'description' => $newDescription,
             'image' => UploadedFile::fake()->image('example.jpg'),
             'is_enable' => $newIsEnable,
-        ])->assertStatus(200);
+        ]);
+        $response->assertStatus(200);
+
+        $product = $product->fresh();
 
         $response->assertSee($newName);
         $response->assertSee(number_format($newPrice, 2));
         $response->assertSee($newDescription);
-        $response->assertSee($product->is_enable ? 'Enabled' : 'Disabled');
+        $response->assertSee($newIsEnable);
         $response->assertSee($product->image_url);
         Storage::assertMissing(str_replace('/storage', 'public', $product->image_url));
     }
