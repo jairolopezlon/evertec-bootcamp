@@ -24,7 +24,7 @@
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
                     <td>{{ $product->price }}</td>
-                    <td>{{ $product->is_enable ? 'enable' : 'disable' }}</td>
+                    <td>{{ $product->is_enable ? 'Enabled' : 'Disabled' }}</td>
                     <td class="">
                         <div class="actions">
 
