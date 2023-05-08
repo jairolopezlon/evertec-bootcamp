@@ -4,10 +4,12 @@
             <a class="nav-item {{ Request::is('/') ? 'current-page' : '' }}" href="/">home</a>
         </li>
         @auth
-            <li>
-                <a class="nav-item {{ Request::is('dashboard') || Request::is('dashboard/*') ? 'current-page' : '' }}"
-                    href="/dashboard">dashboard</a>
-            </li>
+            @if (auth()->user()->type === 'admin')
+                <li>
+                    <a class="nav-item {{ Request::is('dashboard') || Request::is('dashboard/*') ? 'current-page' : '' }}"
+                        href="/dashboard">dashboard</a>
+                </li>
+            @endif
         @endauth
         @guest
             <li>
