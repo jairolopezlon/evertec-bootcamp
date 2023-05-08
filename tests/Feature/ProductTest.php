@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Product;
 use Database\Factories\AdminFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
