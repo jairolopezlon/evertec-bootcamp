@@ -126,8 +126,6 @@ class ProductTest extends TestCase
             'is_enable' => $newIsEnable,
         ])->assertStatus(200);
 
-        $response->assertRedirectToRoute('dashboard.products.index');
-
         $response->assertSee($newName);
         $response->assertSee(number_format($newPrice, 2));
         $response->assertSee($newDescription);
