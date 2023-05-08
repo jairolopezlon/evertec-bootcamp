@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductManagerController extends Controller
 {
@@ -22,7 +24,7 @@ class ProductManagerController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.dashboard.products.create');
     }
 
     /**
@@ -30,7 +32,29 @@ class ProductManagerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'image' => 'required|image',
+        ]);
+
+        $imagePath = $validated['image']->store('public/images/products');
+        $imageUrl = Storage::url($imagePath);
+
+        $slug = Str::slug($validated['name'], '-');
+
+        Product::create([
+            'name' => $validated['name'],
+            'slug' => $slug,
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'is_available' => $request->has('is_available'),
+            'image_url' => $imageUrl
+        ]);
+
+
+        return redirect()->route('dashboard.products.index')->with('success', 'Product created successfully.');
     }
 
     /**
