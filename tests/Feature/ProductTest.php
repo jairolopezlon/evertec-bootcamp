@@ -7,6 +7,7 @@ use Database\Factories\AdminFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
 
 class ProductTest extends TestCase
 {
@@ -99,5 +100,33 @@ class ProductTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
+    }
+
+    public function testUpdateProduct(): void
+    {
+        $product = Product::factory()->create();
+
+        $newName = 'New Product Name';
+        $newPrice = 15.99;
+        $newDescription = 'New Product Description';
+        $newIsEnable = true;
+
+        $response = $this->get(route('dashboard.products.edit', $product));
+        $response->assertStatus(302);
+
+        $response = $this->followingRedirects()->patch(route('dashboard.products.update', $product), [
+            'name' => $newName,
+            'price' => $newPrice,
+            'description' => $newDescription,
+            'image' => UploadedFile::fake()->image('example.jpg'),
+            'is_enable' => $newIsEnable,
+        ])->assertStatus(200);
+
+        $response->assertSee($newName);
+        $response->assertSee(number_format($newPrice, 2));
+        $response->assertSee($newDescription);
+        $response->assertSee($product->is_enable ? 'Enabled' : 'Disabled');
+        $response->assertSee($product->image_url);
+        Storage::assertMissing(str_replace('/storage', 'public', $product->image_url));
     }
 }
