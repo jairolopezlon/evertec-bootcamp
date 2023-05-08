@@ -85,4 +85,19 @@ class ProductTest extends TestCase
         $product->refresh();
         $this->assertFalse($product->is_enable);
     }
+
+    public function testDeleteProduct()
+    {
+        $adminUser = AdminFactory::new()->getAdminUser();
+        $this->actingAs($adminUser);
+
+        $product = Product::factory()->create();
+
+        $response = $this->delete(route('dashboard.products.destroy', $product->id));
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('products', [
+            'id' => $product->id,
+        ]);
+    }
 }

@@ -89,13 +89,14 @@ class ProductManagerController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  */
-    // public function destroy(string $id): RedirectResponse
-    // {
-    //     //
-    // }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Product $product): RedirectResponse
+    {
+        $product->delete();
+        return redirect()->back();
+    }
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {

@@ -2,7 +2,7 @@
 
 .dashboard-products-table{
   border-collapse: collapse;
-  width: min(600px, 90%);
+  width: 100%;
   td, th{
     @extend .text-size-small;
   }
@@ -14,7 +14,10 @@
   }
   .actions{
     display: flex;
-    flex-direction: column;
+    @media (width < 900px){
+      flex-direction: column;
+    }
+    
     gap: .25rem;
     button, a{
       text-align: center;
