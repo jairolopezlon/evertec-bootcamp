@@ -132,7 +132,7 @@ class ProductTest extends TestCase
         $response->assertSee($newName);
         $response->assertSee(number_format($newPrice, 2));
         $response->assertSee($newDescription);
-        $response->assertSee($newIsEnable);
+        $response->assertSee('Enabled');
         $response->assertSee($product->image_url);
         Storage::assertMissing(str_replace('/storage', 'public', $product->image_url));
     }
