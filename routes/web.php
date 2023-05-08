@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dashboard\ProductManagerController;
 use App\Http\Controllers\Dashboard\UsersManagerController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,8 +41,15 @@ Route::post('/signup', [AuthenticationController::class, 'signup']);
 
 Route::post('/logout', [AuthenticationController::class, 'logout']);
 
-Route::get('/dashboard', [UsersManagerController::class, 'dashboardView'])
+Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
+
+
 
 Route::post('/users/{id}/toggle-enable', [UsersManagerController::class, 'toggleUserStatus'])
     ->name('users.toggle-enable');
+
+Route::prefix('dashboard')->middleware(['auth', 'validateAdminAccess'])->group(function () {
+    Route::resource('/product', ProductManagerController::class)->names('dashboard.products');
+    Route::get('/customer', [UsersManagerController::class, 'dashboardView'])->name('dashboard.customers.index');
+});
