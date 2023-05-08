@@ -7,6 +7,7 @@ use Database\Factories\AdminFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
 
 class ProductTest extends TestCase
 {
@@ -51,7 +52,7 @@ class ProductTest extends TestCase
 
         $response = $this->post(route('dashboard.products.store'), $productData);
 
-        $response->assertStatus(302); // Redirect after create
+        $response->assertRedirectToRoute('dashboard.products.index');
 
         $this->assertDatabaseHas('products', [
             'name' => 'Product Test',
@@ -99,5 +100,41 @@ class ProductTest extends TestCase
         $this->assertDatabaseMissing('products', [
             'id' => $product->id,
         ]);
+    }
+
+    public function testUpdateProduct(): void
+    {
+        $adminUser = AdminFactory::new()->getAdminUser();
+        $this->actingAs($adminUser);
+
+        $product = Product::factory()->create();
+
+        $newName = 'New Product Name';
+        $newPrice = 15.99;
+        $newDescription = 'New Product Description';
+        $newIsEnable = true;
+
+        $response = $this->get(route('dashboard.products.edit', $product));
+        $response->assertStatus(200);
+
+        $oldImageUrl = $product->image_url;
+
+        $response = $this->followingRedirects()->patch(route('dashboard.products.update', $product), [
+            'name' => $newName,
+            'price' => $newPrice,
+            'description' => $newDescription,
+            'image' => UploadedFile::fake()->image('example.jpg'),
+            'is_enable' => $newIsEnable,
+        ]);
+        $response->assertStatus(200);
+
+        $product = $product->fresh();
+
+        $response->assertSee($newName);
+        $response->assertSee(number_format($newPrice, 2));
+        $response->assertSee($newDescription);
+        $response->assertSee('Enabled');
+        $response->assertSee($product->image_url);
+        Storage::assertMissing(str_replace('/storage', 'public', $oldImageUrl));
     }
 }

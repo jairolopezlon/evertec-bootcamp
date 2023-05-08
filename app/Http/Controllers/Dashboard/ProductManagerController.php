@@ -76,18 +76,44 @@ class ProductManagerController extends Controller
     // /**
     //  * Show the form for editing the specified resource.
     //  */
-    // public function edit(string $id): View
-    // {
-    //     //
-    // }
+    public function edit(Product $product): View
+    {
+        return view('pages.dashboard.products.edit', ['product' => $product]);
+    }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
-    // public function update(Request $request, string $id): RedirectResponse
-    // {
-    //     //
-    // }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Product $product, Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required',
+            'image' => 'image',
+        ]);
+
+        $slug = Str::slug($validated['name'], '-');
+
+        $product->name = $validated['name'];
+        $product->price = $validated['price'];
+        $product->description = $validated['description'];
+        $product->is_enable = $request->has('is_enable');
+        $product->slug = $slug;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $validated['image']->store('public/images/products');
+            $imageUrl = Storage::url($imagePath);
+
+            $sysStoragePath = str_replace('/storage', 'public', $product->image_url);
+            Storage::delete($sysStoragePath);
+            $product->image_url = $imageUrl;
+        }
+
+        $product->save();
+
+        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully.');
+    }
 
     /**
      * Remove the specified resource from storage.

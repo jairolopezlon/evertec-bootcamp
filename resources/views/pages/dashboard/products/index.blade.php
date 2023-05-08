@@ -24,7 +24,7 @@
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
                     <td>{{ $product->price }}</td>
-                    <td>{{ $product->is_enable ? 'enable' : 'disable' }}</td>
+                    <td>{{ $product->is_enable ? 'Enabled' : 'Disabled' }}</td>
                     <td class="">
                         <div class="actions">
 
@@ -35,10 +35,7 @@
                                 <button type="submit">{{ $product->is_enable ? 'Enable' : 'Disable' }}</button>
                             </form>
                             <a href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">Show</a>
-                            {{-- <form method="POST" action="{{ route('dashboard.products.edit', $product->id) }}">
-                            @csrf
-                            <button type="submit">Edit</button>
-                        </form> --}}
+                            <a href="{{ route('dashboard.products.edit', ['product' => $product->id]) }}">Edit</a>
                             <form method="POST" action="{{ route('dashboard.products.destroy', $product->id) }}">
                                 @csrf
                                 @method('DELETE')
