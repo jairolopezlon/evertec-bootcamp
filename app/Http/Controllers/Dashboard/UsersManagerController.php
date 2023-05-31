@@ -8,7 +8,6 @@ use App\Models\Customer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,11 +42,9 @@ class UsersManagerController extends Controller
         ]);
     }
 
-    public function toggleUserStatus(Request $request, int $id): RedirectResponse
+    public function toggleUserStatus(Customer $customer): RedirectResponse
     {
         try {
-            /** @var Customer $customer */
-            $customer = Customer::findOrFail($id);
             $customer->is_enabled = ! $customer->is_enabled;
             $customer->save();
         } catch (ModelNotFoundException $exception) {

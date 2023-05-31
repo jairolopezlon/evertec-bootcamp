@@ -43,7 +43,7 @@ Route::post('/logout', [AuthenticationController::class, 'logout']);
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
 
-Route::post('/users/{id}/toggle-enable', [UsersManagerController::class, 'toggleUserStatus'])
+Route::patch('/users/{customer}/toggle-enable', [UsersManagerController::class, 'toggleUserStatus'])
     ->name('users.toggle-enable');
 
 Route::prefix('dashboard')->middleware(['auth', 'validateAdminAccess'])->group(function () {
