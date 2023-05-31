@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Src\Products\Domain\Repositories\ProductRepository;
+use Src\Products\Infrastructure\Repository\Eloquent\EloquentProductRespositoryImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ProductRepository::class, EloquentProductRespositoryImpl::class);
     }
 
     /**
