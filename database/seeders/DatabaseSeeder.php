@@ -6,10 +6,10 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Customer;
-use App\Models\User;
 use App\Models\Product;
-use Illuminate\Database\Seeder;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
     {
         //crear el usuario admin
         $userAdmin = User::factory()->state([
-            "name" => "admin",
-            "email" => "admin@admin.com",
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
             'type' => 'admin',
-            "email_verified_at" => Carbon::now(),
+            'email_verified_at' => Carbon::now(),
         ])->create();
         Admin::factory()->state([
             'user_id' => $userAdmin->id,

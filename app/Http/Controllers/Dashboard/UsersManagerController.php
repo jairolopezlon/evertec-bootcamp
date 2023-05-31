@@ -27,18 +27,19 @@ class UsersManagerController extends Controller
 
         return $customers;
     }
+
     public function dashboardView(): View
     {
         $user_id = Auth::user()->id;
         $customer_exists = DB::table('admins')->where('user_id', $user_id)->exists();
-        if (!$customer_exists) {
+        if (! $customer_exists) {
             abort(403, 'No tienes acceso a esta página');
         }
 
         $customers = self::getAllCustomer();
 
         return view('pages.dashboard.customers.index', [
-            'customers' => $customers
+            'customers' => $customers,
         ]);
     }
 
@@ -47,11 +48,12 @@ class UsersManagerController extends Controller
         try {
             /** @var Customer $customer */
             $customer = Customer::findOrFail($id);
-            $customer->is_enabled = !$customer->is_enabled;
+            $customer->is_enabled = ! $customer->is_enabled;
             $customer->save();
         } catch (ModelNotFoundException $exception) {
             abort(404);
         }
+
         return redirect()->back();
     }
 }

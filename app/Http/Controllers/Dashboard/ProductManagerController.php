@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductManagerController extends Controller
 {
@@ -18,6 +18,7 @@ class ProductManagerController extends Controller
     public function index(): View
     {
         $products = Product::all();
+
         return view('pages.dashboard.products.index', compact('products'));
     }
 
@@ -52,9 +53,8 @@ class ProductManagerController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'is_enable' => $request->has('is_enable'),
-            'image_url' => $imageUrl
+            'image_url' => $imageUrl,
         ]);
-
 
         return redirect()->route('dashboard.products.index')->with('success', 'Product created successfully.');
     }
@@ -66,9 +66,11 @@ class ProductManagerController extends Controller
     {
         try {
             $product = Product::where('id', $product)->firstOrFail();
+
             return view('pages.dashboard.products.show', compact('product'));
         } catch (\Throwable $th) {
             $productNotFound = true;
+
             return view('pages.dashboard.products.show', compact('productNotFound'));
         }
     }
@@ -121,13 +123,15 @@ class ProductManagerController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         $product->delete();
+
         return redirect()->back();
     }
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {
-        $product->is_enable = !$product->is_enable;
+        $product->is_enable = ! $product->is_enable;
         $product->save();
+
         return redirect()->back();
     }
 }

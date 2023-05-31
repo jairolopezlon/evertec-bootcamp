@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Dashboard\ProductManagerController;
 use App\Http\Controllers\Dashboard\UsersManagerController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 
 Route::redirect('/home', '/');
 
@@ -43,8 +42,6 @@ Route::post('/logout', [AuthenticationController::class, 'logout']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
-
-
 
 Route::post('/users/{id}/toggle-enable', [UsersManagerController::class, 'toggleUserStatus'])
     ->name('users.toggle-enable');

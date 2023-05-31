@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-use App\Models\User;
 
 class LoginTest extends TestCase
 {
@@ -27,7 +27,7 @@ class LoginTest extends TestCase
 
         $existingUser = User::where('email', $emailTest)->first();
 
-        if (!$existingUser) {
+        if (! $existingUser) {
             $user = User::factory()->create([
                 'email' => $emailTest,
                 'password' => Hash::make($passwordTest),
@@ -52,7 +52,7 @@ class LoginTest extends TestCase
 
         $existingUser = User::where('email', $emailTest)->first();
 
-        if (!$existingUser) {
+        if (! $existingUser) {
             $user = User::factory()->create([
                 'email' => $emailTest,
                 'password' => Hash::make($passwordTest),

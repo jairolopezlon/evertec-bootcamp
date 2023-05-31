@@ -17,6 +17,7 @@ class Customer extends Model
 
     /**
      * Get the user that owns the customer.
+     *
      * @return HasOne<User>
      */
     public function user(): HasOne

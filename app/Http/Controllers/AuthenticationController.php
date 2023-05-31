@@ -19,24 +19,31 @@ class AuthenticationController extends Controller
     {
         return view('auth.signup');
     }
+
     public function loginView(Request $request): View
     {
         return view('auth.login');
     }
+
     public function verifyEmailMessageView(Request $request): View
     {
         return view('auth.verification-notice');
     }
+
     public function emailVerification(EmailVerificationRequest $request): RedirectResponse
     {
         $request->fulfill();
+
         return redirect()->route('home')->with('verification_status', true);
     }
+
     public function resentEmailToVerify(Request $request): RedirectResponse
     {
         Auth::user()->sendEmailVerificationNotification();
+
         return back()->with('resent', true);
     }
+
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -48,12 +55,14 @@ class AuthenticationController extends Controller
         ]);
         if (Auth::attempt($credenciales)) {
             request()->session()->regenerate();
+
             return redirect()->intended('home');
         }
         throw ValidationException::withMessages([
-            'email' => 'incorrect credentials'
+            'email' => 'incorrect credentials',
         ]);
     }
+
     /**
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -89,11 +98,13 @@ class AuthenticationController extends Controller
             return redirect('signup')->withErrors($exception->errors())->withInput();
         }
     }
+
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('home');
     }
 }
