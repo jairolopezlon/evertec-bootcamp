@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require_once __DIR__.'/../src/Infrastructure/Routes/webRoutes.php';
+
 Route::redirect('/home', '/');
 
 Route::view('/', 'pages.home')->name('home');
