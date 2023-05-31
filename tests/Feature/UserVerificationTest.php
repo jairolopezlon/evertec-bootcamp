@@ -5,12 +5,11 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Notification;
-use Tests\TestCase;
-
+use Illuminate\Support\Facades\URL;
 use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
+use Tests\TestCase;
 
 class UserVerificationTest extends TestCase
 {

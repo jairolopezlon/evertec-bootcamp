@@ -48,6 +48,7 @@ class User extends Authenticatable
 
     /**
      * Get the customer record associated with the user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne<Customer>
      */
     public function customer(): HasOne
@@ -57,6 +58,7 @@ class User extends Authenticatable
 
     /**
      * Get the admin record associated with the user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne<Admin>
      */
     public function admin(): HasOne

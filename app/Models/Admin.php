@@ -18,6 +18,7 @@ class Admin extends Model
 
     /**
      * Get the user that owns the admin.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne<User>
      */
     public function user(): HasOne

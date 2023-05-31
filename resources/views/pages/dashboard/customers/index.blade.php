@@ -23,6 +23,7 @@
                     <td>
                         <form method="POST" action="{{ route('users.toggle-enable', $customer->id) }}">
                             @csrf
+                            @method('PATCH')
                             <button type="submit">{{ $customer->is_enabled ? 'Disable' : 'Enable' }}</button>
                         </form>
                     </td>

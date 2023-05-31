@@ -6,8 +6,8 @@ use App\Models\Product;
 use Database\Factories\AdminFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
@@ -47,7 +47,7 @@ class ProductTest extends TestCase
             'description' => 'This is a test product.',
             'price' => 99.99,
             'is_enable' => true,
-            'image' => UploadedFile::fake()->image('product-test.jpg')
+            'image' => UploadedFile::fake()->image('product-test.jpg'),
         ];
 
         $response = $this->post(route('dashboard.products.store'), $productData);
@@ -71,7 +71,7 @@ class ProductTest extends TestCase
         $this->actingAs($adminUser);
 
         $product = Product::factory()->create([
-            'is_enable' => false
+            'is_enable' => false,
         ]);
 
         $response = $this->patch(route('dashboard.products.toggle_enable_disable', $product->id));

@@ -52,10 +52,10 @@
             "@php artisan key:generate --ansi"
         ],
         "format-test": [
-            "./vendor/bin/pint --preset psr12 --test"
+            "./vendor/bin/pint --test"
         ],
         "format-fix": [
-            "./vendor/bin/pint --preset psr12"
+            "./vendor/bin/pint"
         ],
         "stan": [
             "./vendor/bin/phpstan analyse"
