@@ -46,7 +46,7 @@ jobs:
     - name: Build Vite
       run: npm run build
     - name: Execute tests (Format) via Pint
-      run: ./vendor/bin/pint --preset psr12 --test
+      run: ./vendor/bin/pint --test
     - name: Execute tests (Errors in code) via Larastan
       run: ./vendor/bin/phpstan analyse
     - name: Execute tests (Unit and Feature tests) via PHPUnit
