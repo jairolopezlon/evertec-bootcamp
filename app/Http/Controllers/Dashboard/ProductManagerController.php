@@ -62,15 +62,12 @@ class ProductManagerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $product): View
+    public function show(Product $product): View
     {
         try {
-            $product = Product::where('id', $product)->firstOrFail();
-
             return view('pages.dashboard.products.show', compact('product'));
         } catch (\Throwable $th) {
             $productNotFound = true;
-
             return view('pages.dashboard.products.show', compact('productNotFound'));
         }
     }
@@ -129,7 +126,7 @@ class ProductManagerController extends Controller
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {
-        $product->is_enable = ! $product->is_enable;
+        $product->is_enable = !$product->is_enable;
         $product->save();
 
         return redirect()->back();
