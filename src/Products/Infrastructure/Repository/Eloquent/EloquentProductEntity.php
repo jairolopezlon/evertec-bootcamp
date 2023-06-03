@@ -5,7 +5,7 @@ namespace Src\Products\Infrastructure\Repository\Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EloquentProductModel extends Model
+class EloquentProductEntity extends Model
 {
     use HasFactory;
 

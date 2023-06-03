@@ -2,9 +2,18 @@
 
 namespace Src\Products\Domain\Repositories;
 
+use Src\Products\Domain\Dtos\ProductDetailEcommerceData;
+use Src\Products\Domain\Dtos\ProductListEcommerceData;
+
 interface ProductRepository
 {
-    public function ListEcommerceProducts();
+    /**
+     * @return array<ProductListEcommerceData>
+     */
+    public function listEcommerceProducts();
 
-    public function GetEcommerceProductDetail(string $slug);
+    /**
+     * @return ProductDetailEcommerceData
+     */
+    public function getEcommerceProductDetail(string $slug);
 }

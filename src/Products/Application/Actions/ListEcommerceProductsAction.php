@@ -2,6 +2,7 @@
 
 namespace Src\Products\Application\Actions;
 
+use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
 
 class ListEcommerceProductsAction
@@ -13,8 +14,11 @@ class ListEcommerceProductsAction
         $this->productRepository = $productRepository;
     }
 
+    /**
+     * @return array<ProductListEcommerceData>
+     */
     public function handle()
     {
-        return $this->productRepository->ListEcommerceProducts();
+        return $this->productRepository->listEcommerceProducts();
     }
 }
