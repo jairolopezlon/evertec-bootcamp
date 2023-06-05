@@ -60,8 +60,10 @@ class EloquentProductRespositoryImpl implements ProductRepository
                     $nameField = 'name';
                     $descriptionField = 'description';
 
-                    $query->where($nameField, 'LIKE', '%'.$value.'%')
-                        ->orWhere($descriptionField, 'LIKE', '%'.$value.'%');
+                    $query->where(function ($query) use ($nameField, $descriptionField, $value) {
+                        $query->where($nameField, 'LIKE', '%'.$value.'%')
+                            ->orWhere($descriptionField, 'LIKE', '%'.$value.'%');
+                    });
 
                     continue;
                 }
@@ -72,7 +74,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
 
         $sortCriteria = $criteriaValue->getSort();
         if (! is_null($sortCriteria)) {
-            $sortDirection = $sortCriteria->getDirection();
+            $sortDirection = $sortCriteria->getDirection()->value;
             $sortField = $sortCriteria->getField();
             if (Schema::hasColumn($this->productModel->getTable(), $sortField)) {
                 $query->orderBy($sortField, $sortDirection);
