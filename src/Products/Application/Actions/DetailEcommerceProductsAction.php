@@ -15,6 +15,6 @@ class DetailEcommerceProductsAction
 
     public function handle($slug)
     {
-        return $this->productRepository->GetEcommerceProductDetail($slug);
+        return $this->productRepository->getEcommerceProductDetail($slug);
     }
 }

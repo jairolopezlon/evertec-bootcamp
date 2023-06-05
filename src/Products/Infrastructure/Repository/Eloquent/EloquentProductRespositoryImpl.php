@@ -2,6 +2,8 @@
 
 namespace Src\Products\Infrastructure\Repository\Eloquent;
 
+use Illuminate\Support\Facades\Schema;
+use Src\Domain\ValueObjects\CriteriaValue;
 use Src\Products\Domain\Dtos\ProductDetailEcommerceData;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
@@ -21,11 +23,11 @@ class EloquentProductRespositoryImpl implements ProductRepository
     public function listEcommerceProducts()
     {
         $enableProducts = $this->productModel::where('is_enable', true)->get();
-        $listProducts = [];
-        foreach ($enableProducts as $product) {
+        $listProducts = $enableProducts->map(function ($product) {
             $productModel = EloquentProductAdapter::toDomainModel($product);
-            $listProducts[] = new ProductListEcommerceData($productModel);
-        }
+
+            return new ProductListEcommerceData($productModel);
+        });
 
         return $listProducts;
     }
@@ -40,5 +42,53 @@ class EloquentProductRespositoryImpl implements ProductRepository
         $productData = new ProductDetailEcommerceData($productModel);
 
         return $productData;
+    }
+
+    public function matchEcommerceProducts(CriteriaValue $criteriaValue)
+    {
+        $query = $this->productModel::where('is_enable', true);
+
+        if ($criteriaValue->validateThereAreFilters()) {
+            $filters = $criteriaValue->getFilters();
+
+            foreach ($filters as $filter) {
+                $field = $filter->getField();
+                $value = $filter->getValue();
+
+                if ($field === 'searchText') {
+                    //include field (colums name) where want to search
+                    $nameField = 'name';
+                    $descriptionField = 'description';
+
+                    $query->where($nameField, 'LIKE', '%'.$value.'%')
+                        ->orWhere($descriptionField, 'LIKE', '%'.$value.'%');
+
+                    continue;
+                }
+
+                $query->where($field, $value);
+            }
+        }
+
+        $sortCriteria = $criteriaValue->getSort();
+        if (! is_null($sortCriteria)) {
+            $sortDirection = $sortCriteria->getDirection();
+            $sortField = $sortCriteria->getField();
+            if (Schema::hasColumn($this->productModel->getTable(), $sortField)) {
+                $query->orderBy($sortField, $sortDirection);
+            }
+        }
+
+        $limit = $criteriaValue->getLimit();
+        $offset = $criteriaValue->getOffset();
+        $matchProducts = $query->paginate($limit, ['*'], 'page', $offset);
+
+        $listProducts = $matchProducts->map(function ($product) {
+            $productModel = EloquentProductAdapter::toDomainModel($product);
+
+            return new ProductListEcommerceData($productModel);
+        });
+
+        return $listProducts;
     }
 }
