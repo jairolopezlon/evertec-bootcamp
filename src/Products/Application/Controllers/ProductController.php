@@ -3,8 +3,10 @@
 namespace Src\Products\Application\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Src\Products\Application\Actions\DetailEcommerceProductsAction;
 use Src\Products\Application\Actions\ListEcommerceProductsAction;
+use Src\Products\Application\Actions\MatchEcommerceProductsAction;
 
 class ProductController extends Controller
 {
@@ -12,15 +14,19 @@ class ProductController extends Controller
 
     private $detailEcommerceProductsAction;
 
+    private $matchEcommerceProductsAction;
+
     public function __construct(
         ListEcommerceProductsAction $listEcommerceProductsAction,
-        DetailEcommerceProductsAction $detailEcommerceProductsAction
+        DetailEcommerceProductsAction $detailEcommerceProductsAction,
+        MatchEcommerceProductsAction $matchEcommerceProductsAction
     ) {
         $this->listEcommerceProductsAction = $listEcommerceProductsAction;
         $this->detailEcommerceProductsAction = $detailEcommerceProductsAction;
+        $this->matchEcommerceProductsAction = $matchEcommerceProductsAction;
     }
 
-    public function listEcommerceProducts()
+    public function listEcommerceProducts(Request $request)
     {
         $products = $this->listEcommerceProductsAction->handle();
 
@@ -32,5 +38,14 @@ class ProductController extends Controller
         $product = $this->detailEcommerceProductsAction->handle($slug);
 
         return view('pages.ecommerce.products.productDetail', compact('product'));
+    }
+
+    public function matchEcommerceProducts(Request $request)
+    {
+        $searchParams = $request->query();
+
+        $products = $this->matchEcommerceProductsAction->handle($searchParams);
+
+        return view('pages.ecommerce.products.productsList', compact('products'));
     }
 }

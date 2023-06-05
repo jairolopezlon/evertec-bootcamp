@@ -10,3 +10,6 @@ Route::get('/products', [ProductController::class, 'listEcommerceProducts'])
 
 Route::get('/products/{slug}', [ProductController::class, 'detailEcommerceProducts'])
     ->name('ecommerce.products.productsDetail');
+
+Route::get('/products-search', [ProductController::class, 'matchEcommerceProducts'])
+    ->name('ecommerce.products.productsMatch');
