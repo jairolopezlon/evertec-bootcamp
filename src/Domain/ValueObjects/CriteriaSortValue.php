@@ -19,12 +19,12 @@ class CriteriaSortValue
     /**
      * @var SortDirectionEnum::DESC
      */
-    public const DESC_DIRECTION = SortDirectionEnum::DESC->value;
+    public const DESC_DIRECTION = SortDirectionEnum::DESC;
 
     /**
      * @var SortDirectionEnum::ASC
      */
-    public const ASC_DIRECTION = SortDirectionEnum::ASC->value;
+    public const ASC_DIRECTION = SortDirectionEnum::ASC;
 
     public const DIRECTION_INDICARTOR = '-';
 
