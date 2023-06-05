@@ -56,7 +56,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
                 $value = $filter->getValue();
 
                 if ($field === 'searchText') {
-                    //include field (colums name) where want to search
+                    //include fields name (colums name) where want to search
                     $nameField = 'name';
                     $descriptionField = 'description';
 
@@ -65,6 +65,10 @@ class EloquentProductRespositoryImpl implements ProductRepository
                             ->orWhere($descriptionField, 'LIKE', '%'.$value.'%');
                     });
 
+                    continue;
+                }
+
+                if (! Schema::hasColumn($this->productModel->getTable(), $field)) {
                     continue;
                 }
 
@@ -85,12 +89,39 @@ class EloquentProductRespositoryImpl implements ProductRepository
         $offset = $criteriaValue->getOffset();
         $matchProducts = $query->paginate($limit, ['*'], 'page', $offset);
 
-        $listProducts = $matchProducts->map(function ($product) {
+        $matchProducts->appends(request()->query());
+
+        $productsData = $matchProducts->map(function ($product) {
             $productModel = EloquentProductAdapter::toDomainModel($product);
 
             return new ProductListEcommerceData($productModel);
-        });
+        })->toArray();
 
-        return $listProducts;
+        $paginateProductList = $matchProducts->jsonSerialize();
+        $paginateProductList['data'] = $productsData;
+        $paginateProductList['criteriaLinks'] = [
+            'searchText' => route(
+                'ecommerce.products.productsMatch',
+                array_merge(request()->except(['sort', 'page']))
+            ),
+            'sortByPriceAsc' => route(
+                'ecommerce.products.productsMatch',
+                array_merge(request()->except(['sort', 'page']), ['sort' => 'price'])
+            ),
+            'sortByPriceDesc' => route(
+                'ecommerce.products.productsMatch',
+                array_merge(request()->except(['sort', 'page']), ['sort' => '-price'])
+            ),
+            'sortByNameAsc' => route(
+                'ecommerce.products.productsMatch',
+                array_merge(request()->except(['sort', 'page']), ['sort' => 'name'])
+            ),
+            'sortByNameDesc' => route(
+                'ecommerce.products.productsMatch',
+                array_merge(request()->except(['sort', 'page']), ['sort' => '-name'])
+            ),
+        ];
+
+        return $paginateProductList;
     }
 }

@@ -34,8 +34,8 @@ class MatchEcommerceProductsAction
             $criteria['limit'] = intval($searchParams['limit']);
         }
 
-        if (array_key_exists('offset', $searchParams)) {
-            $criteria['offset'] = intval($searchParams['offset']);
+        if (array_key_exists('page', $searchParams)) {
+            $criteria['offset'] = intval($searchParams['page']);
         }
 
         if (array_key_exists('sort', $searchParams)) {
