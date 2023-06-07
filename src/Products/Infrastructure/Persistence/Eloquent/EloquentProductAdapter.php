@@ -1,10 +1,10 @@
 <?php
 
-namespace Src\Products\Infrastructure\Repository\Eloquent;
+namespace Src\Products\Infrastructure\Persistence\Eloquent;
 
-use Src\Products\Domain\Models\ProductId;
+use Src\Products\Domain\ValuesObjects\ProductId;
 use Src\Products\Domain\Models\ProductModel as DomainModel;
-use Src\Products\Infrastructure\Repository\Eloquent\EloquentProductEntity as EloquentEntity;
+use Src\Products\Infrastructure\Persistence\Eloquent\EloquentProductEntity as EloquentEntity;
 
 class EloquentProductAdapter
 {

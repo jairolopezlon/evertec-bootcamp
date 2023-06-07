@@ -1,9 +1,9 @@
 <?php
 
-namespace Src\Products\Infrastructure\Repository\Eloquent;
+namespace Src\Products\Infrastructure\Persistence\Eloquent;
 
 use Illuminate\Support\Facades\Schema;
-use Src\Domain\ValueObjects\CriteriaValue;
+use Src\Shared\Domain\ValueObjects\CriteriaValue;
 use Src\Products\Domain\Dtos\ProductDetailEcommerceData;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
@@ -61,14 +61,14 @@ class EloquentProductRespositoryImpl implements ProductRepository
                     $descriptionField = 'description';
 
                     $query->where(function ($query) use ($nameField, $descriptionField, $value) {
-                        $query->where($nameField, 'LIKE', '%'.$value.'%')
-                            ->orWhere($descriptionField, 'LIKE', '%'.$value.'%');
+                        $query->where($nameField, 'LIKE', '%' . $value . '%')
+                            ->orWhere($descriptionField, 'LIKE', '%' . $value . '%');
                     });
 
                     continue;
                 }
 
-                if (! Schema::hasColumn($this->productModel->getTable(), $field)) {
+                if (!Schema::hasColumn($this->productModel->getTable(), $field)) {
                     continue;
                 }
 
@@ -77,7 +77,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
         }
 
         $sortCriteria = $criteriaValue->getSort();
-        if (! is_null($sortCriteria)) {
+        if (!is_null($sortCriteria)) {
             $sortDirection = $sortCriteria->getDirection()->value;
             $sortField = $sortCriteria->getField();
             if (Schema::hasColumn($this->productModel->getTable(), $sortField)) {
