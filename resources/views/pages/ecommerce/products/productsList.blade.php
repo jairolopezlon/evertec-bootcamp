@@ -7,6 +7,15 @@
     {{-- {{ dd(request()->input('filters', [])) }} --}}
 
     <br>
+    <div class="p-4 bg-red-100">
+        <a href="{{ route('ecommerce.shoppingCart.getAllItems') }}">
+
+            <p>{{ count(session()->get('shoppingCart')->getItemsCart()) }} Cart</p>
+            <pre style="font-size: .75rem">
+                {{ print_r(session()->get('shoppingCart')) }}
+            </pre>
+        </a>
+    </div>
     <br>
     <form style="border: 1px solid grey; padding: .5rem" action="{{ $products['criteriaLinks']['searchText'] }}"
         method="GET">
@@ -46,5 +55,10 @@
             href="{{ $products['criteriaLinks']['sortByNameDesc'] }}">ordenar
             por nombre, Z a A</a>
     </div>
+    @php
+        foreach ($products['data'] as $product) {
+            $product->token = csrf_token();
+        }
+    @endphp
     <products-list :products="{{ json_encode($products['data']) }}"></products-list>
 @endsection
