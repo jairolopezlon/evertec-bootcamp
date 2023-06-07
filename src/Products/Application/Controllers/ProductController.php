@@ -44,7 +44,7 @@ class ProductController extends Controller
     {
         $searchParams = $request->query();
 
-        $products = $this->matchEcommerceProductsAction->handle($searchParams);
+        $products = ($this->matchEcommerceProductsAction)($searchParams);
 
         return view('pages.ecommerce.products.productsList', compact('products'));
     }

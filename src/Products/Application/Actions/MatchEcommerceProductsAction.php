@@ -20,7 +20,7 @@ class MatchEcommerceProductsAction
     /**
      * @return array<ProductListEcommerceData>
      */
-    public function handle(array $searchParams)
+    public function __invoke(array $searchParams)
     {
         $criteria = [];
 
