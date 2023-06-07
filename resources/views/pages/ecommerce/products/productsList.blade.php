@@ -14,7 +14,7 @@
         <input type="search" name="filters[0][value]">
         <button type="submit">Search</button>
     </form>
-    <a href="{{ route('ecommerce.products.productsMatch') }}">Show all</a>
+    <a href="{{ route('ecommerce.products.productsList') }}">Show all</a>
     <br>
     <br>
     <div>
