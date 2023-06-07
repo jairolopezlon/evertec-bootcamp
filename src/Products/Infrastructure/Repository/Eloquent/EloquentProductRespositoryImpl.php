@@ -101,23 +101,23 @@ class EloquentProductRespositoryImpl implements ProductRepository
         $paginateProductList['data'] = $productsData;
         $paginateProductList['criteriaLinks'] = [
             'searchText' => route(
-                'ecommerce.products.productsMatch',
+                'ecommerce.products.productsList',
                 array_merge(request()->except(['sort', 'page']))
             ),
             'sortByPriceAsc' => route(
-                'ecommerce.products.productsMatch',
+                'ecommerce.products.productsList',
                 array_merge(request()->except(['sort', 'page']), ['sort' => 'price'])
             ),
             'sortByPriceDesc' => route(
-                'ecommerce.products.productsMatch',
+                'ecommerce.products.productsList',
                 array_merge(request()->except(['sort', 'page']), ['sort' => '-price'])
             ),
             'sortByNameAsc' => route(
-                'ecommerce.products.productsMatch',
+                'ecommerce.products.productsList',
                 array_merge(request()->except(['sort', 'page']), ['sort' => 'name'])
             ),
             'sortByNameDesc' => route(
-                'ecommerce.products.productsMatch',
+                'ecommerce.products.productsList',
                 array_merge(request()->except(['sort', 'page']), ['sort' => '-name'])
             ),
         ];
