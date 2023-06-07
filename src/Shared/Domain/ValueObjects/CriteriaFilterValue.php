@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\ValueObjects;
+namespace Src\Shared\Domain\ValueObjects;
 
 class CriteriaFilterValue
 {

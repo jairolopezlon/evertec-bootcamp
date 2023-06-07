@@ -2,9 +2,9 @@
 
 namespace Src\Products\Application\Actions;
 
-use Src\Domain\ValueObjects\CriteriaFilterValue;
-use Src\Domain\ValueObjects\CriteriaSortValue;
-use Src\Domain\ValueObjects\CriteriaValue;
+use Src\Shared\Domain\ValueObjects\CriteriaFilterValue;
+use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
+use Src\Shared\Domain\ValueObjects\CriteriaValue;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
 

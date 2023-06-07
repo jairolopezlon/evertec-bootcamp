@@ -2,7 +2,7 @@
 
 namespace Src\Products\Domain\Repositories;
 
-use Src\Domain\ValueObjects\CriteriaValue;
+use Src\Shared\Domain\ValueObjects\CriteriaValue;
 use Src\Products\Domain\Dtos\ProductDetailEcommerceData;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 

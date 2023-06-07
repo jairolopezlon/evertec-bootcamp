@@ -1,8 +1,8 @@
 <?php
 
-namespace Src\Domain\ValueObjects;
+namespace Src\Shared\Domain\ValueObjects;
 
-use Src\Domain\Enums\SortDirectionEnum;
+use Src\Shared\Domain\Enums\SortDirectionEnum;
 
 class CriteriaSortValue
 {

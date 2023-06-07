@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Domain\Enums;
+namespace Src\Shared\Domain\Enums;
 
 enum SortDirectionEnum: string
 {

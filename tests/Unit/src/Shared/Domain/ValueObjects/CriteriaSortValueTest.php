@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\src\Domain\ValueObjects;
+namespace Tests\Unit\src\Shared\Domain\ValueObjects;
 
 use PHPUnit\Framework\TestCase;
-use Src\Domain\ValueObjects\CriteriaSortValue;
+use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
 
 class CriteriaSortValueTest extends TestCase
 {
