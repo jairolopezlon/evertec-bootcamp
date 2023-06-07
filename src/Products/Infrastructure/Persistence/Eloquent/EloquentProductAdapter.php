@@ -2,8 +2,8 @@
 
 namespace Src\Products\Infrastructure\Persistence\Eloquent;
 
-use Src\Products\Domain\ValuesObjects\ProductId;
 use Src\Products\Domain\Models\ProductModel as DomainModel;
+use Src\Products\Domain\ValuesObjects\ProductId;
 use Src\Products\Infrastructure\Persistence\Eloquent\EloquentProductEntity as EloquentEntity;
 
 class EloquentProductAdapter

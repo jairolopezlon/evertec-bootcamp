@@ -2,11 +2,11 @@
 
 namespace Src\Products\Application\Actions;
 
+use Src\Products\Domain\Dtos\ProductListEcommerceData;
+use Src\Products\Domain\Repositories\ProductRepository;
 use Src\Shared\Domain\ValueObjects\CriteriaFilterValue;
 use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
 use Src\Shared\Domain\ValueObjects\CriteriaValue;
-use Src\Products\Domain\Dtos\ProductListEcommerceData;
-use Src\Products\Domain\Repositories\ProductRepository;
 
 class MatchEcommerceProductsAction
 {
