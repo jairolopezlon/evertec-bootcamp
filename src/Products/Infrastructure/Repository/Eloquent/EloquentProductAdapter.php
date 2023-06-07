@@ -2,6 +2,7 @@
 
 namespace Src\Products\Infrastructure\Repository\Eloquent;
 
+use Src\Products\Domain\Models\ProductId;
 use Src\Products\Domain\Models\ProductModel as DomainModel;
 use Src\Products\Infrastructure\Repository\Eloquent\EloquentProductEntity as EloquentEntity;
 
@@ -10,7 +11,7 @@ class EloquentProductAdapter
     public static function toDomainModel(EloquentEntity $eloquentEntity): DomainModel
     {
         $domainModel = new DomainModel(
-            $id = $eloquentEntity->id,
+            $id = new ProductId($eloquentEntity),
             $name = $eloquentEntity->name,
             $slug = $eloquentEntity->slug,
             $description = $eloquentEntity->description,

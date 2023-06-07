@@ -4,28 +4,14 @@ namespace Src\Products\Domain\Models;
 
 class ProductModel
 {
-    private $id;
-
-    private $name;
-
-    private $slug;
-
-    private $description;
-
-    private $price;
-
-    private $isEnable;
-
-    private $imageUrl;
-
     public function __construct(
-        int $id,
-        string $name,
-        string $slug,
-        string $description,
-        float $price,
-        bool $isEnable,
-        string $imageUrl
+        private ProductId $id,
+        private string $name,
+        private string $slug,
+        private string $description,
+        private float $price,
+        private bool $isEnable,
+        private string $imageUrl
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -37,7 +23,7 @@ class ProductModel
     }
 
     /**
-     * @return int
+     * @return ProductId
      */
     public function getId()
     {
