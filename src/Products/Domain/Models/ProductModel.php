@@ -2,6 +2,8 @@
 
 namespace Src\Products\Domain\Models;
 
+use Src\Products\Domain\ValuesObjects\ProductId;
+
 class ProductModel
 {
     public function __construct(

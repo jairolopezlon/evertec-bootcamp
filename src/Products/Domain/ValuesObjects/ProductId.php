@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\Products\Domain\Models;
+namespace Src\Products\Domain\ValuesObjects;
 
 class ProductId
 {
