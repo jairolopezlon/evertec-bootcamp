@@ -2,6 +2,14 @@
 
 namespace Src\Shared\Domain\ValueObjects;
 
+/**
+ * @phpstan-type CriteriaType array{
+ *     filters?: array<CriteriaFilterValue>,
+ *     sort?: CriteriaSortValue,
+ *     limit?: int,
+ *     offset?: int
+ * }
+ */
 class CriteriaValue
 {
     /**
@@ -24,6 +32,11 @@ class CriteriaValue
      */
     private $offset;
 
+    /**
+     * Summary of __construct
+     *
+     * @param  CriteriaType  $criteria
+     */
     public function __construct(array $criteria)
     {
         $this->filters = $criteria['filters'] ?? []; //crear el valueObject

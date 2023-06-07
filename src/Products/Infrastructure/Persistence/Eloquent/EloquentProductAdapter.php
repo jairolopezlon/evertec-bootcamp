@@ -11,7 +11,7 @@ class EloquentProductAdapter
     public static function toDomainModel(EloquentEntity $eloquentEntity): DomainModel
     {
         $domainModel = new DomainModel(
-            $id = new ProductId($eloquentEntity),
+            $id = new ProductId((string) $eloquentEntity->id),
             $name = $eloquentEntity->name,
             $slug = $eloquentEntity->slug,
             $description = $eloquentEntity->description,
@@ -26,7 +26,7 @@ class EloquentProductAdapter
     public static function toEloquentEntity(DomainModel $domainModel): EloquentEntity
     {
         $EloquentEntity = new EloquentEntity();
-        $EloquentEntity->id = $domainModel->getId();
+        $EloquentEntity->id = (int) $domainModel->getId()->value();
         $EloquentEntity->name = $domainModel->getName();
         $EloquentEntity->slug = $domainModel->getSlug();
         $EloquentEntity->description = $domainModel->getDescription();

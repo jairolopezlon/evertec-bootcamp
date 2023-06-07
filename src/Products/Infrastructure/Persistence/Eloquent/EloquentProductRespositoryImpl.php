@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 use Src\Products\Domain\Dtos\ProductDetailEcommerceData;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
+use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
 use Src\Shared\Domain\ValueObjects\CriteriaValue;
 
 class EloquentProductRespositoryImpl implements ProductRepository
 {
-    private $productModel;
-
-    public function __construct(EloquentProductEntity $productModel)
+    public function __construct(private EloquentProductEntity $productModel)
     {
         $this->productModel = $productModel;
     }
@@ -23,11 +22,11 @@ class EloquentProductRespositoryImpl implements ProductRepository
     public function listEcommerceProducts()
     {
         $enableProducts = $this->productModel::where('is_enable', true)->get();
-        $listProducts = $enableProducts->map(function ($product) {
+        $listProducts = array_map(function ($product) {
             $productModel = EloquentProductAdapter::toDomainModel($product);
 
             return new ProductListEcommerceData($productModel);
-        });
+        }, $enableProducts->toArray());
 
         return $listProducts;
     }
@@ -35,7 +34,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
     /**
      * @return ProductDetailEcommerceData
      */
-    public function getEcommerceProductDetail($slug)
+    public function getEcommerceProductDetail(string $slug)
     {
         $product = $this->productModel::where('slug', $slug)->first();
         $productModel = EloquentProductAdapter::toDomainModel($product);
@@ -75,7 +74,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
                 $query->where($field, $value);
             }
         }
-
+        /** @var CriteriaSortValue|null */
         $sortCriteria = $criteriaValue->getSort();
         if (! is_null($sortCriteria)) {
             $sortDirection = $sortCriteria->getDirection()->value;
@@ -96,9 +95,10 @@ class EloquentProductRespositoryImpl implements ProductRepository
 
             return new ProductListEcommerceData($productModel);
         })->toArray();
-
         $paginateProductList = $matchProducts->jsonSerialize();
+
         $paginateProductList['data'] = $productsData;
+
         $paginateProductList['criteriaLinks'] = [
             'searchText' => route(
                 'ecommerce.products.productsList',

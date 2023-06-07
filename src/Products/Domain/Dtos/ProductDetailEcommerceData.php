@@ -6,21 +6,21 @@ use Src\Products\Domain\Models\ProductModel;
 
 class ProductDetailEcommerceData
 {
-    public $id;
+    public string $id;
 
-    public $name;
+    public string $name;
 
-    public $slug;
+    public string $slug;
 
-    public $description;
+    public string $description;
 
-    public $price;
+    public float $price;
 
-    public $imageUrl;
+    public string $imageUrl;
 
     public function __construct(ProductModel $productModel)
     {
-        $this->id = $productModel->getId();
+        $this->id = $productModel->getId()->value();
         $this->name = $productModel->getName();
         $this->slug = $productModel->getSlug();
         $this->description = $productModel->getDescription();

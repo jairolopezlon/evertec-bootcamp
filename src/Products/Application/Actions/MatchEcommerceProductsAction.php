@@ -10,17 +10,16 @@ use Src\Shared\Domain\ValueObjects\CriteriaValue;
 
 class MatchEcommerceProductsAction
 {
-    private $productRepository;
-
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(private ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
     /**
+     * @param  array<mixed>  $searchParams
      * @return array<ProductListEcommerceData>
      */
-    public function __invoke(array $searchParams)
+    public function __invoke($searchParams)
     {
         $criteria = [];
 
