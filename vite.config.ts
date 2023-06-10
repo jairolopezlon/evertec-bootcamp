@@ -5,7 +5,7 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig( {
     plugins: [
         laravel( {
-            input: [ 'resources/sass/app.scss', 'resources/js/app.js' ],
+            input: [ 'resources/sass/app.scss', 'resources/ts/app.ts' ],
             refresh: true,
         } ),
         vue(),
@@ -13,6 +13,7 @@ export default defineConfig( {
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
+            '@': '/resources/ts',
         },
     },
 } );

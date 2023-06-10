@@ -6,7 +6,16 @@ module.exports = {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        'bounce-cart-icon': {
+
+        }
+      },
+      animation: {
+        'bounce-cart-icon': 'bounce .3s linear',
+      }
+    },
   },
   plugins: [],
 }
