@@ -3,6 +3,9 @@
         <li>
             <a class="nav-item {{ Request::is('/') ? 'current-page' : '' }}" href="/">home</a>
         </li>
+        <li>
+            <a class="nav-item {{ Request::is('products') ? 'current-page' : '' }}" href="/products">Products</a>
+        </li>
         @auth
             @if (auth()->user()->type === 'admin')
                 <li>

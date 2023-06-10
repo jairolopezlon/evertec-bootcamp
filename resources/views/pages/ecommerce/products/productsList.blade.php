@@ -4,17 +4,9 @@
 @section('title', 'Ecommerce Products List')
 @section('ecommerce-content')
     <h1>Products List Ecommercedddddddddd</h1>
-    {{-- {{ dd(request()->input('filters', [])) }} --}}
 
     <br>
     <div class="p-4 bg-red-100">
-        <a href="{{ route('ecommerce.shoppingCart.getAllItems') }}">
-
-            <p>{{ count(session()->get('shoppingCart')->getItemsCart()) }} Cart</p>
-            <pre style="font-size: .75rem">
-                {{ print_r(session()->get('shoppingCart')) }}
-            </pre>
-        </a>
     </div>
     <br>
     <form style="border: 1px solid grey; padding: .5rem" action="{{ $products['criteriaLinks']['searchText'] }}"
@@ -56,9 +48,17 @@
             por nombre, Z a A</a>
     </div>
     @php
-        foreach ($products['data'] as $product) {
-            $product->token = csrf_token();
-        }
+        $productData = array_map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'description' => $product->description,
+                'price' => $product->price,
+                'imageUrl' => $product->imageUrl,
+                'token' => csrf_token(),
+            ];
+        }, $products['data']);
     @endphp
-    <products-list :products="{{ json_encode($products['data']) }}"></products-list>
+    <products-list :products="{{ json_encode($productData) }}"></products-list>
 @endsection
