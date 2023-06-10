@@ -2,8 +2,8 @@
 
 namespace Src\ShoppingCart\Domain\Dtos;
 
-use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\Shared\Domain\Types\Types;
+use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 
 /**
  * @phpstan-import-type ItemShoppingCartNative from Types

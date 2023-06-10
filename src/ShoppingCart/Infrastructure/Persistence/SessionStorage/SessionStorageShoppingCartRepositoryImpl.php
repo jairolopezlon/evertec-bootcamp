@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Src\Products\Domain\ValuesObjects\ProductId;
 use Src\Shared\Domain\Types\Types;
-use Src\ShoppingCart\Domain\Dtos\ItemShoppingCartData;
 use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\ShoppingCart\Domain\Models\ShoppingCart;

@@ -47,6 +47,7 @@ class ItemShoppingCart
     {
         return $this->name;
     }
+
     public function getDescription(): string
     {
         return $this->description;
@@ -56,10 +57,12 @@ class ItemShoppingCart
     {
         return $this->imageUrl;
     }
+
     public function getSlug(): string
     {
         return $this->slug;
     }
+
     public function getPrice(): float
     {
         return $this->price;
