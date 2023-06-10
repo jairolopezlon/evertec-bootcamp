@@ -35,6 +35,13 @@ class ShoppingCartController
         return view('pages.ecommerce.shopping.shoppingCart');
     }
 
+    public function indexApi(): JsonResponse
+    {
+        $shoppingCartData = ($this->getItemsShoppingCartAction)();
+
+        return response()->json($shoppingCartData);
+    }
+
     public function addItem(Request $request): JsonResponse
     {
         $validated = $request->validate([

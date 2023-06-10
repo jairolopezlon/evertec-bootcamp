@@ -8,6 +8,9 @@ use Src\ShoppingCart\Infrastructure\Controllers\ShoppingCartController;
 Route::get('/shopping-cart', [ShoppingCartController::class, 'index'])
     ->name('ecommerce.shoppingCart.index');
 
+Route::get('/api/shopping-cart', [ShoppingCartController::class, 'indexApi'])
+    ->name('ecommerce.shoppingCart.indexApi');
+
 Route::post('/api/shopping-cart', [ShoppingCartController::class, 'addItem'])
     ->name('ecommerce.shoppingCart.addItem');
 
