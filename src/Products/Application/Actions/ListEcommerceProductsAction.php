@@ -7,9 +7,7 @@ use Src\Products\Domain\Repositories\ProductRepository;
 
 class ListEcommerceProductsAction
 {
-    private $productRepository;
-
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(private ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'Undefined title') | Everstore</title>
-    @vite(['resources/js/app.js', 'resources/sass/app.scss'])
+    @vite(['resources/ts/app.ts', 'resources/sass/app.scss'])
     @stack('head')
 </head>
 

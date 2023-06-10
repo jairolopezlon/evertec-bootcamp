@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Src\Products\Domain\Repositories\ProductRepository;
-use Src\Products\Infrastructure\Repository\Eloquent\EloquentProductRespositoryImpl;
+use Src\Products\Infrastructure\Persistence\Eloquent\EloquentProductRespositoryImpl;
+use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
+use Src\ShoppingCart\Infrastructure\Persistence\SessionStorage\SessionStorageShoppingCartRepositoryImpl;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(ProductRepository::class, EloquentProductRespositoryImpl::class);
+        $this->app->bind(ShoppingCartRepositoryInterface::class, SessionStorageShoppingCartRepositoryImpl::class);
     }
 
     /**

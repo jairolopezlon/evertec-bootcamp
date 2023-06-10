@@ -4,9 +4,10 @@
 @section('title', 'Ecommerce Products List')
 @section('ecommerce-content')
     <h1>Products List Ecommercedddddddddd</h1>
-    {{-- {{ dd(request()->input('filters', [])) }} --}}
 
     <br>
+    <div class="p-4 bg-red-100">
+    </div>
     <br>
     <form style="border: 1px solid grey; padding: .5rem" action="{{ $products['criteriaLinks']['searchText'] }}"
         method="GET">
@@ -14,7 +15,7 @@
         <input type="search" name="filters[0][value]">
         <button type="submit">Search</button>
     </form>
-    <a href="{{ route('ecommerce.products.productsMatch') }}">Show all</a>
+    <a href="{{ route('ecommerce.products.productsList') }}">Show all</a>
     <br>
     <br>
     <div>
@@ -46,5 +47,18 @@
             href="{{ $products['criteriaLinks']['sortByNameDesc'] }}">ordenar
             por nombre, Z a A</a>
     </div>
-    <products-list :products="{{ json_encode($products['data']) }}"></products-list>
+    @php
+        $productData = array_map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'description' => $product->description,
+                'price' => $product->price,
+                'imageUrl' => $product->imageUrl,
+                'token' => csrf_token(),
+            ];
+        }, $products['data']);
+    @endphp
+    <products-list :products="{{ json_encode($productData) }}"></products-list>
 @endsection

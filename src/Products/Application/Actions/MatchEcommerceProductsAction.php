@@ -2,25 +2,24 @@
 
 namespace Src\Products\Application\Actions;
 
-use Src\Domain\ValueObjects\CriteriaFilterValue;
-use Src\Domain\ValueObjects\CriteriaSortValue;
-use Src\Domain\ValueObjects\CriteriaValue;
 use Src\Products\Domain\Dtos\ProductListEcommerceData;
 use Src\Products\Domain\Repositories\ProductRepository;
+use Src\Shared\Domain\ValueObjects\CriteriaFilterValue;
+use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
+use Src\Shared\Domain\ValueObjects\CriteriaValue;
 
 class MatchEcommerceProductsAction
 {
-    private $productRepository;
-
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(private ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
     /**
+     * @param  array<mixed>  $searchParams
      * @return array<ProductListEcommerceData>
      */
-    public function handle(array $searchParams)
+    public function __invoke($searchParams)
     {
         $criteria = [];
 

@@ -5,7 +5,7 @@ namespace Src\Products\Infrastructure\Routes;
 use Illuminate\Support\Facades\Route;
 use Src\Products\Application\Controllers\ProductController;
 
-Route::get('/products', [ProductController::class, 'listEcommerceProducts'])
+Route::get('/products', [ProductController::class, 'matchEcommerceProducts'])
     ->name('ecommerce.products.productsList');
 
 Route::get('/products/{slug}', [ProductController::class, 'detailEcommerceProducts'])
