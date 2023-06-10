@@ -7,11 +7,30 @@ use Src\Products\Domain\ValuesObjects\ProductId;
 class ItemShoppingCart
 {
     public function __construct(
-        private ProductId $productId,
-        private ?int $amount
+        private readonly ProductId $productId,
+        private readonly string $name,
+        private readonly string $description,
+        private readonly string $slug,
+        private readonly string $imageUrl,
+        private readonly float $price,
+        private readonly float $subTotal,
+        private int $amount,
     ) {
-        $this->productId = $productId;
-        $this->amount = $amount ?? 1;
+    }
+
+    public function incrementAmount(int $amount): void
+    {
+        $this->amount += abs($amount);
+    }
+
+    public function decrementAmount(int $amount): void
+    {
+        $this->amount -= abs($amount);
+    }
+
+    public function setAmount(int $amount): void
+    {
+        $this->amount = abs($amount);
     }
 
     public function getAmount(): int
@@ -24,13 +43,30 @@ class ItemShoppingCart
         return $this->productId;
     }
 
-    public function incrementAmount(int $amount): void
+    public function getName(): string
     {
-        $this->amount += abs($amount);
+        return $this->name;
+    }
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
-    public function decreaseAmount(int $amount): void
+    public function getImageUrl(): string
     {
-        $this->amount -= abs($amount);
+        return $this->imageUrl;
+    }
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function getSubTotal(): float
+    {
+        return $this->subTotal;
     }
 }

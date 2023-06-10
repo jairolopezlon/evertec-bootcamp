@@ -3,23 +3,20 @@
 namespace Src\ShoppingCart\Domain\Repositories;
 
 use Src\Products\Domain\ValuesObjects\ProductId;
-use Src\ShoppingCart\Domain\Dtos\ItemShoppingCartData;
-use Src\ShoppingCart\Domain\Dtos\ShoppingCartData;
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
+use Src\ShoppingCart\Domain\Models\ShoppingCart;
 
 interface ShoppingCartRepositoryInterface
 {
-    public function getAll(): ShoppingCartData;
+    public function getItems(): ShoppingCart;
 
-    public function getItem(ProductId $productId): ItemShoppingCartData;
+    public function addItem(ItemShoppingCart $itemShoppingCart): ShoppingCart;
 
-    public function addItem(ItemShoppingCart $itemShoppingCart): ShoppingCartData;
+    public function removeItem(ProductId $productId): ShoppingCart;
 
-    public function removeItem(ProductId $productId): ShoppingCartData;
+    public function setItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCart;
 
-    public function incrementItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCartData;
+    public function incrementItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCart;
 
-    public function decreaseItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCartData;
-
-    public function getAllItemsWithProductData(): void;
+    public function decrementItemAmount(ProductId $productId, int $amount): ShoppingCart;
 }

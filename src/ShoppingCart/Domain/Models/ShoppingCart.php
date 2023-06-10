@@ -12,12 +12,9 @@ class ShoppingCart
     public function __construct(
         private array $itemsCart,
     ) {
-        $this->itemsCart = $itemsCart;
     }
 
     /**
-     * Summary of getItemsCart
-     *
      * @return array<ItemShoppingCart>
      */
     public function getItemsCart()
