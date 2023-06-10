@@ -2,38 +2,40 @@
 
 namespace Src\ShoppingCart\Infrastructure\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
 use Src\Products\Domain\ValuesObjects\ProductId;
+use Src\Products\Infrastructure\Persistence\Eloquent\EloquentProductEntity;
 use Src\ShoppingCart\Application\Actions\AddItemShoppingCartAction;
-use Src\ShoppingCart\Application\Actions\GetAllItemsShoppingCartAction;
+use Src\ShoppingCart\Application\Actions\GetItemsShoppingCartAction;
 use Src\ShoppingCart\Application\Actions\RemoveItemShoppingCartAction;
+use Src\ShoppingCart\Application\Actions\SetItemAmountShoppingCartAction;
 use Src\ShoppingCart\Application\Actions\UpdateItemAmountShoppingCartAction;
 use Src\ShoppingCart\Domain\Enums\UpdateOptionsEnum;
+use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 
-/**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
- */
 class ShoppingCartController
 {
     public function __construct(
-        private readonly GetAllItemsShoppingCartAction $getAllItemsShoppingCartAction,
+        private readonly GetItemsShoppingCartAction $getItemsShoppingCartAction,
         private readonly AddItemShoppingCartAction $addItemShoppingCartAction,
         private readonly UpdateItemAmountShoppingCartAction $updateItemAmountShoppingCartAction,
         private readonly RemoveItemShoppingCartAction $removeItemShoppingCartAction,
+        private readonly SetItemAmountShoppingCartAction $setItemAmountShoppingCartAction,
     ) {
     }
 
-    /**
-     * @return array<PrimitiveItemShoppingCartData>
-     */
-    public function getAll()
+    public function index(): View
     {
-        return ($this->getAllItemsShoppingCartAction)();
+        ($this->getItemsShoppingCartAction)();
+
+        return view('pages.ecommerce.shopping.shoppingCart');
     }
 
-    public function addItem(Request $request): RedirectResponse
+    public function addItem(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'productId' => 'required|numeric',
@@ -41,40 +43,89 @@ class ShoppingCartController
         ]);
 
         $productId = new ProductId($validated['productId']);
-        $amount = $validated['amount'] ?? null;
+        $amount = $validated['amount'] ?? 1;
 
-        $shoppingCartData = ($this->addItemShoppingCartAction)($productId, $amount);
+        $product = EloquentProductEntity::where('id', $productId->value())->first();
 
-        return back()->with('shoppingCartData', $shoppingCartData);
+        $itemShoppingCart = new ItemShoppingCart(
+            $productId,
+            $product->name,
+            $product->description,
+            $product->slug,
+            $product->image_url,
+            $product->price,
+            $product->price * $amount,
+            $amount
+        );
+
+        $shoppingCartData = ($this->addItemShoppingCartAction)($itemShoppingCart);
+
+        return response()->json($shoppingCartData);
     }
 
-    public function removeItem(Request $request): RedirectResponse
+    public function removeItem(string $productId): JsonResponse
     {
-        $validated = $request->validate([
-            'productId' => 'required|numeric',
-        ]);
-
-        $productId = new ProductId($validated['productId']);
+        $productId = new ProductId($productId);
 
         $shoppingCartData = ($this->removeItemShoppingCartAction)($productId);
 
-        return back()->with('shoppingCartData', $shoppingCartData);
+        return response()->json($shoppingCartData);
     }
 
-    public function updateItemAmount(Request $request): RedirectResponse
+    public function updateItemAmount(string $productId, Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'productId' => 'required|numeric',
             'amount' => 'numeric',
             'option' => [new Enum(UpdateOptionsEnum::class)],
         ]);
 
-        $productId = new ProductId($validated['productId']);
-        $amount = $validated['amount'] ?? null;
+        $productId = new ProductId($productId);
+        $amount = $validated['amount'] ?? 1;
         $option = UpdateOptionsEnum::from($validated['option']);
 
-        $shoppingCartData = ($this->updateItemAmountShoppingCartAction)($productId, $amount, $option);
+        $product = EloquentProductEntity::where('id', $productId->value())->first();
 
-        return back()->with('shoppingCartData', $shoppingCartData);
+        $itemShoppingCart = new ItemShoppingCart(
+            $productId,
+            $product->name,
+            $product->description,
+            $product->slug,
+            $product->image_url,
+            $product->price,
+            $product->price * $amount,
+            $amount
+        );
+
+        $shoppingCartData = ($this->updateItemAmountShoppingCartAction)($itemShoppingCart, $option);
+
+        return response()->json($shoppingCartData);
+    }
+
+    public function setItemAmount(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'productId' => 'required|numeric',
+            'amount' => 'numeric',
+        ]);
+
+        $productId = new ProductId($validated['productId']);
+        $amount = $validated['amount'] ?? 1;
+
+        $product = EloquentProductEntity::where('id', $productId->value())->first();
+
+        $itemShoppingCart = new ItemShoppingCart(
+            $productId,
+            $product->name,
+            $product->description,
+            $product->slug,
+            $product->image_url,
+            $product->price,
+            $product->price * $amount,
+            $amount
+        );
+
+        ($this->setItemAmountShoppingCartAction)($itemShoppingCart);
+
+        return back();
     }
 }

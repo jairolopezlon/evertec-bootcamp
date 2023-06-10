@@ -5,121 +5,134 @@ namespace Src\ShoppingCart\Infrastructure\Persistence\SessionStorage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Src\Products\Domain\ValuesObjects\ProductId;
+use Src\Shared\Domain\Types\Types;
 use Src\ShoppingCart\Domain\Dtos\ItemShoppingCartData;
-use Src\ShoppingCart\Domain\Dtos\ShoppingCartData;
+use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\ShoppingCart\Domain\Models\ShoppingCart;
 use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 
+/**
+ * @phpstan-import-type ItemShoppingCartNative from Types
+ */
 class SessionStorageShoppingCartRepositoryImpl implements ShoppingCartRepositoryInterface
 {
-    public function getAll(): ShoppingCartData
+    public function getItems(): ShoppingCart
     {
         $request = App::make(Request::class);
 
-        /** @var ShoppingCart|null */
-        $shoppingCartSession = $request->session()->get('shoppingCart');
+        /** @var array<string, ItemShoppingCartNative>|null */
+        $shoppingCartSessionData = $request->session()->get('shoppingCart');
 
-        if (is_null($shoppingCartSession)) {
-            $shoppingCartSession = new ShoppingCart([]);
+        if (is_null($shoppingCartSessionData) || gettype($shoppingCartSessionData) !== 'array') {
+            $shoppingCartSessionData = ([]);
+            $request->session()->put('shoppingCart', $shoppingCartSessionData);
         }
 
-        $request->session()->put('shoppingCart', $shoppingCartSession);
+        $itemsShoppingCart = array_map(function ($item) {
+            return new ItemShoppingCart(
+                new ProductId($item['productId']),
+                $item['name'],
+                $item['description'],
+                $item['slug'],
+                $item['imageUrl'],
+                $item['price'],
+                $item['subTotal'],
+                $item['amount'],
+            );
+        }, $shoppingCartSessionData);
 
-        $shoppingCartData = new ShoppingCartData($shoppingCartSession);
-
-        return $shoppingCartData;
+        return new ShoppingCart($itemsShoppingCart);
     }
 
-    public function getItem(ProductId $productId): ItemShoppingCartData
+    public function addItem(ItemShoppingCart $itemShoppingCart): ShoppingCart
     {
-        $request = App::make(Request::class);
-
-        /** @var ShoppingCart */
-        $shoppingCartSession = $request->session()->get('shoppingCart', new ShoppingCart([]));
-
-        $itemShoppingCart = $shoppingCartSession->getItem($productId);
-
-        return new ItemShoppingCartData($itemShoppingCart);
-    }
-
-    public function addItem(ItemShoppingCart $itemShoppingCart): ShoppingCartData
-    {
-        $request = App::make(Request::class);
-
-        /** @var ShoppingCart */
-        $shoppingCartSession = $request->session()->get('shoppingCart', new ShoppingCart([]));
-
+        $shoppingCart = $this->getItems();
         $productId = $itemShoppingCart->getProductId();
 
-        if ($shoppingCartSession->hasItem($productId)) {
-            $shoppingCartSession->getItem($productId)->incrementAmount($itemShoppingCart->getAmount());
+        if ($shoppingCart->hasItem($productId)) {
+            $shoppingCart->getItem($productId)->incrementAmount($itemShoppingCart->getAmount());
         } else {
-            $shoppingCartSession->addItemCart($itemShoppingCart);
+            $shoppingCart->addItemCart($itemShoppingCart);
         }
 
-        $request->session()->put('shoppingCart', $shoppingCartSession);
+        $shoppingCartSessionData = (new ItemsShoppingCartData($shoppingCart))->toArray();
+        $request = App::make(Request::class);
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
 
-        return new ShoppingCartData($shoppingCartSession);
+        return $shoppingCart;
     }
 
-    public function removeItem(ProductId $productId): ShoppingCartData
+    public function removeItem(ProductId $productId): ShoppingCart
     {
-        $request = App::make(Request::class);
+        $shoppingCart = $this->getItems();
 
-        /** @var ShoppingCart */
-        $shoppingCartSession = $request->session()->get('shoppingCart', new ShoppingCart([]));
-
-        if ($shoppingCartSession->hasItem($productId)) {
-            $shoppingCartSession->removeItemCart($productId);
+        if ($shoppingCart->hasItem($productId)) {
+            $shoppingCart->removeItemCart($productId);
         }
 
-        $request->session()->put('shoppingCart', $shoppingCartSession);
+        $shoppingCartSessionData = (new ItemsShoppingCartData($shoppingCart))->toArray();
+        $request = App::make(Request::class);
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
 
-        return new ShoppingCartData($shoppingCartSession);
+        return $shoppingCart;
     }
 
-    public function incrementItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCartData
+    public function incrementItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCart
     {
-        $request = App::make(Request::class);
-        /** @var ShoppingCart */
-        $shoppingCartSession = $request->session()->get('shoppingCart', new ShoppingCart([]));
+        $shoppingCart = $this->getItems();
 
         $productId = $itemShoppingCart->getProductId();
 
-        if ($shoppingCartSession->hasItem($productId)) {
-            $shoppingCartSession->getItem($productId)->incrementAmount($itemShoppingCart->getAmount());
+        if ($shoppingCart->hasItem($productId)) {
+            $shoppingCart->getItem($productId)->incrementAmount($itemShoppingCart->getAmount());
         } else {
-            $shoppingCartSession->addItemCart($itemShoppingCart);
+            $shoppingCart->addItemCart($itemShoppingCart);
         }
 
-        $request->session()->put('shoppingCart', $shoppingCartSession);
+        $shoppingCartSessionData = (new ItemsShoppingCartData($shoppingCart))->toArray();
+        $request = App::make(Request::class);
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
 
-        return new ShoppingCartData($shoppingCartSession);
+        return $shoppingCart;
     }
 
-    public function decreaseItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCartData
+    public function decrementItemAmount(ProductId $productId, int $amount): ShoppingCart
     {
+        $shoppingCart = $this->getItems();
+
+        if ($shoppingCart->hasItem($productId)) {
+            $itemShoppingCart = $shoppingCart->getItem($productId);
+            $itemShoppingCart->decrementAmount($amount);
+
+            if ($itemShoppingCart->getAmount() <= 0) {
+                $shoppingCart->removeItemCart($productId);
+            }
+        }
+
+        $shoppingCartSessionData = (new ItemsShoppingCartData($shoppingCart))->toArray();
         $request = App::make(Request::class);
-        /** @var ShoppingCart */
-        $shoppingCartSession = $request->session()->get('shoppingCart', new ShoppingCart([]));
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
+
+        return $shoppingCart;
+    }
+
+    public function setItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCart
+    {
+        $shoppingCart = $this->getItems();
 
         $productId = $itemShoppingCart->getProductId();
 
-        if ($shoppingCartSession->hasItem($productId)) {
-            $shoppingCartSession->getItem($productId)->decreaseAmount($itemShoppingCart->getAmount());
+        if ($shoppingCart->hasItem($productId)) {
+            $shoppingCart->getItem($productId)->setAmount($itemShoppingCart->getAmount());
+        } else {
+            $shoppingCart->addItemCart($itemShoppingCart);
         }
 
-        if ($shoppingCartSession->getItem($productId)->getAmount() <= 0) {
-            $shoppingCartSession->removeItemCart($productId);
-        }
+        $shoppingCartSessionData = (new ItemsShoppingCartData($shoppingCart))->toArray();
+        $request = App::make(Request::class);
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
 
-        $request->session()->put('shoppingCart', $shoppingCartSession);
-
-        return new ShoppingCartData($shoppingCartSession);
-    }
-
-    public function getAllItemsWithProductData(): void
-    {
+        return $shoppingCart;
     }
 }

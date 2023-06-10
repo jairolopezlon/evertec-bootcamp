@@ -5,14 +5,17 @@ namespace Src\ShoppingCart\Infrastructure\Routes;
 use Illuminate\Support\Facades\Route;
 use Src\ShoppingCart\Infrastructure\Controllers\ShoppingCartController;
 
-Route::get('/shopping-cart', [ShoppingCartController::class, 'getAll'])
-    ->name('ecommerce.shoppingCart.getAllItems');
+Route::get('/shopping-cart', [ShoppingCartController::class, 'index'])
+    ->name('ecommerce.shoppingCart.index');
 
-Route::post('/shopping-cart', [ShoppingCartController::class, 'addItem'])
+Route::post('/api/shopping-cart', [ShoppingCartController::class, 'addItem'])
     ->name('ecommerce.shoppingCart.addItem');
 
-Route::patch('/shopping-cart', [ShoppingCartController::class, 'updateItemAmount'])
+Route::put('/api/shopping-cart/{productId}', [ShoppingCartController::class, 'setItemAmount'])
+    ->name('ecommerce.shoppingCart.setItemAmount');
+
+Route::patch('/api/shopping-cart/{productId}', [ShoppingCartController::class, 'updateItemAmount'])
     ->name('ecommerce.shoppingCart.updateItemAmount');
 
-Route::delete('/shopping-cart', [ShoppingCartController::class, 'removeItem'])
+Route::delete('/api/shopping-cart/{productId}', [ShoppingCartController::class, 'removeItem'])
     ->name('ecommerce.shoppingCart.removeItemAmount');
