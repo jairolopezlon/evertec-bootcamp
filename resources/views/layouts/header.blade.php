@@ -5,5 +5,8 @@
             <span class="branding-text">Everstore</span>
         </a>
     </div>
-    @include('partials.menu')
+    <div class="flex gap-2 items-center justify-center">
+        @include('partials.menu')
+        <shopping-cart-button-icon />
+    </div>
 </header>
