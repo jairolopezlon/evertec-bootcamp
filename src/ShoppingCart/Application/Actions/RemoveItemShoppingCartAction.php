@@ -3,11 +3,9 @@
 namespace Src\ShoppingCart\Application\Actions;
 
 use Src\Products\Domain\ValuesObjects\ProductId;
+use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
 use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 
-/**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
- */
 class RemoveItemShoppingCartAction
 {
     public function __construct(
@@ -15,13 +13,11 @@ class RemoveItemShoppingCartAction
     ) {
     }
 
-    /**
-     * @return array<PrimitiveItemShoppingCartData>
-     */
-    public function __invoke(ProductId $productId): array
+    public function __invoke(ProductId $productId): ItemsShoppingCartData
     {
-        $shoppingCartData = $this->shoppingCartRepository->removeItem($productId);
+        $shoppingCart = $this->shoppingCartRepository->removeItem($productId);
+        $shoppingCartData = new ItemsShoppingCartData($shoppingCart);
 
-        return $shoppingCartData->toArray();
+        return $shoppingCartData;
     }
 }

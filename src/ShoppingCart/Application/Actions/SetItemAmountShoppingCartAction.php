@@ -6,10 +6,7 @@ use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 
-/**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
- */
-class AddItemShoppingCartAction
+class SetItemAmountShoppingCartAction
 {
     public function __construct(
         private readonly ShoppingCartRepositoryInterface $shoppingCartRepository
@@ -18,7 +15,8 @@ class AddItemShoppingCartAction
 
     public function __invoke(ItemShoppingCart $itemShoppingCart): ItemsShoppingCartData
     {
-        $shoppingCart = $this->shoppingCartRepository->addItem($itemShoppingCart);
+        $shoppingCart = $this->shoppingCartRepository->setItemAmount($itemShoppingCart);
+
         $shoppingCartData = new ItemsShoppingCartData($shoppingCart);
 
         return $shoppingCartData;

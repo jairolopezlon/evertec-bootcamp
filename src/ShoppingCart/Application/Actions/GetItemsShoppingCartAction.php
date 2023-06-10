@@ -3,22 +3,18 @@
 namespace Src\ShoppingCart\Application\Actions;
 
 use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
-use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 
-/**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
- */
-class AddItemShoppingCartAction
+class GetItemsShoppingCartAction
 {
     public function __construct(
         private readonly ShoppingCartRepositoryInterface $shoppingCartRepository
     ) {
     }
 
-    public function __invoke(ItemShoppingCart $itemShoppingCart): ItemsShoppingCartData
+    public function __invoke(): ItemsShoppingCartData
     {
-        $shoppingCart = $this->shoppingCartRepository->addItem($itemShoppingCart);
+        $shoppingCart = $this->shoppingCartRepository->getItems();
         $shoppingCartData = new ItemsShoppingCartData($shoppingCart);
 
         return $shoppingCartData;

@@ -2,14 +2,11 @@
 
 namespace Src\ShoppingCart\Application\Actions;
 
-use Src\Products\Domain\ValuesObjects\ProductId;
+use Src\ShoppingCart\Domain\Dtos\ItemsShoppingCartData;
 use Src\ShoppingCart\Domain\Enums\UpdateOptionsEnum;
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
 use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 
-/**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
- */
 class UpdateItemAmountShoppingCartAction
 {
     public function __construct(
@@ -17,20 +14,22 @@ class UpdateItemAmountShoppingCartAction
     ) {
     }
 
-    /**
-     * @return array<PrimitiveItemShoppingCartData>
-     */
-    public function __invoke(ProductId $productId, ?int $amount, UpdateOptionsEnum $option): array
+    public function __invoke(ItemShoppingCart $itemShoppingCart, UpdateOptionsEnum $option): ItemsShoppingCartData
     {
-        $itemShoppingCart = new ItemShoppingCart($productId, $amount);
-
-        if ($option === UpdateOptionsEnum::DECREASE) {
-            $shoppingCartData = $this->shoppingCartRepository->decreaseItemAmount($itemShoppingCart);
-        }
         if ($option === UpdateOptionsEnum::INCREMENT) {
-            $shoppingCartData = $this->shoppingCartRepository->incrementItemAmount($itemShoppingCart);
+            $shoppingCart = $this->shoppingCartRepository->incrementItemAmount($itemShoppingCart);
         }
 
-        return $shoppingCartData->toArray();
+        if ($option === UpdateOptionsEnum::DECREMENT) {
+            $shoppingCart = $this->shoppingCartRepository
+                ->decrementItemAmount(
+                    $itemShoppingCart->getProductId(),
+                    $itemShoppingCart->getAmount(),
+                );
+        }
+
+        $shoppingCartData = new ItemsShoppingCartData($shoppingCart);
+
+        return $shoppingCartData;
     }
 }
