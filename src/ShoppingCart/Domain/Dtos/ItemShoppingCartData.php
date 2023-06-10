@@ -3,9 +3,10 @@
 namespace Src\ShoppingCart\Domain\Dtos;
 
 use Src\ShoppingCart\Domain\Models\ItemShoppingCart;
+use Src\Shared\Domain\Types\Types;
 
 /**
- * @phpstan-type PrimitiveItemShoppingCartData array{productId: string, amount: int}
+ * @phpstan-import-type ItemShoppingCartNative from Types
  */
 class ItemShoppingCartData
 {
@@ -14,13 +15,19 @@ class ItemShoppingCartData
     }
 
     /**
-     * @return PrimitiveItemShoppingCartData
+     * @return ItemShoppingCartNative
      */
     public function toArray()
     {
         return [
-            'productId' => $this->itemShoppingCart->getProductId()->value(),
             'amount' => $this->itemShoppingCart->getAmount(),
+            'description' => $this->itemShoppingCart->getDescription(),
+            'imageUrl' => $this->itemShoppingCart->getImageUrl(),
+            'name' => $this->itemShoppingCart->getName(),
+            'price' => $this->itemShoppingCart->getPrice(),
+            'productId' => $this->itemShoppingCart->getProductId()->value(),
+            'slug' => $this->itemShoppingCart->getSlug(),
+            'subTotal' => $this->itemShoppingCart->getSubTotal(),
         ];
     }
 }
