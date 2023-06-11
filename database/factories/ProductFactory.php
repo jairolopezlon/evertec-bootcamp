@@ -26,7 +26,7 @@ class ProductFactory extends Factory
         $slug = Str::slug($name);
 
         return [
-            'name' => $this->faker->sentence(3),
+            'name' => $name,
             'description' => $this->faker->paragraph(3),
             'price' => $this->faker->randomFloat(2, 1, 1000),
             'stock' => $stock,
