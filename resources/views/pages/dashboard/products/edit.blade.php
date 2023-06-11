@@ -21,10 +21,15 @@
             <input type="number" id="price" name="price" step="0.01" value="{{ $product->price }}" required>
         </div>
 
+        <div class="form_field">
+            <label for="price">Stock</label>
+            <input type="number" id="stock" name="stock" step="1" value="{{ $product->stock }}" required>
+        </div>
+
         <div class="form_field form_field--x">
             <label for="is_enable">Enable</label>
-            <input type="checkbox" id="is_enable" name="is_enable" value="1"
-                {{ $product->is_enable ? 'checked' : '' }}>
+            <input type="checkbox" id="is_enabled" name="is_enabled" value="1"
+                {{ $product->is_enabled ? 'checked' : '' }}>
         </div>
 
         <div class="form_field">

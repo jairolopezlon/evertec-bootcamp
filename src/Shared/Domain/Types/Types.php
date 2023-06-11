@@ -13,6 +13,20 @@ namespace Src\Shared\Domain\Types;
  * slug: string,
  * subTotal: float,
  * }
+ * @phpstan-type ValidatedItemShoppingCartNative array{
+ * amount: int,
+ * description: string,
+ * imageUrl: string,
+ * name: string,
+ * price: float,
+ * oldPrice?: float,
+ * productId: string,
+ * slug: string,
+ * subTotal: float,
+ * validation?: array<string>,
+ * currentStock?: int,
+ * }
+ * @phpstan-type CheckoutDataToUpdate array{ price?: float, amount?: int }
  */
 class Types
 {

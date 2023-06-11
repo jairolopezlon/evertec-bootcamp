@@ -38,6 +38,7 @@ class ProductManagerController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'price' => 'required|numeric',
+            'stock' => 'required|numeric|min:0',
             'description' => 'required',
             'image' => 'required|image',
         ]);
@@ -47,12 +48,15 @@ class ProductManagerController extends Controller
 
         $slug = Str::slug($validated['name'], '-');
 
+        $hasAvailability = $validated['stock'] <= 0 ? false : true;
+
         Product::create([
             'name' => $validated['name'],
             'slug' => $slug,
             'description' => $validated['description'],
             'price' => $validated['price'],
-            'is_enable' => $request->has('is_enable'),
+            'stock' => $hasAvailability,
+            'is_enabled' => $request->has('is_enable'),
             'image_url' => $imageUrl,
         ]);
 
@@ -89,6 +93,7 @@ class ProductManagerController extends Controller
         $validated = $request->validate([
             'name' => 'required|max:255',
             'price' => 'required|numeric',
+            'stock' => 'required|numeric|min:0',
             'description' => 'required',
             'image' => 'image',
         ]);
@@ -96,10 +101,12 @@ class ProductManagerController extends Controller
         $slug = Str::slug($validated['name'], '-');
 
         $product->name = $validated['name'];
+        $product->stock = $validated['stock'];
         $product->price = $validated['price'];
         $product->description = $validated['description'];
-        $product->is_enable = $request->has('is_enable');
+        $product->is_enabled = $request->has('is_enabled');
         $product->slug = $slug;
+        $product->has_availability = $validated['stock'] <= 0 ? false : true;
 
         if ($request->hasFile('image')) {
             $imagePath = $validated['image']->store('public/images/products');
@@ -127,7 +134,7 @@ class ProductManagerController extends Controller
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {
-        $product->is_enable = ! $product->is_enable;
+        $product->is_enabled = ! $product->is_enabled;
         $product->save();
 
         return redirect()->back();

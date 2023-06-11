@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Product>
@@ -19,13 +20,20 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $stock = $this->faker->numberBetween(0, 50);
+        $hasAvailability = ($stock > 0);
+        $name = $this->faker->sentence(3);
+        $slug = Str::slug($name);
+
         return [
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(3),
             'price' => $this->faker->randomFloat(2, 1, 1000),
-            'is_enable' => $this->faker->boolean(),
+            'stock' => $stock,
+            'is_enabled' => $this->faker->boolean(),
+            'has_availability' => $hasAvailability,
             'image_url' => $this->faker->imageUrl(),
-            'slug' => $this->faker->unique()->slug(),
+            'slug' => $slug,
         ];
     }
 
@@ -33,7 +41,7 @@ class ProductFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_enable' => true,
+                'is_enabled' => true,
             ];
         });
     }
@@ -42,7 +50,27 @@ class ProductFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'is_enable' => false,
+                'is_enabled' => false,
+            ];
+        });
+    }
+
+    public function availability(): ProductFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'has_availability' => true,
+                'stock' => $this->faker->numberBetween(1, 50),
+            ];
+        });
+    }
+
+    public function unavailability(): ProductFactory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'has_availability' => false,
+                'stock' => 0,
             ];
         });
     }

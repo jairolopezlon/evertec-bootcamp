@@ -16,8 +16,10 @@ return new class() extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
-            $table->decimal('price', 8, 2);
-            $table->boolean('is_enable')->default(false);
+            $table->unsignedDecimal('price', 8, 2);
+            $table->unsignedInteger('stock')->default(0);
+            $table->boolean('is_enabled')->default(false);
+            $table->boolean('has_availability')->default(false);
             $table->string('image_url');
             $table->timestamps();
         });

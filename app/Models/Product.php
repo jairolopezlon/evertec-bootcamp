@@ -14,17 +14,23 @@ class Product extends Model
         'slug',
         'description',
         'price',
-        'is_enable',
+        'is_enabled',
+        'has_availability',
         'image_url',
+        'stock',
     ];
 
     protected $casts = [
-        'is_enable' => 'boolean',
+        'is_enabled' => 'boolean',
+        'has_availability' => 'boolean',
     ];
 
     public function castAttribute($key, $value)
     {
-        if ($key === 'is_enable') {
+        if ($key === 'is_enabled') {
+            return (bool) $value;
+        }
+        if ($key === 'has_availability') {
             return (bool) $value;
         }
 

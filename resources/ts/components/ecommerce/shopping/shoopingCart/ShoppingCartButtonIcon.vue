@@ -22,15 +22,15 @@ const { getItemsAmount, loadShoppingCart } = useShoppingCart()
 
 const badgetAmount = ref(null)
 
-watch(getItemsAmount, () => {
-  if (badgetAmount !== null) {
+// watch(getItemsAmount, () => {
+//   if (badgetAmount !== null) {
 
-    badgetAmount.value.classList.add('animate-shake');
-    setTimeout(() => {
-      badgetAmount.value.classList.remove('animate-shake');
-    }, 500);
-  }
-})
+//     badgetAmount.value.classList.add('animate-shake');
+//     setTimeout(() => {
+//       badgetAmount.value.classList.remove('animate-shake');
+//     }, 500);
+//   }
+// })
 
 loadShoppingCart()
 

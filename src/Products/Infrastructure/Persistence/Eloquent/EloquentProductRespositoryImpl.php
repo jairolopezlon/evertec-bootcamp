@@ -21,7 +21,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
      */
     public function listEcommerceProducts()
     {
-        $enableProducts = $this->productModel::where('is_enable', true)->get();
+        $enableProducts = $this->productModel::where('is_enabled', true)->where('has_availability', true)->get();
         $listProducts = array_map(function ($product) {
             $productModel = EloquentProductAdapter::toDomainModel($product);
 
@@ -45,7 +45,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
 
     public function matchEcommerceProducts(CriteriaValue $criteriaValue)
     {
-        $query = $this->productModel::where('is_enable', true);
+        $query = $this->productModel::where('is_enabled', true)->where('has_availability', true);
 
         if ($criteriaValue->validateThereAreFilters()) {
             $filters = $criteriaValue->getFilters();
