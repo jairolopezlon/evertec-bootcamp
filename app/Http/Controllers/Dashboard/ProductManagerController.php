@@ -135,7 +135,7 @@ class ProductManagerController extends Controller
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {
-        $product->is_enabled = !$product->is_enabled;
+        $product->is_enabled = ! $product->is_enabled;
         $product->save();
 
         return redirect()->back();
