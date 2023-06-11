@@ -16,6 +16,14 @@ class CheckoutController
     {
         $itemsCartValidated = ($this->validationShoppingCartITemsAction)();
 
-        return view('pages.ecommerce.checkout.checkout', compact('itemsCartValidated'));
+        $messagesOfValidation = array_reduce($itemsCartValidated, function ($acc, $cur) {
+            if (isset($cur['validation'])) {
+                $acc = [...$acc, ...$cur['validation']];
+            }
+
+            return $acc;
+        }, []);
+
+        return view('pages.ecommerce.checkout.checkout', compact('messagesOfValidation'));
     }
 }

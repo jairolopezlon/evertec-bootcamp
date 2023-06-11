@@ -41,7 +41,8 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
             $productInCart = $shoppingCartSessionData[$productId];
 
             if (! $product->has_availability) {
-                $productInCart['validation'][] = 'the product is out of stock';
+                $productInCart['validation'][] =
+                    "The product \"{$product->name}\" is out of stock, the item was remove of cart";
                 $this->removeItemShoppingCartData($productId);
 
                 return $productInCart;
@@ -52,7 +53,7 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
             $dataToUpdate = [];
 
             if ($stock < $productInCart['amount']) {
-                $productInCart['validation'][] = "now only {$stock} units left";
+                $productInCart['validation'][] = "Of the product \"{$product->name}\" now only {$stock} units left";
                 $productInCart['oldAmount'] = $productInCart['amount'];
                 $productInCart['amount'] = $stock;
 
@@ -61,9 +62,11 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
 
             if ($price !== $productInCart['price']) {
                 if ($price < $productInCart['price']) {
-                    $productInCart['validation'][] = "the product decreased in price, current price {$price}";
+                    $productInCart['validation'][] =
+                        "The product \"{$product->name}\" decreased in price, current price \${$price}";
                 } else {
-                    $productInCart['validation'][] = "the product increased in price, current price {$price}";
+                    $productInCart['validation'][] =
+                        "The product \"{$product->name}\" increased in price, current price \${$price}";
                 }
 
                 $productInCart['oldPrice'] = $productInCart['price'];
