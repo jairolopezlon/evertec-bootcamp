@@ -11,6 +11,7 @@ use Src\Shared\Domain\Types\Types;
 /**
  * @phpstan-import-type ValidatedItemShoppingCartNative from Types
  * @phpstan-import-type ItemShoppingCartNative from Types
+ * @phpstan-import-type CheckoutDataToUpdate from Types
  */
 class CheckoutServiceImpl implements CheckoutServiceInterface
 {
@@ -30,21 +31,32 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
         $productsData = EloquentProductEntity::whereIn('id', $idItemsCart)->get();
 
         $dataValidated = $productsData->map(function ($product) use ($shoppingCartSessionData) {
+            $productId = $product->id;
             $price = (float) $product->price;
+            $stock = (int) $product->stock;
+
             /**
              * @var ValidatedItemShoppingCartNative
              */
-            $productInCart = $shoppingCartSessionData[$product->id];
+            $productInCart = $shoppingCartSessionData[$productId];
 
             if (! $product->has_availability) {
                 $productInCart['validation'][] = 'the product is out of stock';
+                $this->removeItemShoppingCartData($productId);
 
                 return $productInCart;
             }
+            /**
+             * @var CheckoutDataToUpdate
+             */
+            $dataToUpdate = [];
 
-            if ($product->stock < $productInCart['amount']) {
-                $productInCart['validation'][] = "now only {$product->stock} units left";
-                $productInCart['currentStock'] = $product->stock;
+            if ($stock < $productInCart['amount']) {
+                $productInCart['validation'][] = "now only {$stock} units left";
+                $productInCart['oldAmount'] = $productInCart['amount'];
+                $productInCart['amount'] = $stock;
+
+                $dataToUpdate['amount'] = $productInCart['amount'];
             }
 
             if ($price !== $productInCart['price']) {
@@ -53,14 +65,53 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
                 } else {
                     $productInCart['validation'][] = "the product increased in price, current price {$price}";
                 }
+
                 $productInCart['oldPrice'] = $productInCart['price'];
                 $productInCart['price'] = $price;
                 $productInCart['subTotal'] = $price * $productInCart['amount'];
+
+                $dataToUpdate['price'] = $productInCart['price'];
+                $dataToUpdate['subTotal'] = $productInCart['subTotal'];
+            }
+
+            if (count($dataToUpdate) > 0) {
+                $this->updateShoppingCart($productId, $dataToUpdate);
             }
 
             return $productInCart;
         })->toArray();
 
         return $dataValidated;
+    }
+
+    /**
+     * @param  CheckoutDataToUpdate  $data
+     */
+    private function updateShoppingCart(int $productId, $data): void
+    {
+        $request = App::make(Request::class);
+
+        $shoppingCartSessionData = $request->session()->get('shoppingCart');
+
+        if (isset($data['price'])) {
+            $shoppingCartSessionData[$productId]['price'] = $data['price'];
+        }
+
+        if (isset($data['amount'])) {
+            $shoppingCartSessionData[$productId]['amount'] = $data['amount'];
+        }
+
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
+    }
+
+    private function removeItemShoppingCartData(int $productId): void
+    {
+        $request = App::make(Request::class);
+
+        $shoppingCartSessionData = $request->session()->get('shoppingCart');
+
+        unset($shoppingCartSessionData[$productId]);
+
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
     }
 }
