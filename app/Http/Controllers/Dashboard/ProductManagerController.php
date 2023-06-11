@@ -55,12 +55,13 @@ class ProductManagerController extends Controller
             'slug' => $slug,
             'description' => $validated['description'],
             'price' => $validated['price'],
-            'stock' => $hasAvailability,
-            'is_enabled' => $request->has('is_enable'),
+            'stock' => $validated['stock'],
+            'has_availability' => $hasAvailability,
+            'is_enabled' => $request->has('is_enabled'),
             'image_url' => $imageUrl,
         ]);
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('dashboard.products.index');
     }
 
     /**
@@ -119,7 +120,7 @@ class ProductManagerController extends Controller
 
         $product->save();
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('dashboard.products.index');
     }
 
     /**

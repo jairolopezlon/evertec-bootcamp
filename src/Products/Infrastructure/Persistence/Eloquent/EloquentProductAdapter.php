@@ -16,7 +16,7 @@ class EloquentProductAdapter
             $slug = $eloquentEntity->slug,
             $description = $eloquentEntity->description,
             $price = $eloquentEntity->price,
-            $isEnable = $eloquentEntity->is_enable,
+            $isEnable = $eloquentEntity->is_enabled,
             $imageUrl = $eloquentEntity->image_url,
         );
 
@@ -31,7 +31,7 @@ class EloquentProductAdapter
         $EloquentEntity->slug = $domainModel->getSlug();
         $EloquentEntity->description = $domainModel->getDescription();
         $EloquentEntity->price = $domainModel->getPrice();
-        $EloquentEntity->is_enable = $domainModel->getIsEnable();
+        $EloquentEntity->is_enabled = $domainModel->getIsEnable();
         $EloquentEntity->image_url = $domainModel->getImageUrl();
 
         return $EloquentEntity;

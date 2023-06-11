@@ -16,17 +16,17 @@ class EloquentProductEntity extends Model
         'slug',
         'description',
         'price',
-        'is_enable',
+        'is_enabled',
         'image_url',
     ];
 
     protected $casts = [
-        'is_enable' => 'boolean',
+        'is_enabled' => 'boolean',
     ];
 
     public function castAttribute($key, $value)
     {
-        if ($key === 'is_enable') {
+        if ($key === 'is_enabled') {
             return (bool) $value;
         }
 
