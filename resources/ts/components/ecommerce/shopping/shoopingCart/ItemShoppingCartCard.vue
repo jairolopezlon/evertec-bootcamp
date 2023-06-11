@@ -6,7 +6,7 @@
     <div class="info-container flex gap-8 self-stretch flex-grow justify-between">
       <div class="left-side-info flex flex-col justify-between">
         <div>
-          <a class="font-bold" :href="`/products/slug}`">{{ cartItem.name }}</a>
+          <a class="font-bold" :href="`/products/${cartItem.slug}`">{{ cartItem.name }}</a>
           <div class="text-sm">{{ cartItem.description }}</div>
         </div>
         <modifier-cart-amount-button :productId="productId" :token="(token)"></modifier-cart-amount-button>
