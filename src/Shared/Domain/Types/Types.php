@@ -26,6 +26,7 @@ namespace Src\Shared\Domain\Types;
  * validation?: array<string>,
  * currentStock?: int,
  * }
+ * @phpstan-type CheckoutDataToUpdate array{ price?: float, amount?: int }
  */
 class Types
 {
