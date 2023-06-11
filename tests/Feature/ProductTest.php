@@ -46,7 +46,8 @@ class ProductTest extends TestCase
             'slug' => 'product-test',
             'description' => 'This is a test product.',
             'price' => 99.99,
-            'is_enable' => true,
+            'is_enabled' => true,
+            'stock' => 23,
             'image' => UploadedFile::fake()->image('product-test.jpg'),
         ];
 
@@ -59,7 +60,9 @@ class ProductTest extends TestCase
             'slug' => 'product-test',
             'description' => 'This is a test product.',
             'price' => 99.99,
-            'is_enable' => true,
+            'is_enabled' => true,
+            'stock' => 23,
+            'has_availability' => true,
         ]);
 
         $this->expectOutputString('');
@@ -71,20 +74,20 @@ class ProductTest extends TestCase
         $this->actingAs($adminUser);
 
         $product = Product::factory()->create([
-            'is_enable' => false,
+            'is_enabled' => false,
         ]);
 
         $response = $this->patch(route('dashboard.products.toggle_enable_disable', $product->id));
         $response->assertStatus(302);
 
         $product->refresh();
-        $this->assertTrue($product->is_enable);
+        $this->assertTrue($product->is_enabled);
 
         $response = $this->patch(route('dashboard.products.toggle_enable_disable', $product->id));
         $response->assertStatus(302);
 
         $product->refresh();
-        $this->assertFalse($product->is_enable);
+        $this->assertFalse($product->is_enabled);
     }
 
     public function testDeleteProduct(): void
@@ -124,7 +127,7 @@ class ProductTest extends TestCase
             'price' => $newPrice,
             'description' => $newDescription,
             'image' => UploadedFile::fake()->image('example.jpg'),
-            'is_enable' => $newIsEnable,
+            'is_enabled' => $newIsEnable,
         ]);
         $response->assertStatus(200);
 

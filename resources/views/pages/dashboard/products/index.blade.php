@@ -10,7 +10,9 @@
                 <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th>Quantity in Stock</th>
                 <th>Price</th>
+                <th>Stock</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -23,8 +25,10 @@
                     </td>
                     <td>{{ $product->name }}</td>
                     <td>{{ $product->description }}</td>
+                    <td>{{ $product->stock }}</td>
                     <td>{{ $product->price }}</td>
-                    <td>{{ $product->is_enable ? 'Enabled' : 'Disabled' }}</td>
+                    <td>{{ $product->has_availability ? 'In Stock' : 'Out of Stock' }}</td>
+                    <td>{{ $product->is_enabled ? 'Enabled' : 'Disabled' }}</td>
                     <td class="">
                         <div class="actions">
 
@@ -32,7 +36,7 @@
                                 action="{{ route('dashboard.products.toggle_enable_disable', $product->id) }}">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit">{{ $product->is_enable ? 'Enable' : 'Disable' }}</button>
+                                <button type="submit">{{ $product->is_enabled ? 'Enable' : 'Disable' }}</button>
                             </form>
                             <a href="{{ route('dashboard.products.show', ['product' => $product->id]) }}">Show</a>
                             <a href="{{ route('dashboard.products.edit', ['product' => $product->id]) }}">Edit</a>
