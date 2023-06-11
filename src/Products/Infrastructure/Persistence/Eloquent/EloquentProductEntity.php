@@ -16,7 +16,7 @@ class EloquentProductEntity extends Model
         'slug',
         'description',
         'price',
-        'is_enable',
+        'is_enabled',
         'image_url',
     ];
 
@@ -26,7 +26,7 @@ class EloquentProductEntity extends Model
 
     public function castAttribute($key, $value)
     {
-        if ($key === 'is_enable') {
+        if ($key === 'is_enabled') {
             return (bool) $value;
         }
 
