@@ -27,7 +27,7 @@
         </div>
 
         <div class="form_field form_field--x">
-            <label for="is_enable">Enable</label>
+            <label for="is_enabled">Enable</label>
             <input type="checkbox" id="is_enabled" name="is_enabled" value="1"
                 {{ $product->is_enabled ? 'checked' : '' }}>
         </div>

@@ -22,8 +22,8 @@
             <input type="number" name="stock" id="stock" value="{{ old('stock') }}">
         </div>
         <div class="form_field">
-            <label for="is_enable">Habilitado:</label>
-            <input type="checkbox" name="is_enabled" id="is_enable" {{ old('is_enable') ? 'checked' : '' }}>
+            <label for="is_enabled">Habilitado:</label>
+            <input type="checkbox" name="is_enabled" id="is_enabled" {{ old('is_enabled') ? 'checked' : '' }}>
         </div>
         <div class="form_field">
             <label for="image_url">Imagen:</label>

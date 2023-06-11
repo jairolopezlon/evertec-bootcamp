@@ -56,7 +56,7 @@ class ProductManagerController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'stock' => $hasAvailability,
-            'is_enabled' => $request->has('is_enable'),
+            'is_enabled' => $request->has('is_enabled'),
             'image_url' => $imageUrl,
         ]);
 
@@ -134,7 +134,7 @@ class ProductManagerController extends Controller
 
     public function toggleEnableDisable(Product $product): RedirectResponse
     {
-        $product->is_enabled = ! $product->is_enabled;
+        $product->is_enabled = !$product->is_enabled;
         $product->save();
 
         return redirect()->back();

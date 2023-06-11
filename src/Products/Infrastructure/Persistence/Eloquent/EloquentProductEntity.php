@@ -21,7 +21,7 @@ class EloquentProductEntity extends Model
     ];
 
     protected $casts = [
-        'is_enable' => 'boolean',
+        'is_enabled' => 'boolean',
     ];
 
     public function castAttribute($key, $value)
