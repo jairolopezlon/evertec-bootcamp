@@ -19,7 +19,7 @@
         </button>
         <div class="price-info text-right text-sm">
           <div class="">unit price {{ cartItem.price }}</div>
-          <div class="">total {{ parseFloat((cartItem.price * cartItem.amount).toFixed(2)) }}</div>
+          <div class="">subtotal {{ parseFloat((cartItem.price * cartItem.amount).toFixed(2)) }}</div>
         </div>
       </div>
     </div>
