@@ -43,7 +43,6 @@ class ProductTest extends TestCase
 
         $productData = [
             'name' => 'Product Test',
-            'slug' => 'product-test',
             'description' => 'This is a test product.',
             'price' => 99.99,
             'is_enabled' => true,
