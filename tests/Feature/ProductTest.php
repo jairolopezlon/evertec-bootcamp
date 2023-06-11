@@ -6,7 +6,6 @@ use App\Models\Product;
 use Database\Factories\AdminFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -41,17 +40,18 @@ class ProductTest extends TestCase
         $adminUser = AdminFactory::new()->getAdminUser();
         $this->actingAs($adminUser);
 
+        $imageFile = UploadedFile::fake()->image('test.jpg');
+
         $productData = [
             'name' => 'Product Test',
             'description' => 'This is a test product.',
             'price' => 99.99,
             'is_enabled' => true,
             'stock' => 23,
-            'image' => UploadedFile::fake()->image('product-test.jpg'),
+            'image' => $imageFile,
         ];
 
         $response = $this->post(route('dashboard.products.store'), $productData);
-
         $response->assertRedirectToRoute('dashboard.products.index');
 
         $this->assertDatabaseHas('products', [
@@ -113,37 +113,21 @@ class ProductTest extends TestCase
 
         $newName = 'New Product Name';
         $newPrice = 15.99;
+        $newStock = 34;
         $newDescription = 'New Product Description';
         $newIsEnable = true;
 
-        $response = $this->get(route('dashboard.products.edit', $product));
-        $response->assertStatus(200);
-
-        // $oldImageUrl = $product->image_url;
-
-        $response = $this->put(route('dashboard.products.update', $product), [
+        $response = $this->followingRedirects()->patch(route('dashboard.products.update', $product), [
             'name' => $newName,
             'price' => $newPrice,
             'description' => $newDescription,
-            'image' => UploadedFile::fake()->image('example.jpg'),
-            'is_enabled' => $newIsEnable,
-        ]);
-        // $response->assertStatus(200);
-
-        // $product = $product->fresh();
-
-        $this->assertDatabaseHas('products', [
-            'name' => $newName,
-            'description' => $newDescription,
-            'price' => $newPrice,
+            'stock' => $newStock,
             'is_enabled' => $newIsEnable,
         ]);
 
-        // $response->assertSee($newName);
-        // $response->assertSee(number_format($newPrice, 2));
-        // $response->assertSee($newDescription);
-        // $response->assertSee('Enabled');
-        // $response->assertSee($product->image_url);
-        // Storage::assertMissing(str_replace('/storage', 'public', $oldImageUrl));
+        $response->assertSee($newName);
+        $response->assertSee(number_format($newPrice, 2));
+        $response->assertSee($newDescription);
+        $response->assertSee('Enabled');
     }
 }

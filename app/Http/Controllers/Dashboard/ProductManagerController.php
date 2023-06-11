@@ -61,7 +61,7 @@ class ProductManagerController extends Controller
             'image_url' => $imageUrl,
         ]);
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('dashboard.products.index');
     }
 
     /**
@@ -120,7 +120,7 @@ class ProductManagerController extends Controller
 
         $product->save();
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('dashboard.products.index');
     }
 
     /**
