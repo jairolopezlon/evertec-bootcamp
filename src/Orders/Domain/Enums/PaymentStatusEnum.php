@@ -2,20 +2,14 @@
 
 namespace Src\Orders\Domain\Enums;
 
+use Src\Shared\Domain\Traits\EnumFromValue;
+
 enum PaymentStatusEnum: string
 {
+    use EnumFromValue;
+
     case COMPLETED = 'COMPLETED';
     case PROCESSING = 'PROCESSING';
     case CANCELLED = 'CANCELLED';
     case NOT_STARTED = 'NOT_STARTED';
-
-    public static function fromName(string $name): PaymentStatusEnum
-    {
-        foreach (self::cases() as $status) {
-            if ($name === $status->name) {
-                return $status;
-            }
-        }
-        throw new \ValueError("$name is not a valid backing value for enum ".self::class);
-    }
 }
