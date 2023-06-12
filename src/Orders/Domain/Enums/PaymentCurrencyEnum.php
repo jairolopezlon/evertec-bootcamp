@@ -2,14 +2,12 @@
 
 namespace Src\Orders\Domain\Enums;
 
-enum PaymentStatusEnum: string
+enum PaymentCurrencyEnum: string
 {
-    case COMPLETED = 'COMPLETED';
-    case PROCESSING = 'PROCESSING';
-    case CANCELLED = 'CANCELLED';
-    case NOT_STARTED = 'NOT_STARTED';
+    case COP = 'COP';
+    case USD = 'USD';
 
-    public static function fromName(string $name): PaymentStatusEnum
+    public static function fromName(string $name): PaymentCurrencyEnum
     {
         foreach (self::cases() as $status) {
             if ($name === $status->name) {
