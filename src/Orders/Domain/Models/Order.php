@@ -2,11 +2,13 @@
 
 namespace Src\Orders\Domain\Models;
 
+use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
 use Src\Orders\Domain\Enums\PaymentStatusEnum;
 use Src\Shared\Domain\Types\Types;
 
 /**
  * @phpstan-import-type OrderPrimitive from Types
+ * @phpstan-import-type OrderDetailPrimitive from Types
  */
 class Order
 {
@@ -19,10 +21,9 @@ class Order
         private readonly string $userId,
         private readonly float $total,
         private readonly PaymentStatusEnum $paymentStatus,
-        private readonly string $currency,
+        private readonly PaymentCurrencyEnum $currency,
         private readonly string|null $paymentId,
         private readonly string|null $paymentUrl,
-        private readonly int $orderDateTimestamps,
         private readonly array $orderDetails,
     ) {
     }
@@ -40,13 +41,18 @@ class Order
             'userId' => $this->userId,
             'total' => $this->total,
             'paymentStatus' => $this->paymentStatus->value,
-            'currency' => $this->currency,
+            'currency' => $this->currency->value,
             'paymentId' => $this->paymentId ?? null,
             'paymentUrl' => $this->paymentUrl ?? null,
-            'orderDateTimestamp' => $this->orderDateTimestamps,
-            'orderDetails' => array_map(function (OrderDetail $orderDetail) {
-                return $orderDetail->getAttributes();
-            }, $this->orderDetails),
+            'orderDetails' => array_map(
+                /**
+                 * @return OrderDetailPrimitive
+                 */
+                function (OrderDetail $orderDetail) {
+                    return $orderDetail->getAttributes();
+                },
+                $this->orderDetails
+            ),
         ];
     }
 }

@@ -14,11 +14,11 @@ class OrderDetail
         private readonly string $orderId,
         private readonly string $productId,
         private readonly string $productName,
-        private readonly float $price,
+        private readonly float $productPrice,
         private readonly int $quantity,
         private float $subtotal,
     ) {
-        $this->subtotal = $this->price * $this->quantity;
+        $this->subtotal = $this->productPrice * $this->quantity;
     }
 
     /**
@@ -33,7 +33,7 @@ class OrderDetail
             'orderId' => $this->orderId,
             'productId' => $this->productId,
             'productName' => $this->productName,
-            'price' => $this->price,
+            'productPrice' => $this->productPrice,
             'quantity' => $this->quantity,
             'subtotal' => $this->subtotal,
         ];
