@@ -9,6 +9,7 @@ interface ShoppingCartState {
   itemsShoppingCart: ItemShoppingCartObj,
   totalPrice: number,
   totalItemsAmount: number,
+  isLoading: boolean,
 }
 
 export const useShoppingCartStore = defineStore('shoppingCart', {
@@ -16,6 +17,7 @@ export const useShoppingCartStore = defineStore('shoppingCart', {
     itemsShoppingCart: {},
     totalPrice: 0,
     totalItemsAmount: 0,
+    isLoading: true,
   }),
   getters: {
     getItems: (state: ShoppingCartState) => {
@@ -67,7 +69,7 @@ export const useShoppingCartStore = defineStore('shoppingCart', {
       data.forEach(cartItem => {
         this.itemsShoppingCart[cartItem.productId] = cartItem
       })
-
+      this.isLoading = false
     }
   },
 })

@@ -6,7 +6,7 @@
         <h1 class="font-bold text-xl">Checkout Page</h1>
         <div class="flex justify-center p-8">
             <div class="flex gap-4" style="width:min(100%, 900px)">
-                <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-4 grow-[1]">
                     @if (count($messagesOfValidation) > 0)
                         <div class="flex gap-4 p-4  bg-red-200  rounded-md">
                             <svg class="stroke-red-400 w-[40px]" fill="none" stroke="currentColor" stroke-width="1.5"
