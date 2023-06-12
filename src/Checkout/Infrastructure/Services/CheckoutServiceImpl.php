@@ -22,7 +22,7 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
     {
         $request = App::make(Request::class);
 
-        $shoppingCartSessionData = $request->session()->get('shoppingCart');
+        $shoppingCartSessionData = $request->session()->get('shoppingCart', []);
 
         $idItemsCart = array_map(function (array $itemShoppingCartNative): int {
             return $itemShoppingCartNative['productId'];
