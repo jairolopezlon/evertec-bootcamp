@@ -3,7 +3,11 @@
 namespace Src\Orders\Infrastructure\Persistence\Eloquent;
 
 use Src\Orders\Domain\Models\OrderDetail;
+use Src\Shared\Domain\Types\Types;
 
+/**
+ * @phpstan-import-type OrderDetailPrimitive from Types
+ */
 class EloquentOrderDetailAdapter
 {
     public static function toDomainModel(EloquentOrderDetailEntity $eloquentOrderDetailEntity): OrderDetail
@@ -23,13 +27,16 @@ class EloquentOrderDetailAdapter
     {
         $eloquentEntity = new EloquentOrderDetailEntity();
 
+        /**
+         * @var OrderDetailPrimitive
+         */
         $orderDetailAttributes = $orderDetail->getAttributes();
 
         $eloquentEntity->id = (int) $orderDetailAttributes['orderDetailId'];
         $eloquentEntity->order_id = (int) $orderDetailAttributes['orderId'];
         $eloquentEntity->product_id = (int) $orderDetailAttributes['productId'];
         $eloquentEntity->product_name = $orderDetailAttributes['productName'];
-        $eloquentEntity->product_price = $orderDetailAttributes['price'];
+        $eloquentEntity->product_price = $orderDetailAttributes['productPrice'];
         $eloquentEntity->quantity = $orderDetailAttributes['quantity'];
         $eloquentEntity->subtotal = $orderDetailAttributes['subtotal'];
 
