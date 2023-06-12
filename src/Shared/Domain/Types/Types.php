@@ -33,10 +33,9 @@ namespace Src\Shared\Domain\Types;
  * userId: string,
  * total: float,
  * paymentStatus: 'CANCELLED' | 'COMPLETED' | 'NOT_STARTED' | 'PROCESSING',
- * currency: string,
+ * currency: 'COP' | 'USD',
  * paymentId?: string|null,
  * paymentUrl?: string|null,
- * orderDateTimestamp: int,
  * orderDetails: array<OrderDetailPrimitive>,
  * }
  * @phpstan-type OrderDetailPrimitive array{
@@ -44,7 +43,7 @@ namespace Src\Shared\Domain\Types;
  * orderId: string,
  * productId: string,
  * productName: string,
- * price: float,
+ * productPrice: float,
  * quantity: int,
  * subtotal: float,
  * }
