@@ -1,10 +1,10 @@
 @use '../../../../base' as *;
 
 .cart-button-icon{
-  @apply flex justify-center items-center gap-1 px-3 py-1 border-solid border-indigo-100 border-[1px] w-fit rounded-md;  
+  @apply flex justify-center items-center gap-1 px-3 py-1 border-solid border-indigo-100 border-[1px] w-fit rounded-md transition-colors;  
 
   .badget-amount{    
-    @apply bg-indigo-500 text-indigo-100 w-6 h-6 flex justify-center items-center rounded-full text-[.7rem] leading-none;
+    @apply bg-indigo-500 text-indigo-100 w-6 h-6 flex justify-center items-center rounded-full text-[.7rem] leading-none transition-colors;
   }
 
   &:hover{
@@ -26,10 +26,10 @@
   .icon-container{
     @apply w-[22px];    
     .cart-icon-stroke{
-      @apply stroke-indigo-500;
+      @apply stroke-indigo-500 transition-colors;
     }
     .cart-icon-fill{
-      @apply fill-indigo-500;
+      @apply fill-indigo-500 transition-colors;
     }
   }
 }
