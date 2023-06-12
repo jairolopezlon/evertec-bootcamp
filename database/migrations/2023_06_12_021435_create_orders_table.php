@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('paymentProvider');
+            $table->string('payment_provider');
             $table->unsignedBigInteger('user_id');
             $table->double('total');
-            $table->enum('payment_status', ['CANCELLED', 'COMPLETED', 'NOT_STARTED', 'PROCESSING',])
+            $table->enum('payment_status', ['CANCELLED', 'COMPLETED', 'NOT_STARTED', 'PROCESSING'])
                 ->default('NOT_STARTED');
-            $table->enum('currency', ['COP'])
+            $table->enum('currency', ['COP', 'USD'])
                 ->default('COP');
             $table->string('payment_id')->nullable();
             $table->string('payment_url')->nullable();
