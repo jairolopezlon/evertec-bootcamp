@@ -11,6 +11,7 @@ class OrderController
     {
         return view('pages.ecommerce.orders.orderList');
     }
+
     public function create(Request $request): View
     {
         return view('pages.ecommerce.orders.orderList');
