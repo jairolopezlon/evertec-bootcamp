@@ -2,11 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-use App\Models\User;
 
 class SignupTest extends TestCase
 {
@@ -25,7 +24,7 @@ class SignupTest extends TestCase
         $response->assertSeeInOrder(['form', 'id', 'signupForm', 'form']);
     }
 
-    public function testSignupWithValidData()
+    public function testSignupWithValidData(): void
     {
         $userData = [
             'name' => $this->faker->name(),
@@ -45,7 +44,7 @@ class SignupTest extends TestCase
         ]);
     }
 
-    public function testSignupWithInvalidData()
+    public function testSignupWithInvalidData(): void
     {
         $userData = [
             'name' => $this->faker->name(),

@@ -1,0 +1,36 @@
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+
+@use "base" as *;
+@use "components/" as *;
+@use "layouts/" as *;
+
+.form_field {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem; 
+  input[type="number"],
+  input[type="text"]{
+    outline: 1px solid $color-primary-light-2;
+    padding: .25rem;
+    border-radius: .25rem;
+  }
+  textarea{
+    outline: 1px solid $color-primary-light-2;
+    padding: .25rem;
+    border-radius: .25rem;
+  }
+}
+
+
+.invalid-feedback-container {
+  display: flex;
+  flex-direction: column;
+  gap: .125rem;
+}
+
+.invalid-feedback {
+  color: #ff0000;
+  font-size: .8rem;
+}

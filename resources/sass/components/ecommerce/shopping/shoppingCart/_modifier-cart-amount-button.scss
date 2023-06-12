@@ -1,0 +1,23 @@
+@use './../../../../base' as *;
+
+
+.modifier-cart-amount-button{
+  @apply flex justify-center items-center w-fit border-indigo-100 border-solid border-[1px] rounded-md;
+  * {
+    @apply w-8 flex justify-center items-center text-sm select-none;
+  }
+  a, button{
+
+    path{
+      @apply fill-indigo-500;
+    }
+    
+    @apply p-1;
+    &:hover{
+      @apply bg-indigo-50;
+      path{
+        @apply fill-indigo-700;
+      }
+    }
+  }
+}

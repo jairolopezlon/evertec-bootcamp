@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Customer extends Model
 {
@@ -16,8 +17,10 @@ class Customer extends Model
 
     /**
      * Get the user that owns the customer.
+     *
+     * @return HasOne<User>
      */
-    public function user()
+    public function user(): HasOne
     {
         return $this->hasOne(User::class);
     }

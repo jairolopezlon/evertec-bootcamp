@@ -1,15 +1,10 @@
 <?php
 
-use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\Dashboard\ProductManagerController;
+use App\Http\Controllers\Dashboard\UsersManagerController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\EmailVerificationRequest;
-use App\Models\Customer;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,100 +17,40 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
+require_once __DIR__.'/../src/Shared/Infrastructure/Routes/webRoutes.php';
 
-// REDIRECTS
 Route::redirect('/home', '/');
 
+Route::view('/', 'pages.home')->name('home');
 
-// PAGES
-Route::view('/', 'home')->name('home');
+Route::get('/signup', [AuthenticationController::class, 'signupView'])->middleware('guest')->name('login');
 
-Route::view('/login', 'login')->name('login')->middleware('guest');
+Route::get('/login', [AuthenticationController::class, 'loginView'])->middleware('guest')->name('login');
 
-Route::view('/signup', 'signup')->name('signup')->middleware('guest');
+Route::get('/email/verify/notice', [AuthenticationController::class, 'verifyEmailMessageView'])
+    ->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
 
-Route::get('/email/verify/notice', function () {
-    return view('auth.verification-notice');
-})->middleware(['auth', 'redirectIfVerifying'])->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [AuthenticationController::class, 'emailVerification'])
+    ->middleware(['auth', 'redirectIfVerifying', 'signed'])->name('verification.verify');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect()->route('home')->with('verification_status', true);
-})->middleware(['auth', 'redirectIfVerifying',  'signed'])->name('verification.verify');
+Route::get('/email/verify/resend', [AuthenticationController::class, 'resentEmailToVerify'])
+    ->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
 
-Route::get('/email/verify/resend', function () {
-    Auth::user()->sendEmailVerificationNotification();
-    return back()->with('resent', true);
-})->middleware(['auth', 'redirectIfVerifying'])->name('verification.resend');
+Route::post('/login', [AuthenticationController::class, 'login']);
 
-Route::get('/dashboard', function () {
+Route::post('/signup', [AuthenticationController::class, 'signup']);
 
-    $user_id = Auth::user()->id;
-    $customer_exists = DB::table('admins')->where('user_id', $user_id)->exists();
-    if (!$customer_exists) {
-        abort(403, 'No tienes acceso a esta página');
-    }
+Route::post('/logout', [AuthenticationController::class, 'logout']);
 
-    $customers = DB::table('users')
-        ->leftJoin('customers', 'users.id', '=', 'customers.user_id')
-        ->select('users.*', 'customers.is_enabled')
-        ->get();
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
 
-    return view('dashboard', [
-        'customers' => $customers
-    ]);
-})->middleware(['auth', 'validateAdminAccess'])->name('dashboard');
+Route::patch('/users/{customer}/toggle-enable', [UsersManagerController::class, 'toggleUserStatus'])
+    ->name('users.toggle-enable');
 
-// POST REQUEST
-Route::post('/login', function (Request $request) {
-    $credenciales = $request->validate([
-        'email' => ['required', 'email', 'string'],
-        'password' => ['required', 'string'],
-    ]);
-    if (Auth::attempt($credenciales)) {
-        request()->session()->regenerate();
-        return redirect()->intended('home');
-    }
-    throw ValidationException::withMessages([
-        'email' => 'incorrect credentials'
-    ]);
+Route::prefix('dashboard')->middleware(['auth', 'validateAdminAccess'])->group(function () {
+    Route::patch('/product/toggle_enable_disable/{product}', [ProductManagerController::class, 'toggleEnableDisable'])
+        ->name('dashboard.products.toggle_enable_disable');
+    Route::resource('/product', ProductManagerController::class)->names('dashboard.products');
+    Route::get('/customer', [UsersManagerController::class, 'dashboardView'])->name('dashboard.customers.index');
 });
-
-Route::post('/signup', function (Request $request) {
-    try {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'email_verified_at' => null, // set email_verified_at to null by default
-        ]);
-
-        $customer = Customer::create([
-            'is_enable' => false,
-            'user_id' => $user->id,
-        ]);
-
-        event(new Registered($user));
-        $user->sendEmailVerificationNotification();
-
-        Auth()->login($user);
-        $request->session()->put('email', $user->email);
-
-        return redirect()->route('verification.notice');
-    } catch (ValidationException  $exception) {
-        return redirect('signup')->withErrors($exception->errors())->withInput();
-    }
-});
-
-Route::post('/users/{id}/toggle-enable', function (Request $request, $id) {
-    $customer = Customer::findOrFail($id);
-    $customer->is_enabled = !$customer->is_enabled;
-    $customer->save();
-    return redirect()->back();
-})->name('users.toggle-enable');

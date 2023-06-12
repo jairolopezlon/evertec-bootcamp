@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Admin extends Model
 {
@@ -17,8 +18,10 @@ class Admin extends Model
 
     /**
      * Get the user that owns the admin.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<User>
      */
-    public function user()
+    public function user(): HasOne
     {
         return $this->hasOne(User::class);
     }

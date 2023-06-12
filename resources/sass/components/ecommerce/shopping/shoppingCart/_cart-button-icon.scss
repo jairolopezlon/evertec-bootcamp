@@ -1,0 +1,36 @@
+@use '../../../../base' as *;
+
+.cart-button-icon{
+  @apply flex justify-center items-center gap-1 px-3 py-1 border-solid border-indigo-100 border-[1px] w-fit rounded-md;  
+
+  .badget-amount{    
+    @apply bg-indigo-500 text-indigo-100 w-6 h-6 flex justify-center items-center rounded-full text-[.7rem] leading-none;
+  }
+
+  &:hover{
+    @apply bg-indigo-100;
+
+    .badget-amount{
+      @apply bg-indigo-700;
+    }
+    .icon-container{
+      .cart-icon-stroke{
+        @apply stroke-indigo-700;
+      }
+      .cart-icon-fill{
+        @apply fill-indigo-700;
+      }      
+    }
+  }
+
+  .icon-container{
+    @apply w-[22px];    
+    .cart-icon-stroke{
+      @apply stroke-indigo-500;
+    }
+    .cart-icon-fill{
+      @apply fill-indigo-500;
+    }
+  }
+}
+

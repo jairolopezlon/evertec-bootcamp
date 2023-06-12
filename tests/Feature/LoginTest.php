@@ -2,15 +2,12 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-use App\Models\User;
 
 class LoginTest extends TestCase
 {
-
     public function testLoginPageExist(): void
     {
         $response = $this->get('/login');
@@ -30,7 +27,7 @@ class LoginTest extends TestCase
 
         $existingUser = User::where('email', $emailTest)->first();
 
-        if (!$existingUser) {
+        if (! $existingUser) {
             $user = User::factory()->create([
                 'email' => $emailTest,
                 'password' => Hash::make($passwordTest),
@@ -50,13 +47,12 @@ class LoginTest extends TestCase
 
     public function testLoginFailureWithPasswordWrong(): void
     {
-
         $emailTest = 'test@test.com';
         $passwordTest = 'password';
 
         $existingUser = User::where('email', $emailTest)->first();
 
-        if (!$existingUser) {
+        if (! $existingUser) {
             $user = User::factory()->create([
                 'email' => $emailTest,
                 'password' => Hash::make($passwordTest),

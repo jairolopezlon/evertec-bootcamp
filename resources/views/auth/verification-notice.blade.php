@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Verification Notice</title>
-    @vite(['resources/js/app.js'])
-</head>
-
-<body>
-    <div id="app">
-        <div>
-            @include('partials.menu')
-        </div>
+@extends('layouts.app')
+@section('title', 'Verification Notice')
+@section('content')
+    @include('layouts.header')
+    <div id="containerMain">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -32,7 +21,7 @@
                                 @endif
 
                                 {{ __('Before proceeding, please check your email for a verification link.') }}
-                                {{ __('If you did not receive the email') }}, <a
+                                {{ __('If you did not receive the email') }}, <a class="text-sky-500"
                                     href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
                             @endif
                         </div>
@@ -41,6 +30,5 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+    @include('layouts.footer')
+@endsection
