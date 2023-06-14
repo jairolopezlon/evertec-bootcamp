@@ -20,7 +20,7 @@ class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
     /**
      * @param PaymentProviderEnum $paymentProvider
      * @param PaymentCurrencyEnum $paymentCurrency
-     * @param ValidatedItemShoppingCartNative $shoppingCartData
+     * @param ValidatedItemShoppingCartNative|array $shoppingCartData
      * @return Order
      */
     public function createOrder($paymentProvider, $paymentCurrency, $shoppingCartData): Order
