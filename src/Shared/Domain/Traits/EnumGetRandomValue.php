@@ -10,6 +10,6 @@ trait EnumGetRandomValue
             return $enum->value;
         }, self::cases());
 
-        return array_rand($enumToArray);
+        return $enumToArray[array_rand($enumToArray)];
     }
 }
