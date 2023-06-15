@@ -4,12 +4,12 @@ namespace Src\Orders\Infrastructure\Persistence\Eloquent;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Src\Orders\Domain\Models\Order;
-use Src\Orders\Domain\Repositories\OrderRepositoryInterface;
-use Src\Shared\Domain\Types\Types;
 use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
 use Src\Orders\Domain\Enums\PaymentProviderEnum;
 use Src\Orders\Domain\Enums\PaymentStatusEnum;
+use Src\Orders\Domain\Models\Order;
+use Src\Orders\Domain\Repositories\OrderRepositoryInterface;
+use Src\Shared\Domain\Types\Types;
 
 /**
  * @phpstan-import-type OrderPrimitive from Types
@@ -18,10 +18,9 @@ use Src\Orders\Domain\Enums\PaymentStatusEnum;
 class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
 {
     /**
-     * @param PaymentProviderEnum $paymentProvider
-     * @param PaymentCurrencyEnum $paymentCurrency
-     * @param ValidatedItemShoppingCartNative|array $shoppingCartData
-     * @return Order
+     * @param  PaymentProviderEnum  $paymentProvider
+     * @param  PaymentCurrencyEnum  $paymentCurrency
+     * @param  ValidatedItemShoppingCartNative|array<mixed>  $shoppingCartData
      */
     public function createOrder($paymentProvider, $paymentCurrency, $shoppingCartData): Order
     {

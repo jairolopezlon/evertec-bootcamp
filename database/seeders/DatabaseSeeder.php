@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
 
         //order of customer user
         Order::factory(4)->state([
-            'user_id' => $userCustomer
+            'user_id' => $userCustomer,
         ])->create()->each(function ($order) {
             $order_id = $order->id;
 
@@ -71,7 +71,6 @@ class DatabaseSeeder extends Seeder
             $order_total = 0;
 
             $randomProducts->map(function ($product) use ($order_id, &$order_total) {
-
                 $quantity = rand(1, 10);
                 $product_price = $product->price;
                 $subtotal = $product_price * $quantity;
@@ -102,7 +101,6 @@ class DatabaseSeeder extends Seeder
             $order_total = 0;
 
             $randomProducts->map(function ($product) use ($order_id, &$order_total) {
-
                 $quantity = rand(1, 10);
                 $product_price = (float) $product->price;
                 $subtotal = $product_price * $quantity;

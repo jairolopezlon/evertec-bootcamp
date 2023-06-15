@@ -2,11 +2,11 @@
 
 namespace Src\Orders\Application\Actions;
 
+use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
+use Src\Orders\Domain\Enums\PaymentProviderEnum;
 use Src\Orders\Domain\Models\Order;
 use Src\Orders\Domain\Repositories\OrderRepositoryInterface;
 use Src\Shared\Domain\Types\Types;
-use Src\Orders\Domain\Enums\PaymentProviderEnum;
-use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
 
 /**
  * @phpstan-import-type ValidatedItemShoppingCartNative from Types
@@ -19,9 +19,9 @@ class OrderCreateAction
     }
 
     /**
-     * @param PaymentProviderEnum $paymentProvider
-     * @param PaymentCurrencyEnum $paymentCurrency
-     * @param ValidatedItemShoppingCartNative $shoppingCartData
+     * @param  PaymentProviderEnum  $paymentProvider
+     * @param  PaymentCurrencyEnum  $paymentCurrency
+     * @param  ValidatedItemShoppingCartNative  $shoppingCartData
      * @return Order
      */
     public function __invoke($paymentProvider, $paymentCurrency, $shoppingCartData)

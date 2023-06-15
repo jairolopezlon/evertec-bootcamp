@@ -3,8 +3,8 @@
 namespace Src\Orders\Domain\Enums;
 
 use Src\Shared\Domain\Traits\EnumFromValue;
-use Src\Shared\Domain\Traits\EnumToArray;
 use Src\Shared\Domain\Traits\EnumGetRandomValue;
+use Src\Shared\Domain\Traits\EnumToArray;
 
 enum PaymentProviderEnum: string
 {

@@ -21,7 +21,6 @@ class EloquentOrderEntityFactory extends Factory
      */
     public function definition(): array
     {
-
         $randomUser = Customer::where('is_enabled', true)->pluck('user_id')->toArray();
 
         return [
