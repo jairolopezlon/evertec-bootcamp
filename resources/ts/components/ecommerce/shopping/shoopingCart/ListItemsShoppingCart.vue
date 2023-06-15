@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-col gap-4" style="width: min(600px, 100%);">
+  <div class="flex flex-col gap-4">
     <h1>list cart item</h1>
     <div>
       total: {{ getTotalPrice }}
     </div>
-    <ItemShoppingCartCard v-for="cartItem in getItems" :key="cartItem.productId" :productId="cartItem.productId" :token="props.token"></ItemShoppingCartCard>
+    <ItemShoppingCartCard v-for=" cartItem in getItems" :key="cartItem.productId" :productId="cartItem.productId" :token="props.token">
+    </ItemShoppingCartCard>
   </div>
 </template>
 

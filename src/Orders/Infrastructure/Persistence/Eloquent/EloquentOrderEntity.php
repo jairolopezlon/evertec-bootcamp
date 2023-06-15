@@ -24,12 +24,14 @@ class EloquentOrderEntity extends Model
         'payment_url',
     ];
 
+    protected string $foreignKey = 'order_id';
+
     /**
      * @return BelongsTo<User, EloquentOrderEntity>
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -37,6 +39,6 @@ class EloquentOrderEntity extends Model
      */
     public function orderDetails(): HasMany
     {
-        return $this->hasMany(EloquentOrderDetailEntity::class);
+        return $this->hasMany(EloquentOrderDetailEntity::class, 'order_id');
     }
 }

@@ -1,4 +1,3 @@
-import { ItemShoppingCart } from "@/interfaces";
 import { useShoppingCartStore } from "@/store/"
 import { storeToRefs } from "pinia";
 import { everstoreApi } from "@/api";
@@ -16,6 +15,7 @@ export const useShoppingCart = () => {
     itemsShoppingCart,
     totalItemsAmount,
     totalPrice,
+    isLoading,
   } = storeToRefs(shoppingCartStore)
 
   const loadShoppingCart = async () => {
@@ -79,6 +79,7 @@ export const useShoppingCart = () => {
     totalPrice,
     totalItemsAmount,
     itemsShoppingCart,
+    isLoading,
 
     // Computed
     getItem,

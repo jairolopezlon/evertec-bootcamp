@@ -19,8 +19,8 @@ class EloquentOrderAdapter
             $eloquentOrderEntity->payment_provider,
             "{$eloquentOrderEntity->user_id}",
             $eloquentOrderEntity->total,
-            PaymentStatusEnum::fromName($eloquentOrderEntity->payment_status),
-            PaymentCurrencyEnum::fromName($eloquentOrderEntity->currency),
+            PaymentStatusEnum::enumFromValue($eloquentOrderEntity->payment_status),
+            PaymentCurrencyEnum::enumFromValue($eloquentOrderEntity->currency),
             $eloquentOrderEntity->payment_id,
             $eloquentOrderEntity->payment_url,
             $orderDetails

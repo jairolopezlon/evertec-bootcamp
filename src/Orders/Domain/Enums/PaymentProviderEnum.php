@@ -6,12 +6,13 @@ use Src\Shared\Domain\Traits\EnumFromValue;
 use Src\Shared\Domain\Traits\EnumGetRandomValue;
 use Src\Shared\Domain\Traits\EnumToArray;
 
-enum PaymentCurrencyEnum: string
+enum PaymentProviderEnum: string
 {
     use EnumFromValue;
     use EnumToArray;
     use EnumGetRandomValue;
 
-    case COP = 'COP';
-    case USD = 'USD';
+    case PAYPAL = 'PAYPAL';
+    case PLACETOPAY = 'PLACETOPAY';
+    case MERCADOPAGO = 'MERCADOPAGO';
 }

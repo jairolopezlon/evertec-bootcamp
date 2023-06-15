@@ -2,33 +2,60 @@
 
 namespace Src\Orders\Infrastructure\Persistence\Eloquent;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
+use Src\Orders\Domain\Enums\PaymentProviderEnum;
+use Src\Orders\Domain\Enums\PaymentStatusEnum;
 use Src\Orders\Domain\Models\Order;
 use Src\Orders\Domain\Repositories\OrderRepositoryInterface;
 use Src\Shared\Domain\Types\Types;
 
 /**
  * @phpstan-import-type OrderPrimitive from Types
+ * @phpstan-import-type ValidatedItemShoppingCartNative from Types
  */
 class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
 {
-    public function createOrder(Order $order): Order
+    /**
+     * @param  PaymentProviderEnum  $paymentProvider
+     * @param  PaymentCurrencyEnum  $paymentCurrency
+     * @param  ValidatedItemShoppingCartNative|array<mixed>  $shoppingCartData
+     */
+    public function createOrder($paymentProvider, $paymentCurrency, $shoppingCartData): Order
     {
-        $entity = EloquentOrderAdapter::toEloquentEntity($order);
+        $totalOrder = array_reduce($shoppingCartData, function (float $acc, $cur) {
+            return $acc + ($cur['price'] * $cur['amount']);
+        }, 0);
 
-        $entity->save();
+        $orderEntity = new EloquentOrderEntity();
 
-        $orderDetails = array_map(function ($orderDetails) use ($entity) {
+        $orderEntity->payment_provider = $paymentProvider->value;
+        $orderEntity->user_id = Auth::user()->id;
+        $orderEntity->total = $totalOrder;
+        $orderEntity->payment_status = PaymentStatusEnum::NOT_STARTED->value;
+        $orderEntity->currency = PaymentCurrencyEnum::USD->value;
+
+        $orderEntity->save();
+
+        $orderId = $orderEntity->id;
+
+        $ordersDetail = array_map(function ($orderDetail) use ($orderId) {
             return [
-                'order_id' => $entity->id,
-                'product_id' => $orderDetails['productId'],
-                'product_name' => $orderDetails['productName'],
-                'product_price' => $orderDetails['productPrice'],
-                'quantity' => $orderDetails['quantity'],
-                'subtotal' => $orderDetails['subtotal'],
+                'order_id' => $orderId,
+                'product_id' => $orderDetail['productId'],
+                'product_name' => $orderDetail['name'],
+                'product_price' => $orderDetail['price'],
+                'quantity' => $orderDetail['amount'],
+                'subtotal' => $orderDetail['subTotal'],
+                'created_at' => now()->toDateTimeString(),
+                'updated_at' => now()->toDateTimeString(),
             ];
-        }, $order->getAttributes()['orderDetails']);
+        }, $shoppingCartData);
 
-        $entity->orderDetails()->createMany($orderDetails);
+        DB::table('order_details')->insert($ordersDetail);
+
+        $order = EloquentOrderAdapter::toDomainModel($orderEntity);
 
         return $order;
     }
