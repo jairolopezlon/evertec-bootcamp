@@ -4,11 +4,14 @@ namespace Src\Shared\Domain\Traits;
 
 trait EnumToArray
 {
-    public static function enumToArray(): array
+    /**
+     * @return array<int, string>
+     */
+    public static function enumToArray()
     {
         $enumToArray = array_map(function ($enum) {
             return $enum->value;
-        }, self::cases());
+        }, static::cases());
 
         return $enumToArray;
     }

@@ -24,7 +24,7 @@ class EloquentOrderEntity extends Model
         'payment_url',
     ];
 
-    protected $foreignKey = 'order_id';
+    protected string $foreignKey = 'order_id';
 
     /**
      * @return BelongsTo<User, EloquentOrderEntity>
