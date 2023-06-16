@@ -24,16 +24,7 @@
                     @endif
                     <list-items-checkout token="{{ csrf_token() }}"></list-items-checkout>
                 </div>
-                <div class="flex flex-col bg-indigo-50 rounded-md p-4 min-w-[250px] self-start"
-                    style="width:min(100%, 250px)">
-                    <div>
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque quisquam ipsum consequuntur hic odio
-                        facilis enim. Rerum asperiores, assumenda voluptate optio earum debitis excepturi, totam, iure
-                        repellendus dolorem labore vitae.
-                    </div>
-                    <button class="py-2 px-4 bg-indigo-500 text-indigo-50 rounded-md hover:bg-indigo-700">Proceed to
-                        Payment</button>
-                </div>
+                <aside-checkout token="{{ csrf_token() }}"></aside-checkout>
             </div>
         </div>
     </div>
