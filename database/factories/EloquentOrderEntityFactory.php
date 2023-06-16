@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories\Src\Orders\Infrastructure\Persistence\Eloquent;
+namespace Database\Factories;
 
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
