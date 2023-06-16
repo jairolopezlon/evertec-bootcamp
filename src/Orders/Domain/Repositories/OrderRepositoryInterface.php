@@ -18,4 +18,9 @@ interface OrderRepositoryInterface
      * @param  ValidatedItemShoppingCartNative  $shoppingCartData
      */
     public function createOrder($paymentProvider, $paymentCurrency, $shoppingCartData): Order;
+
+    /**
+     * @return array<Order>
+     */
+    public function listOrdersByUser(): array;
 }

@@ -13,6 +13,9 @@
                         href="/dashboard">dashboard</a>
                 </li>
             @endif
+            <li>
+                <a class="nav-item {{ Request::is('orders') ? 'current-page' : '' }}" href="/orders">Orders</a>
+            </li>
         @endauth
         @guest
             <li>

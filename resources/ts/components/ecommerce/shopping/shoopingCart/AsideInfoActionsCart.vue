@@ -11,7 +11,7 @@
       </div>
     </div>
     <a href="/checkout" :class="`py-2 px-4 rounded-md bg-indigo-500 text-indigo-50 hover:bg-indigo-700 text-center ${getItemsAmount === 0 ? 'bg-indigo-300  hover:bg-indigo-300 pointer-events-none' : ''}`">
-      ir a Checkout
+      Go to Checkout
     </a>
   </div>
 </template>

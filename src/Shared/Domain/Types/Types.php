@@ -26,7 +26,18 @@ namespace Src\Shared\Domain\Types;
  * validation?: array<string>,
  * currentStock?: int,
  * }
- * @phpstan-type CheckoutDataToUpdate array{ price?: float, amount?: int }
+ * @phpstan-type CheckoutDataToUpdate array{
+ * price?: float,
+ * amount?: int
+ * }
+ * @phpstan-type OrderListPrimitive array{
+ * orderId: string,
+ * paymentProvider: string,
+ * userId: string,
+ * total: float,
+ * paymentStatus: 'CANCELLED' | 'COMPLETED' | 'NOT_STARTED' | 'PROCESSING',
+ * currency: 'COP' | 'USD',
+ * }
  * @phpstan-type OrderPrimitive array{
  * orderId: string,
  * paymentProvider: string,
