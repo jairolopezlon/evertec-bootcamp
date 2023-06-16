@@ -59,4 +59,19 @@ class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
 
         return $order;
     }
+
+    /**
+     * @return array<Order>
+     */
+    public function listOrdersByUser(): array
+    {
+        $userId = Auth::user()->id;
+        $orders = EloquentOrderEntity::where('user_id', $userId)->get();
+
+        $orderByUser = $orders->map(function (EloquentOrderEntity $orderEntity) {
+            return EloquentOrderAdapter::toDomainModel($orderEntity);
+        })->toArray();
+
+        return $orderByUser;
+    }
 }

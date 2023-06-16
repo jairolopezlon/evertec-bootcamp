@@ -6,19 +6,16 @@
         <div class="flex flex-col py-4" style="width: min(900px, 100%)">
             <h1 class="font-bold text-xl">Orders</h1>
             <div class="flex flex-col gap-2">
-                @foreach ($orders as $order)
+                @foreach ($ordersByUSer as $order)
                     <div class="border-[1px] border-indigo-100 p-4 rounded-lg">
                         <div>
                             <div>
-
-                            </div>
-                            <div>
-                                <span>Order Date</span>
-                                <span> {{ $order['created_at'] }} </span>
-                            </div>
-                            <div>
                                 <span>payment provider</span>
-                                <span> {{ $order['payment_provider'] }} </span>
+                                <span> {{ $order['paymentProvider'] }} </span>
+                            </div>
+                            <div>
+                                <span>Order status</span>
+                                <span> {{ $order['paymentStatus'] }}</span>
                             </div>
                             <div>
                                 <span>Total</span>

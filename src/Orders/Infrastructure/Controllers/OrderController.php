@@ -5,25 +5,24 @@ namespace Src\Orders\Infrastructure\Controllers;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Src\Orders\Application\Actions\OrderCreateAction;
+use Src\Orders\Application\Actions\OrdersListByUserAction;
 use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
 use Src\Orders\Domain\Enums\PaymentProviderEnum;
-use Src\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderEntity;
 
 class OrderController
 {
     public function __construct(
-        private readonly OrderCreateAction $orderCreateAction
+        private readonly OrderCreateAction $orderCreateAction,
+        private readonly OrdersListByUserAction $ordersListByUserAction
     ) {
     }
 
     public function index(Request $request): View
     {
-        $userId = Auth::user()->id;
-        $orders = EloquentOrderEntity::where('user_id', $userId)->get();
+        $ordersByUSer = ($this->ordersListByUserAction)();
 
-        return view('pages.ecommerce.orders.orderList', compact('orders'));
+        return view('pages.ecommerce.orders.orderList', compact('ordersByUSer'));
     }
 
     public function store(Request $request): RedirectResponse
