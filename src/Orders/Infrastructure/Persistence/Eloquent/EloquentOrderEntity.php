@@ -13,7 +13,7 @@ class EloquentOrderEntity extends Model
 {
     use HasFactory;
 
-    protected static function newFactory()
+    protected static function newFactory(): EloquentOrderEntityFactory
     {
         return new EloquentOrderEntityFactory();
     }
