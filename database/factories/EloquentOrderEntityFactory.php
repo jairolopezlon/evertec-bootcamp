@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Everstore\Orders\Domain\Enums\PaymentCurrencyEnum;
+use App\Everstore\Orders\Domain\Enums\PaymentProviderEnum;
+use App\Everstore\Orders\Domain\Enums\PaymentStatusEnum;
+use App\Everstore\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderEntity;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Src\Orders\Domain\Enums\PaymentCurrencyEnum;
-use Src\Orders\Domain\Enums\PaymentProviderEnum;
-use Src\Orders\Domain\Enums\PaymentStatusEnum;
-use Src\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderEntity;
 
 /**
  * @extends Factory<EloquentOrderEntity>
