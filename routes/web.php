@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-require_once __DIR__.'/../src/Shared/Infrastructure/Routes/webRoutes.php';
+require_once __DIR__.'/../app/Everstore/Shared/Infrastructure/Routes/webRoutes.php';
 
 Route::redirect('/home', '/');
 

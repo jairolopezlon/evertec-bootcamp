@@ -8,5 +8,4 @@ parameters:
         - config/
         - routes/web.php
         - database/
-        - src/
     level: 7

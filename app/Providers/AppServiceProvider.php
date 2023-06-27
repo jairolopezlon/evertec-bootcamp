@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
+use App\Everstore\Checkout\Domain\Services\CheckoutServiceInterface;
+use App\Everstore\Checkout\Infrastructure\Services\CheckoutServiceImpl;
+use App\Everstore\Orders\Domain\Repositories\OrderRepositoryInterface;
+use App\Everstore\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderRepositoryImpl;
+use App\Everstore\Products\Domain\Repositories\ProductRepository;
+use App\Everstore\Products\Infrastructure\Persistence\Eloquent\EloquentProductRespositoryImpl;
+use App\Everstore\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
+use App\Everstore\ShoppingCart\Infrastructure\Persistence\SessionStorage\SessionStorageShoppingCartRepositoryImpl;
 use Illuminate\Support\ServiceProvider;
-use Src\Checkout\Domain\Services\CheckoutServiceInterface;
-use Src\Checkout\Infrastructure\Services\CheckoutServiceImpl;
-use Src\Orders\Domain\Repositories\OrderRepositoryInterface;
-use Src\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderRepositoryImpl;
-use Src\Products\Domain\Repositories\ProductRepository;
-use Src\Products\Infrastructure\Persistence\Eloquent\EloquentProductRespositoryImpl;
-use Src\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
-use Src\ShoppingCart\Infrastructure\Persistence\SessionStorage\SessionStorageShoppingCartRepositoryImpl;
 
 class AppServiceProvider extends ServiceProvider
 {

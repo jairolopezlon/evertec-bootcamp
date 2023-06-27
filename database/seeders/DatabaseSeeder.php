@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Everstore\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderDetailEntity as OrderDetail;
+use App\Everstore\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderEntity as Order;
 use App\Models\Admin;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Src\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderDetailEntity as OrderDetail;
-use Src\Orders\Infrastructure\Persistence\Eloquent\EloquentOrderEntity as Order;
 
 class DatabaseSeeder extends Seeder
 {

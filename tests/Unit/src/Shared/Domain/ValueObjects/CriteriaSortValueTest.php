@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\src\Shared\Domain\ValueObjects;
 
+use App\Everstore\Shared\Domain\ValueObjects\CriteriaSortValue;
 use PHPUnit\Framework\TestCase;
-use Src\Shared\Domain\ValueObjects\CriteriaSortValue;
 
 class CriteriaSortValueTest extends TestCase
 {
