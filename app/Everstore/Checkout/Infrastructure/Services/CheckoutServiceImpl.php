@@ -47,6 +47,15 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
 
                 return $productInCart;
             }
+
+            if (! $product->is_enabled) {
+                $productInCart['validation'][] =
+                    "The product \"{$product->name}\" is disabled, the item was remove of cart";
+                $this->removeItemShoppingCartData($productId);
+
+                return $productInCart;
+            }
+
             /**
              * @var CheckoutDataToUpdate
              */
