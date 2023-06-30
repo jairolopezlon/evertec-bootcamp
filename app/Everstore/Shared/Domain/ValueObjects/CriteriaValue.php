@@ -68,7 +68,7 @@ class CriteriaValue
         return $this->offset;
     }
 
-    public function getSort(): CriteriaSortValue
+    public function getSort(): CriteriaSortValue|null
     {
         return $this->sort;
     }
