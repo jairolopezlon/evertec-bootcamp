@@ -4,7 +4,6 @@
       <div class="image-container  rounded-md overflow-hidden">
         <img class="max-w-full" :src="cartItem.imageUrl" :alt="cartItem.name">
       </div>
-      <modifier-cart-amount-button :productId="productId" :token="(token)"></modifier-cart-amount-button>
     </div>
     <div class="info-container flex gap-2 flex-col justify-between grow-[1]">
       <div class="flex justify-between">
@@ -22,7 +21,11 @@
       </div>
       <div class="price-info text-right text-sm flex justify-end self-end gap-4">
         <div class="flex gap-2">
-          <span>Price</span>
+          <span>Amount</span>
+          <span class="font-bold">{{ cartItem.amount }}</span>
+        </div>
+        <div class="flex gap-2">
+          <span>Unit Price</span>
           <span class="font-bold">{{ cartItem.price }}</span>
         </div>
         <div class="flex gap-2">
