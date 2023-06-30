@@ -58,6 +58,15 @@ namespace App\Everstore\Shared\Domain\Types;
  * quantity: int,
  * subtotal: float,
  * }
+ * @phpstan-type ProductPrimitive array{
+ * id: string,
+ * imageUrl: string,
+ * isEnable: bool,
+ * name: string,
+ * price: float,
+ * slug: string,
+ * description: string,
+ * }
  */
 class Types
 {

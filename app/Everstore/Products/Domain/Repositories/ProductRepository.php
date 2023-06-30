@@ -11,15 +11,12 @@ interface ProductRepository
     /**
      * @return array<ProductListEcommerceData>
      */
-    public function listEcommerceProducts();
+    public function listEcommerceProducts(): array;
 
-    /**
-     * @return ProductDetailEcommerceData
-     */
-    public function getEcommerceProductDetail(string $slug);
+    public function getEcommerceProductDetail(string $slug): ProductDetailEcommerceData;
 
     /**
      * @return array<ProductListEcommerceData>
      */
-    public function matchEcommerceProducts(CriteriaValue $criteriaValue);
+    public function matchEcommerceProducts(CriteriaValue $criteriaValue): array;
 }

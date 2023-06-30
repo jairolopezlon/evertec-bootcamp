@@ -3,7 +3,11 @@
 namespace App\Everstore\Products\Domain\Models;
 
 use App\Everstore\Products\Domain\ValuesObjects\ProductId;
+use App\Everstore\Shared\Domain\Types\Types;
 
+/**
+ * @phpstan-import-type ProductPrimitive from Types
+ */
 class ProductModel
 {
     public function __construct(
@@ -17,75 +21,54 @@ class ProductModel
     ) {
     }
 
-    /**
-     * @return ProductId
-     */
-    public function getId()
+    public function getId(): ProductId
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @return float
-     */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsEnable()
+    public function getIsEnable(): bool
     {
         return $this->isEnable;
     }
 
-    /**
-     * @return string
-     */
-    public function getImageUrl()
+    public function getImageUrl(): string
     {
         return $this->imageUrl;
     }
 
     /**
-     * @return array<string, mixed>
+     * @return ProductPrimitive
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return [
-            'description' => $this->description,
-            'id' => $this->id,
+            'id' => $this->id->value(),
             'imageUrl' => $this->imageUrl,
             'isEnable' => $this->isEnable,
             'name' => $this->name,
             'price' => $this->price,
             'slug' => $this->slug,
+            'description' => $this->description,
         ];
     }
 }

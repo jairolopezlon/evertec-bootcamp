@@ -20,18 +20,12 @@ class CriteriaFilterValue
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getField()
+    public function getField(): string
     {
         return $this->field;
     }
 
-    /**
-     * @return string|int|bool|float
-     */
-    public function getValue()
+    public function getValue(): string|int|bool|float
     {
         return $this->value;
     }

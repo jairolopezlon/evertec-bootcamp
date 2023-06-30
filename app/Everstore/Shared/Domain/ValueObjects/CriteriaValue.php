@@ -53,31 +53,22 @@ class CriteriaValue
     /**
      * @return array<CriteriaFilterValue>
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
 
-    /**
-     * @return int
-     */
-    public function getLimit()
+    public function getLimit(): int
     {
         return $this->limit;
     }
 
-    /**
-     * @return int
-     */
-    public function getOffset()
+    public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @return CriteriaSortValue
-     */
-    public function getSort()
+    public function getSort(): CriteriaSortValue|null
     {
         return $this->sort;
     }

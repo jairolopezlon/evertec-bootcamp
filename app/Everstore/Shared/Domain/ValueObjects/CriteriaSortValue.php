@@ -36,18 +36,12 @@ class CriteriaSortValue
             : self::ASC_DIRECTION;
     }
 
-    /**
-     * @return string
-     */
-    public function getField()
+    public function getField(): string
     {
         return $this->field;
     }
 
-    /**
-     * @return SortDirectionEnum
-     */
-    public function getDirection()
+    public function getDirection(): SortDirectionEnum
     {
         return $this->direction;
     }

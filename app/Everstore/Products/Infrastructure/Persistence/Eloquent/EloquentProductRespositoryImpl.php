@@ -19,7 +19,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
     /**
      * @return array<ProductListEcommerceData>
      */
-    public function listEcommerceProducts()
+    public function listEcommerceProducts(): array
     {
         $enableProducts = $this->productModel::where('is_enabled', true)->where('has_availability', true)->get();
         $listProducts = array_map(function ($product) {
@@ -31,10 +31,7 @@ class EloquentProductRespositoryImpl implements ProductRepository
         return $listProducts;
     }
 
-    /**
-     * @return ProductDetailEcommerceData
-     */
-    public function getEcommerceProductDetail(string $slug)
+    public function getEcommerceProductDetail(string $slug): ProductDetailEcommerceData
     {
         $product = $this->productModel::where('slug', $slug)->first();
         $productModel = EloquentProductAdapter::toDomainModel($product);
@@ -43,7 +40,10 @@ class EloquentProductRespositoryImpl implements ProductRepository
         return $productData;
     }
 
-    public function matchEcommerceProducts(CriteriaValue $criteriaValue)
+    /**
+     * @return array<ProductListEcommerceData>
+     */
+    public function matchEcommerceProducts(CriteriaValue $criteriaValue): array
     {
         $query = $this->productModel::where('is_enabled', true)->where('has_availability', true);
 

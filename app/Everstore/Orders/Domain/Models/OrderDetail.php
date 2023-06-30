@@ -22,11 +22,9 @@ class OrderDetail
     }
 
     /**
-     * Summary of getAttributes
-     *
      * @return OrderDetailPrimitive
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return [
             'orderDetailId' => $this->orderDetailId,

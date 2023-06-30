@@ -15,7 +15,7 @@ class ListEcommerceProductsAction
     /**
      * @return array<ProductListEcommerceData>
      */
-    public function handle()
+    public function handle(): array
     {
         return $this->productRepository->listEcommerceProducts();
     }

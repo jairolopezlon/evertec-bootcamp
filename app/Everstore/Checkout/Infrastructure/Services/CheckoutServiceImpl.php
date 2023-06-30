@@ -18,7 +18,7 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
     /**
      * @return array<ValidatedItemShoppingCartNative>
      */
-    public function validateProductInShoppingCart()
+    public function validateProductInShoppingCart(): array
     {
         $request = App::make(Request::class);
 
@@ -47,6 +47,15 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
 
                 return $productInCart;
             }
+
+            if (! $product->is_enabled) {
+                $productInCart['validation'][] =
+                    "The product \"{$product->name}\" is disabled, the item was remove of cart";
+                $this->removeItemShoppingCartData($productId);
+
+                return $productInCart;
+            }
+
             /**
              * @var CheckoutDataToUpdate
              */

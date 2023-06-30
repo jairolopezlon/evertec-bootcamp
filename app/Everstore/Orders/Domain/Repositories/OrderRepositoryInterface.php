@@ -13,11 +13,13 @@ use App\Everstore\Shared\Domain\Types\Types;
 interface OrderRepositoryInterface
 {
     /**
-     * @param  PaymentProviderEnum  $paymentProvider
-     * @param  PaymentCurrencyEnum  $paymentCurrency
      * @param  ValidatedItemShoppingCartNative  $shoppingCartData
      */
-    public function createOrder($paymentProvider, $paymentCurrency, $shoppingCartData): Order;
+    public function createOrder(
+        PaymentProviderEnum $paymentProvider,
+        PaymentCurrencyEnum $paymentCurrency,
+        $shoppingCartData
+    ): Order;
 
     /**
      * @return array<Order>

@@ -20,7 +20,7 @@ class OrdersListByUserAction
     /**
      * @return array<OrderListPrimitive>
      */
-    public function __invoke()
+    public function __invoke(): array
     {
         $ordersByUser = $this->orderRepositoryInterface->listOrdersByUser();
 
