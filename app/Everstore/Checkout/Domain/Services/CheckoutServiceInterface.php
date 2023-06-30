@@ -12,5 +12,5 @@ interface CheckoutServiceInterface
     /**
      * @return array<ValidatedItemShoppingCartNative>
      */
-    public function validateProductInShoppingCart();
+    public function validateProductInShoppingCart(): array;
 }

@@ -7,12 +7,7 @@ use Illuminate\Database\Seeder;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         Admin::factory()->count(10)->create();
     }

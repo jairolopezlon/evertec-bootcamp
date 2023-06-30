@@ -7,8 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
-use function PHPUnit\Framework\assertFalse;
-use function PHPUnit\Framework\assertTrue;
 use Tests\TestCase;
 
 class UserVerificationTest extends TestCase
@@ -37,7 +35,7 @@ class UserVerificationTest extends TestCase
 
         $user = User::where('email', 'johndoe@example.com')->first();
 
-        assertFalse($user->hasVerifiedEmail());
+        $this->assertFalse($user->hasVerifiedEmail());
     }
 
     public function testSuccessfulRegistrationWithEmailVerified(): void
@@ -61,7 +59,7 @@ class UserVerificationTest extends TestCase
 
         $user = User::where('email', 'johndoe@example.com')->first();
         $user->markEmailAsVerified();
-        assertTrue($user->hasVerifiedEmail());
+        $this->assertTrue($user->hasVerifiedEmail());
     }
 
     public function testSuccessfulEmailVerification(): void

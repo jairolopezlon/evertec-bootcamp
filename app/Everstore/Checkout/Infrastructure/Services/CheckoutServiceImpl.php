@@ -18,7 +18,7 @@ class CheckoutServiceImpl implements CheckoutServiceInterface
     /**
      * @return array<ValidatedItemShoppingCartNative>
      */
-    public function validateProductInShoppingCart()
+    public function validateProductInShoppingCart(): array
     {
         $request = App::make(Request::class);
 

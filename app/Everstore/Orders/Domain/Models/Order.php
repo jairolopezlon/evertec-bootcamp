@@ -29,8 +29,6 @@ class Order
     }
 
     /**
-     * Summary of getAttributes
-     *
      * @return OrderPrimitive
      */
     public function getAttributes()

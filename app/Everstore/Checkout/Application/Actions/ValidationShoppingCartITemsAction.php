@@ -18,7 +18,7 @@ class ValidationShoppingCartITemsAction
     /**
      * @return array<ValidatedItemShoppingCartNative>
      */
-    public function __invoke()
+    public function __invoke(): array
     {
         return $this->checkoutServiceInterface->validateProductInShoppingCart();
     }

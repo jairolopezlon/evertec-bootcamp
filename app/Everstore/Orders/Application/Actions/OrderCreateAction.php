@@ -19,13 +19,13 @@ class OrderCreateAction
     }
 
     /**
-     * @param  PaymentProviderEnum  $paymentProvider
-     * @param  PaymentCurrencyEnum  $paymentCurrency
      * @param  ValidatedItemShoppingCartNative  $shoppingCartData
-     * @return Order
      */
-    public function __invoke($paymentProvider, $paymentCurrency, $shoppingCartData)
-    {
+    public function __invoke(
+        PaymentProviderEnum $paymentProvider,
+        PaymentCurrencyEnum $paymentCurrency,
+        $shoppingCartData
+    ): Order {
         return $this->orderRepositoryInterface->createOrder($paymentProvider, $paymentCurrency, $shoppingCartData);
     }
 }

@@ -12,12 +12,8 @@ class ProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     */
     public function testAdminCanVisitDashboardProductPage(): void
     {
-        //validete if user admin have access to products route
         $adminUser = AdminFactory::new()->getAdminUser();
         $this->actingAs($adminUser);
         $response = $this->get(route('dashboard.products.index'));
@@ -26,7 +22,6 @@ class ProductTest extends TestCase
 
     public function testAdminCanWatchExistingProducts(): void
     {
-        // validate if user admin can watch the products list
         $adminUser = AdminFactory::new()->getAdminUser();
         $this->actingAs($adminUser);
         $product = Product::factory()->create();
