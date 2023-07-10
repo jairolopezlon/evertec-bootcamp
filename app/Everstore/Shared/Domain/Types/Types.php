@@ -58,6 +58,11 @@ namespace App\Everstore\Shared\Domain\Types;
  * quantity: int,
  * subtotal: float,
  * }
+ * @phpstan-type PaymentInfo array{
+ * status?: 'CANCELLED' | 'COMPLETED' | 'NOT_STARTED' | 'PROCESSING',
+ * paymentId?: string,
+ * paymentUrl?: string,
+ * }
  * @phpstan-type ProductPrimitive array{
  * id: string,
  * imageUrl: string,
@@ -66,6 +71,22 @@ namespace App\Everstore\Shared\Domain\Types;
  * price: float,
  * slug: string,
  * description: string,
+ * }
+ * @phpstan-type PlacetoPayPaymentAmountData array{
+ * currency: string,
+ * total: float,
+ * }
+ * @phpstan-type PlacetoPayPaymentData array{
+ * reference: string,
+ * description: string,
+ * amount: PlacetoPayPaymentAmountData,
+ * }
+ * @phpstan-type PlacetoPayPaymentOrderData array{
+ * payment: PlacetoPayPaymentData,
+ * expiration: string,
+ * returnUrl: string,
+ * ipAddress: string,
+ * userAgent: string,
  * }
  */
 class Types
