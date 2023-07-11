@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-2 bg-indigo-50 rounded-md p-4 min-w-[250px] self-start" style="width:min(100%, 250px)">
     <h3 class="text-lg font-bold">Payment Information</h3>
-    <form action="/orders" method="POST" class="w-full flex flex-col gap-4">
+    <form action="/payments" method="POST" class="w-full flex flex-col gap-4">
       <input type="hidden" name="_token" :value="props.token">
       <div class="flex flex-col gap-2">
         <div>
