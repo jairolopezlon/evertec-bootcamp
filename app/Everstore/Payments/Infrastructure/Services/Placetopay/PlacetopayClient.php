@@ -5,7 +5,6 @@ namespace App\Everstore\Payments\Infrastructure\Services\Placetopay;
 use App\Everstore\Shared\Domain\Types\Types;
 use Carbon\Carbon;
 use Dnetix\Redirection\Exceptions\PlacetoPayException;
-use Dnetix\Redirection\Message\RedirectResponse;
 use Dnetix\Redirection\PlacetoPay;
 // use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Client\Response;
@@ -14,11 +13,14 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
+ * @phpstan-import-type PaymentResponse from Types
+ * @phpstan-import-type PlacetoPayAuthData from Types
  * @phpstan-import-type PlacetoPayPaymentOrderData from Types
  */
 class PlacetopayClient
 {
     public PlacetoPay $placetoPay;
+
     public function __construct()
     {
         try {
@@ -31,10 +33,10 @@ class PlacetopayClient
                 'login' => $login,
                 'tranKey' => $tranKey,
                 'baseUrl' => $baseUrl,
-                'timeout' => $timeout
+                'timeout' => $timeout,
             ]);
         } catch (PlacetoPayException $e) {
-            Log::error('[PAY]: placetoPay instance error ' . PlacetoPayException::readException($e));
+            Log::error('[PAY]: placetoPay instance error '.PlacetoPayException::readException($e));
         }
     }
 
@@ -61,8 +63,8 @@ class PlacetopayClient
                 'description' => $description,
                 'amount' => [
                     'currency' => $currency,
-                    'total' => $total
-                ]
+                    'total' => $total,
+                ],
             ],
             'expiration' => Carbon::now()->addMinutes(30),
             'returnUrl' => $returnUrl,
@@ -72,29 +74,39 @@ class PlacetopayClient
     }
 
     /**
-     * @param PlacetoPayPaymentOrderData $placetoPayPaymentOrderData
+     * @param  PlacetoPayPaymentOrderData  $placetoPayPaymentOrderData
      */
     public function createPaymentOrder(
         $placetoPayPaymentOrderData,
     ): Response {
         $result = Http::post(
-            config('placetopay.baseUrl') . '/api/session',
+            config('placetopay.baseUrl').'/api/session',
             $placetoPayPaymentOrderData
         );
+
         return $result;
     }
 
+    /**
+     * @return PaymentResponse
+     */
     public function getPaymentStatus(string $requestId)
     {
         $result = Http::post(
-            config('placetopay.baseUrl') . '/api/session/' . $requestId,
+            config('placetopay.baseUrl').'/api/session/'.$requestId,
             [
-                'auth' => $this->getAuth()
+                'auth' => $this->getAuth(),
             ]
         );
-        return $result;
+
+        $paymentResponse = $result->json()['status'];
+
+        return $paymentResponse;
     }
 
+    /**
+     * @return PlacetoPayAuthData
+     */
     private function getAuth()
     {
         $nonce = Str::random();
@@ -105,7 +117,7 @@ class PlacetopayClient
             'tranKey' => base64_encode(
                 hash(
                     'sha256',
-                    $nonce . $seed . config('placetopay.tranKey'),
+                    $nonce.$seed.config('placetopay.tranKey'),
                     true
                 )
             ),

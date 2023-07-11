@@ -77,7 +77,7 @@ class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
     }
 
     /**
-     * @param PaymentInfo $paymentInfo
+     * @param  PaymentInfo  $paymentInfo
      */
     public function updatePaymentInfo(string $orderId, array $paymentInfo): void
     {

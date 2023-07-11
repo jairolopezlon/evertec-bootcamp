@@ -7,37 +7,37 @@ use App\Everstore\Orders\Domain\Enums\PaymentProviderEnum;
 use App\Everstore\Orders\Domain\Enums\PaymentStatusEnum;
 use App\Everstore\Orders\Domain\Repositories\OrderRepositoryInterface;
 use App\Everstore\Payments\Domain\Services\PaymentServicesInterface;
-use App\Everstore\Payments\Infrastructure\Services\Placetopay\PlacetopayClient;
 use App\Everstore\Shared\Domain\Types\Types;
-use Carbon\Carbon;
+use App\Everstore\ShoppingCart\Domain\Repositories\ShoppingCartRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
 /**
+ * @phpstan-import-type OrderPrimitive from Types
+ * @phpstan-import-type PaymentResponse from Types
+ * @phpstan-import-type PaymentResponseData from Types
  * @phpstan-import-type ValidatedItemShoppingCartNative from Types
  */
 class PlacetopayServicesImpl implements PaymentServicesInterface
 {
     public function __construct(
-        private OrderRepositoryInterface $OrderRepository
+        private OrderRepositoryInterface $OrderRepository,
+        private ShoppingCartRepositoryInterface $shoppingCartRepository
     ) {
     }
+
     /**
-     * @param ValidatedItemShoppingCartNative $shoppingCartData
+     * @param  ValidatedItemShoppingCartNative  $shoppingCartData
      */
     public function pay(
         PaymentProviderEnum $paymentProvider,
         PaymentCurrencyEnum $paymentCurrency,
         $shoppingCartData
     ): RedirectResponse {
-
         $order = $this->OrderRepository->createOrder($paymentProvider, $paymentCurrency, $shoppingCartData);
         $orderAttributes = $order->getAttributes();
 
-        // $request = App::make(Request::class);
-        // $request->session()->put('shoppingCart', ([]));
+        $this->shoppingCartRepository->removeAllItems();
 
         $ip = Request()->ip();
         $userAgent = Request()->userAgent();
@@ -48,15 +48,13 @@ class PlacetopayServicesImpl implements PaymentServicesInterface
             $paymentCurrency->value,
             $orderAttributes['total'],
             route('ecommerce.payments.processResponse')
-                . '?orderId=' . $orderAttributes['orderId']
-                . '&paymentProvider=' . $paymentProvider->value,
+                .'?orderId='.$orderAttributes['orderId']
+                .'&paymentProvider='.$paymentProvider->value,
             $ip,
             $userAgent
         );
 
         $orderPlacetoPay = $placetopayClient->createPaymentOrder($paymentOrderData);
-
-        dd(Carbon::createFromDate('2023-07-08T02:46:17-05:00')->diffInMinutes(Carbon::now()), $orderPlacetoPay->json());
 
         $redirectTo = route('ecommerce.orders.index');
         $paymentId = null;
@@ -71,9 +69,9 @@ class PlacetopayServicesImpl implements PaymentServicesInterface
         }
 
         $this->OrderRepository->updatePaymentInfo($orderAttributes['orderId'], [
-            'paymentUrl' => $paymentUrl,
+            'status' => $statusOrder->value,
             'paymentId' => $paymentId,
-            'status' => $statusOrder,
+            'paymentUrl' => $paymentUrl,
         ]);
 
         $paymentMessage = $orderPlacetoPay->json()['status']['message'];
@@ -84,38 +82,54 @@ class PlacetopayServicesImpl implements PaymentServicesInterface
         return redirect()->to($redirectTo);
     }
 
-    public function getPaymentStatus(string $requestId)
+    /**
+     * @return PaymentResponse
+     */
+    public function getPaymentInfo(string $requestId)
     {
         $placetopayClient = new PlacetopayClient();
+
         return $placetopayClient->getPaymentStatus($requestId);
     }
 
-    public function paymentHandlerResponse(string $orderId)
+    /**
+     * @return PaymentResponseData
+     */
+    public function paymentHandlerResponse(string $orderId): array
     {
+        /** @var OrderPrimitive */
         $order = $this->OrderRepository->getOrderById($orderId);
-        $paymentInfo = $this->getPaymentStatus($order['paymentId']);
-        $newStatus = $this->getStatusModelAdapter($paymentInfo->json()['status']['status']);
-        $this->OrderRepository->updatePaymentInfo($orderId, ['status' => $newStatus]);
 
-        dd(Carbon::now()->subMinutes(5), $paymentInfo->json());
+        /** @var PaymentResponse */
+        $paymentInfo = $this->getPaymentInfo($order['paymentId']);
+        $newStatus = $this->getStatusModelAdapter($paymentInfo['status']);
+        $this->OrderRepository->updatePaymentInfo($orderId, ['status' => $newStatus->value]);
+
+        $paymentData = [
+            'status' => $newStatus->value,
+            'message' => $paymentInfo['message'],
+            'orderId' => $orderId,
+        ];
+
+        return $paymentData;
     }
 
     public function getStatusModelAdapter(string $paymentStatusOfService): PaymentStatusEnum
     {
-        $paymentStatus = '';
+        $paymentStatus = PaymentStatusEnum::enumFromValue('NOT_STARTED');
 
         switch ($paymentStatusOfService) {
             case 'APPROVED':
-                $paymentStatus = PaymentStatusEnum::COMPLETED;
+                $paymentStatus = PaymentStatusEnum::enumFromValue('COMPLETED');
                 break;
             case 'FAILED':
             case 'REJECTED':
             case 'PARTIAL_EXPIRED':
-                $paymentStatus = PaymentStatusEnum::CANCELLED;
+                $paymentStatus = PaymentStatusEnum::enumFromValue('CANCELLED');
                 break;
             case 'PENDING':
             case 'APPROVED_PARTIAL':
-                $paymentStatus = PaymentStatusEnum::PROCESSING;
+                $paymentStatus = PaymentStatusEnum::enumFromValue('PROCESSING');
                 break;
         }
 
