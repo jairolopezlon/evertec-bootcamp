@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @phpstan-import-type OrderPrimitive from Types
  * @phpstan-import-type ValidatedItemShoppingCartNative from Types
+ * @phpstan-import-type PaymentInfo from Types
+ * @phpstan-import-type OrderPrimitive from Types
  */
 class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
 {
@@ -73,5 +74,37 @@ class EloquentOrderRepositoryImpl implements OrderRepositoryInterface
         })->toArray();
 
         return $orderByUser;
+    }
+
+    /**
+     * @param  PaymentInfo  $paymentInfo
+     */
+    public function updatePaymentInfo(string $orderId, array $paymentInfo): void
+    {
+        $orderEntity = EloquentOrderEntity::where('id', $orderId)->first();
+
+        if (isset($paymentInfo['status'])) {
+            $orderEntity->payment_status = $paymentInfo['status'];
+        }
+        if (isset($paymentInfo['paymentId'])) {
+            $orderEntity->payment_id = $paymentInfo['paymentId'];
+        }
+        if (isset($paymentInfo['paymentUrl'])) {
+            $orderEntity->payment_url = $paymentInfo['paymentUrl'];
+        }
+
+        $orderEntity->save();
+    }
+
+    /**
+     * @return OrderPrimitive
+     */
+    public function getOrderById(string $orderId)
+    {
+        $orderEntity = EloquentOrderEntity::where('id', $orderId)->first();
+
+        $order = EloquentOrderAdapter::toDomainModel($orderEntity);
+
+        return $order->getAttributes();
     }
 }

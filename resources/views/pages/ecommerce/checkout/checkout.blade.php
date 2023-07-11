@@ -3,7 +3,18 @@
 @section('title', 'Checkout')
 @section('ecommerce-content')
     <div class="p-4">
-        <h1 class="font-bold text-xl">Checkout Page</h1>
+        <div class="flex justify-between">
+            <h1 class="font-bold text-xl">Checkout Page</h1>
+            <a class="flex gap-1 text-sm items-center" href="">
+                <svg class="w-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path clip-rule="evenodd" fill-rule="evenodd"
+                        d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z">
+                    </path>
+                </svg>
+                Shopping Cart
+            </a>
+        </div>
         <div class="flex justify-center p-8">
             <div class="flex gap-4" style="width:min(100%, 900px)">
                 <div class="flex flex-col gap-4 grow-[1]">

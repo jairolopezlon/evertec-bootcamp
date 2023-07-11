@@ -8,6 +8,8 @@ use App\Everstore\Orders\Domain\Models\Order;
 use App\Everstore\Shared\Domain\Types\Types;
 
 /**
+ * @phpstan-import-type OrderPrimitive from Types
+ * @phpstan-import-type PaymentInfo from Types
  * @phpstan-import-type ValidatedItemShoppingCartNative from Types
  */
 interface OrderRepositoryInterface
@@ -25,4 +27,15 @@ interface OrderRepositoryInterface
      * @return array<Order>
      */
     public function listOrdersByUser(): array;
+
+    /**
+     * @param  PaymentInfo  $paymentInfo
+     */
+    public function updatePaymentInfo(string $orderId, array $paymentInfo): void;
+
+    /**
+     * @return OrderPrimitive
+     */
+    public function getOrderById(string $orderId);
+    // public function cancelOrderById(string $orderId);
 }

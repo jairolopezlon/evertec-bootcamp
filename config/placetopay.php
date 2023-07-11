@@ -2,6 +2,7 @@
 
 return [
     'login' => env(key: 'PLACETOPAY_LOGIN'),
-    'trankey' => env(key: 'PLACETOPAY_TRANKEY'),
-    'url' => env(key: 'PLACETOPAY_URL'),
+    'tranKey' => env(key: 'PLACETOPAY_TRANKEY'),
+    'baseUrl' => env(key: 'PLACETOPAY_URL'),
+    'timeout' => env(key: 'PLACETOPAY_TIMEOUT', default: 15),
 ];
