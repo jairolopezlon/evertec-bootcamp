@@ -19,4 +19,6 @@ interface ShoppingCartRepositoryInterface
     public function incrementItemAmount(ItemShoppingCart $itemShoppingCart): ShoppingCart;
 
     public function decrementItemAmount(ProductId $productId, int $amount): ShoppingCart;
+
+    public function removeAllItems(): void;
 }

@@ -134,4 +134,12 @@ class SessionStorageShoppingCartRepositoryImpl implements ShoppingCartRepository
 
         return $shoppingCart;
     }
+
+    public function removeAllItems(): void
+    {
+        $request = App::make(Request::class);
+
+        $shoppingCartSessionData = ([]);
+        $request->session()->put('shoppingCart', $shoppingCartSessionData);
+    }
 }
